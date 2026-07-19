@@ -8,7 +8,7 @@
 Sitio web oficial y documentación de **[Joidy](https://github.com/Axel-DaMage/Joidy)**. 
 Joidy es un sistema de progresión disciplinario (PKM) que convierte tus notas en puntos de experiencia. Privado, open-source y alojado en tu propia máquina.
 
-## 🚀 Inicio Rápido (Desarrollo Local)
+## Inicio Rápido (Desarrollo Local)
 
 El proyecto está construido con Next.js (App Router), React y TailwindCSS.
 
@@ -26,7 +26,7 @@ npm run dev
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la página en vivo.
 
-## 🏗️ Stack Tecnológico
+## Stack Tecnológico
 
 - **Framework:** Next.js (App Router)
 - **Estilos:** Tailwind CSS
@@ -34,11 +34,11 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la 
 - **Iconos:** Lucide (Custom SVG implementados localmente)
 - **Despliegue:** Optimizado para Vercel (Serverless Edge Functions)
 
-## 🌐 Endpoints Dinámicos
+## Endpoints Dinámicos
 
 Este proyecto incluye una API Serverless interna configurada para obtener datos en tiempo real de GitHub protegiendo los límites de tarifa (rate-limit) mediante caché (ISR):
 - `/api/github/version`: Obtiene el último *release* de Joidy desde GitHub y lo almacena en caché durante 24 horas.
 
-## 📄 Licencia
+## Licencia
 
 Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/Joidy).
