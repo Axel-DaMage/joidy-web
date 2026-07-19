@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Joidy Web
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?style=for-the-badge&logo=vercel)](https://vercel.com)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL_v3-blue.svg?style=for-the-badge)](https://github.com/Axel-DaMage/Joidy/blob/main/LICENSE)
 
-First, run the development server:
+Sitio web oficial y documentación de **[Joidy](https://github.com/Axel-DaMage/Joidy)**. 
+Joidy es un sistema de progresión disciplinario (PKM) que convierte tus notas en puntos de experiencia. Privado, open-source y alojado en tu propia máquina.
+
+## 🚀 Inicio Rápido (Desarrollo Local)
+
+El proyecto está construido con Next.js (App Router), React y TailwindCSS.
 
 ```bash
+# 1. Clonar el repositorio
+git clone https://github.com/Axel-DaMage/joidy-web.git
+cd joidy-web
+
+# 2. Instalar dependencias
+npm install
+
+# 3. Iniciar el servidor de desarrollo
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la página en vivo.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🏗️ Stack Tecnológico
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework:** Next.js (App Router)
+- **Estilos:** Tailwind CSS
+- **Animaciones:** Framer Motion
+- **Iconos:** Lucide (Custom SVG implementados localmente)
+- **Despliegue:** Optimizado para Vercel (Serverless Edge Functions)
 
-## Learn More
+## 🌐 Endpoints Dinámicos
 
-To learn more about Next.js, take a look at the following resources:
+Este proyecto incluye una API Serverless interna configurada para obtener datos en tiempo real de GitHub protegiendo los límites de tarifa (rate-limit) mediante caché (ISR):
+- `/api/github/version`: Obtiene el último *release* de Joidy desde GitHub y lo almacena en caché durante 24 horas.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 Licencia
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/Joidy).
