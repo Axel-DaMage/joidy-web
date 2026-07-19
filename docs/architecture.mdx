@@ -1,0 +1,166 @@
+---
+title: Architecture
+description: System architecture, data flow, and component overview for Joidy.
+---
+
+# Architecture
+
+## System Overview
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        DOCKER COMPOSE                           │
+├─────────────┬─────────────┬─────────────┬───────────────────────┤
+│  Frontend   │    API      │   Worker    │     AI Service        │
+│  (Next.js)  │  (FastAPI)  │  (Watcher)  │  (Embeddings/Classify)│
+│  Port 3000  │  Port 8000  │             │  Port 8002            │
+└──────┬──────┴──────┬───────┴──────┬──────┴───────────┬──────────┘
+       │             │              │                  │
+       ▼             ▼              ▼                  ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    SHARED VOLUMES                                │
+│  ./data ──────▶ SQLite DB + Vector Index                        │
+│  ./vault ─────▶ Obsidian Vault (read-only)                      │
+│  ./ollama ───▶ Ollama Models                                    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Component Details
+
+### Frontend (Next.js 16)
+
+- **App Router** with React Server Components
+- **Tailwind CSS v4** for styling
+- **Framer Motion** for animations
+- **i18n** (ES/EN) with custom hook
+- **Static Export** for documentation (`nextra`)
+
+### API (FastAPI)
+
+- **Async Python 3.11+**
+- **SQLAlchemy 2.0** with async support
+- **sqlite-vec** for vector similarity search
+- **Pydantic v2** for validation
+- **JWT** authentication (HS256)
+- **Structured logging** with structlog
+
+### Worker (Python)
+
+- **Watchdog** for filesystem events
+- **Obsidian vault** parsing (markdown + frontmatter)
+- **Background tasks** with asyncio
+- **Deduplication** via content hashing
+
+### AI Service (FastAPI)
+
+- **Multi-provider**: Ollama, Gemini, OpenAI, Anthropic
+- **Embeddings**: nomic-embed-text, text-embedding-3-small, etc.
+- **Classification**: Tag suggestion from content
+- **Local-first**: Ollama runs on same machine
+
+## Data Flow
+
+### Note Ingestion
+
+```
+1. File Change Detected (watchdog)
+       │
+       ▼
+2. Parse Markdown (frontmatter + content)
+       │
+       ▼
+3. Generate Embedding (AI Service)
+       │
+       ▼
+4. Store in SQLite + sqlite-vec
+       │
+       ▼
+5. Extract Tags → Update Tag Graph
+       │
+       ▼
+6. Award XP → Update Skill Tree
+       │
+       ▼
+7. Check Streaks/Goals → Notify
+```
+
+### Semantic Search
+
+```
+Query → Embedding → sqlite-vec KNN → Ranked Results
+```
+
+## Database Schema
+
+```sql
+-- Core tables
+notes (id, title, content, path, hash, created, updated)
+tags (id, name, color, count)
+note_tags (note_id, tag_id)
+
+-- Gamification
+skills (id, name, parent_id, xp, level, icon)
+xp_events (id, note_id, skill_id, amount, reason, created)
+streaks (id, name, config, current, longest, last_date)
+goals (id, title, target, current, unit, mode, deadline)
+
+-- Vector search (sqlite-vec virtual table)
+note_embeddings (rowid, embedding)
+```
+
+## Vector Search with sqlite-vec
+
+```sql
+-- Create virtual table
+CREATE VIRTUAL TABLE note_embeddings USING vec0(embedding float[768]);
+
+-- Insert
+INSERT INTO note_embeddings (rowid, embedding) VALUES (1, '[0.1, 0.2, ...]');
+
+-- Search (cosine similarity)
+SELECT n.*, vec_distance_cosine(embedding, ?) as distance
+FROM notes n
+JOIN note_embeddings e ON n.id = e.rowid
+WHERE distance < 0.3
+ORDER BY distance
+LIMIT 10;
+```
+
+## Configuration
+
+All configuration via environment variables (see [Configuration](/docs/configuration)).
+
+## Deployment
+
+### Development
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+### Production
+
+```bash
+docker compose up -d
+```
+
+### Environment-Specific
+
+- **Frontend**: `NEXT_PUBLIC_API_URL`
+- **API**: `DATABASE_URL`, `SECRET_KEY`, `CORS_ORIGINS`
+- **Worker**: `OBSIDIAN_VAULT_PATH`, `WATCH_INTERVAL`
+- **AI**: `OLLAMA_HOST`, `*_API_KEY`
+
+## Monitoring
+
+- **Health**: `GET /health` on all services
+- **Metrics**: `GET /metrics` (Prometheus format)
+- **Logs**: `docker compose logs -f`
+
+## Security
+
+- No external network access required
+- JWT tokens with configurable expiry
+- CORS restricted to configured origins
+- SQLite file permissions (600)
+- Optional: Reverse proxy with TLS

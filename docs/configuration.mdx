@@ -1,0 +1,121 @@
+---
+title: Configuration
+description: Complete configuration reference for Joidy via environment variables.
+---
+
+# Configuration
+
+All configuration is done via environment variables.
+
+## Core
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `DATABASE_URL` | Yes | `sqlite:///data/joidy.db` | SQLite database path |
+| `SECRET_KEY` | Yes | — | JWT secret (32+ chars) |
+| `API_HOST` | No | `0.0.0.0` | API bind address |
+| `API_PORT` | No | `8000` | API port |
+| `LOG_LEVEL` | No | `info` | Log level |
+
+## AI Providers
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `OLLAMA_HOST` | No | Ollama endpoint (default: `http://ollama:11434`) |
+| `GEMINI_API_KEY` | No | Google Gemini API key |
+| `OPENAI_API_KEY` | No | OpenAI API key |
+| `ANTHROPIC_API_KEY` | No | Anthropic API key |
+| `DEFAULT_AI_PROVIDER` | No | `ollama`, `gemini`, `openai`, `anthropic` |
+| `EMBEDDING_MODEL` | No | Embedding model name |
+| `CLASSIFICATION_MODEL` | No | Classification model name |
+
+## Obsidian Integration
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `OBSIDIAN_VAULT_PATH` | No | `/app/vault` | Path to Obsidian vault |
+| `WATCH_INTERVAL` | No | `5000` | File watch interval (ms) |
+| `SYNC_ON_START` | No | `true` | Full sync on startup |
+| `IGNORE_PATTERNS` | No | `.obsidian,*.canvas` | Glob patterns to ignore |
+
+## Vector Search
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `VECTOR_DIM` | No | `768` | Embedding dimensions |
+| `SIMILARITY_THRESHOLD` | No | `0.7` | Minimum cosine similarity |
+| `MAX_SEARCH_RESULTS` | No | `10` | Max results per query |
+
+## Gamification
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `XP_PER_NOTE` | No | `10` | Base XP per note |
+| `XP_PER_TAG` | No | `2` | XP per tag |
+| `STREAK_GRACE_HOURS` | No | `24` | Hours before streak breaks |
+
+## Rate Limiting
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `RATE_LIMIT_REQUESTS` | No | `100` | Requests per window |
+| `RATE_LIMIT_WINDOW` | No | `60` | Window in seconds |
+
+## CORS
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `CORS_ORIGINS` | No | `http://localhost:3000` | Comma-separated origins |
+
+## Example `.env`
+
+```bash
+# Core
+DATABASE_URL=sqlite:///data/joidy.db
+SECRET_KEY=your-super-secret-key-change-in-production
+
+# AI (at least one)
+OLLAMA_HOST=http://ollama:11434
+# GEMINI_API_KEY=your-key
+# OPENAI_API_KEY=your-key
+
+# Obsidian
+OBSIDIAN_VAULT_PATH=/home/user/obsidian-vault
+WATCH_INTERVAL=5000
+
+# Optional tuning
+VECTOR_DIM=768
+SIMILARITY_THRESHOLD=0.7
+LOG_LEVEL=info
+CORS_ORIGINS=http://localhost:3000,https://joidy.local
+```
+
+## Generating SECRET_KEY
+
+```bash
+# OpenSSL
+openssl rand -hex 32
+
+# Python
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+## Docker Compose Override
+
+For local development, create `docker-compose.override.yml`:
+
+```yaml
+services:
+  api:
+    environment:
+      - LOG_LEVEL=debug
+      - DATABASE_URL=sqlite:///data/joidy.db
+    volumes:
+      - ./api:/app
+      - ./data:/app/data
+  
+  worker:
+    volumes:
+      - ./worker:/app
+      - /home/user/obsidian-vault:/app/vault:ro
+```

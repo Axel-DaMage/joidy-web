@@ -1,0 +1,138 @@
+{
+  "hero": {
+    "title": "JOIDY",
+    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas.",
+    "cta": "Explorar"
+  },
+  "whatIs": {
+    "title": "¿Qué es Joidy?",
+    "description": "El entorno de notas donde tu aprendizaje sube de nivel. Escribe, conecta ideas y haz evolucionar tu conocimiento como si fuera un juego, dentro de un espacio seguro y 100% bajo tu control.",
+    "pillars": [
+      { "title": "Notas → XP", "desc": "Cada nota, edición o actividad genera puntos de XP. Tu conocimiento se gamifica y trabajar en tus apuntes desbloquea nuevas funciones." },
+      { "title": "100% Privado", "desc": "Al ser auto-hospedado, tus notas son verdaderamente tuyas y nadie más las puede leer. Sin servidores ajenos, sin nubes, sin tracking." },
+      { "title": "Grafo Vivo", "desc": "Conexiones automáticas entre notas y generación inteligente de categorías. Desbloquea habilidades y observa visualmente cómo crece tu conocimiento." }
+    ]
+  },
+  "problem": {
+    "title": "El Problema",
+    "tagline": "analisis_sistemas_de_notas.sh",
+    "before": [
+      "Falta de motivación: escribir se vuelve una tarea aburrida y terminas abandonando tus apuntes diarios.",
+      "Grafos caóticos: visualizaciones que se ven bien pero terminan siendo una bola gigante de conexiones inútiles.",
+      "Privacidad nula: tus ideas alimentan la IA de empresas privadas o quedan atrapadas en nubes de suscripción.",
+      "Alta fricción: pierdes más tiempo configurando plugins y plantillas que realmente sentándote a escribir."
+    ],
+    "after": [
+      "Gamificación real: el sistema de XP y las rachas transforman la escritura en un hábito diario adictivo.",
+      "Conexiones estructuradas: un árbol de habilidades automático que refleja visualmente tu maestría y progreso.",
+      "Privacidad absoluta: base de datos local en tu disco duro, sin telemetría y sin dependencias externas.",
+      "Enfoque total: cero configuraciones complejas. Tú solo escribes y el entorno clasifica todo por ti."
+    ]
+  },
+  "privacy": {
+    "title": "Privacidad y Auto-Hospedaje",
+    "description": "Tu conocimiento es lo más valioso que tienes. No debería vivir en el servidor de otro.",
+    "points": [
+      { "title": "Tus Datos, Tu Hardware", "desc": "Joidy corre en tu máquina via Docker Compose. Sin nube, sin terceros." },
+      { "title": "Cero Telemetría", "desc": "Sin analytics, sin tracking, sin phone-home. Lo que escribes se queda." },
+      { "title": "IA Local, Nube Opcional", "desc": "Usa Ollama para IA local. Sin API key. IA en nube solo si tú decides." },
+      { "title": "SQLite en Tu Disco", "desc": "Un archivo portable con búsqueda vectorial. Cópialo, versiona, encripta — tu base de datos es tuya." }
+    ]
+  },
+  "howItWorks": {
+    "title": "Cómo Funciona",
+    "steps": [
+      { "label": "Obsidian Vault", "desc": "El watcher detecta cambios en tus archivos .md" },
+      { "label": "Worker", "desc": "Importa la nota y la envía a la API" },
+      { "label": "API", "desc": "Otorga XP, actualiza el skill tree y el grafo de tags" },
+      { "label": "AI Service", "desc": "Genera embeddings, clasifica tags y permite búsqueda semántica" }
+    ]
+  },
+  "features": {
+    "title": "Features Clave",
+    "items": [
+      { "title": "Gamificación", "desc": "XP events, rachas, planta evolutiva (semilla → árbol). Cada nota te sube de nivel.", "highlight": "Ningún otro PKM convierte conocimiento en crecimiento" },
+      { "title": "Grafo de Conocimiento", "desc": "Visualización de co-ocurrencia de tags que revela conexiones ocultas.", "highlight": "Conexiones que ninguna otra herramienta muestra" },
+      { "title": "Skill Tree", "desc": "Generado de tus tags. Ve tu expertise crecer y ramificarse al escribir.", "highlight": "Habilidades que evolucionan en tiempo real" },
+      { "title": "Búsqueda Semántica", "desc": "Búsqueda vectorial con sqlite-vec. Encuentra notas por significado.", "highlight": "Busca por significado, no por keyword" },
+      { "title": "Clasificación por IA", "desc": "Tags sugeridos por Gemini, OpenAI, Anthropic o completamente local con Ollama.", "highlight": "Tu IA, tus reglas, tu hardware" },
+      { "title": "Conexiones Cruzadas", "desc": "Joidy enlaza automáticamente notas relacionadas en toda tu bóveda.", "highlight": "Enlaces entre dos notas cualesquiera" },
+      { "title": "Metas y Objetivos", "desc": "Goal tracking con failure modes: rollover, snowball, reseteo diario.", "highlight": "Metas que se adaptan a tu ritmo" },
+      { "title": "Rachas Personalizadas", "desc": "Streaks configurables para cualquier cosa: leer, meditar, gym, código.", "highlight": "Cualquier hábito, un solo sistema" },
+      { "title": "Sincronización Obsidian", "desc": "Sync bidireccional. Si tienes un vault, Joidy lo potencia.", "highlight": "Potencia tu vault existente" },
+      { "title": "Pomodoro", "desc": "Timer integrado conectado a tu sistema de XP y rachas.", "highlight": "Enfoque que alimenta tu crecimiento" }
+    ]
+  },
+  "techStack": {
+    "title": "Stack Tecnológico"
+  },
+  "architecture": {
+    "title": "Arquitectura"
+  },
+  "audience": {
+    "title": "¿Para Quién es?",
+    "items": [
+      { "title": "Conscientes de Privacidad", "desc": "Personas que no intercambian su conocimiento por servicios gratuitos." },
+      { "title": "Knowledge Workers", "desc": "Profesionales con grandes volúmenes de información interconectada." },
+      { "title": "Desarrolladores", "desc": "Que quieren un PKM open-source, auto-hospedado, extensible y confiable." },
+      { "title": "Investigadores y Estudiantes", "desc": "Que necesitan conectar ideas entre disciplinas." }
+    ],
+    "message": "100% open-source · self-hosted · tu control, tus datos"
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "items": [
+      { "hash": "a1b2c3d", "message": "feat: integración Google Calendar" },
+      { "hash": "e4f5g6h", "message": "feat: editor WYSIWYG embebido" },
+      { "hash": "i7j8k9l", "message": "feat: migración a PostgreSQL + pgvector" },
+      { "hash": "m0n1o2p", "message": "feat: WebSockets en tiempo real" },
+      { "hash": "q3r4s5t", "message": "fix: rate limiting por usuario" },
+      { "hash": "u6v7w8x", "message": "docs: API pública documentada" },
+      { "hash": "y9z0a1b", "message": "feat: notificaciones Telegram" },
+      { "hash": "c2d3e4f", "message": "feat: tema oscuro/claro completo" }
+    ]
+  },
+  "faq": {
+    "title": "FAQs",
+    "items": [
+      { "q": "¿Qué pasa si Joidy deja de existir mañana? ¿Pierdo todo?", "a": "No pierdes nada. Todas tus notas se guardan localmente como archivos Markdown simples en tu disco duro y tu progreso/grafo vive en una base de datos SQLite. No hay \"vendor lock-in\", eres libre de llevarte tus archivos a cualquier otro sistema cuando quieras." },
+      { "q": "¿Puedo escribir desde mi celular si es auto-hospedado?", "a": "Actualmente puedes usar la app de Obsidian para sincronizar tu bóveda (vía Git u Obsidian Sync) a tu Android/iOS. Al encender tu PC, Joidy procesará los cambios y te otorgará los XP. A futuro, existirá una aplicación móvil nativa de Joidy con todas las capacidades integradas." },
+      { "q": "¿Cómo calcula el sistema los XP y las subidas de nivel?", "a": "El algoritmo premia la profundidad y el hábito. Ganas XP base por la longitud de la nota, bonificaciones por crear enlaces (backlinks) entre ideas, y multiplicadores fuertes por rachas diarias (streaks)." },
+      { "q": "¿Tengo que pagar por usar la Inteligencia Artificial (Auto-Tagging, etc)?", "a": "Depende de tu hardware. Joidy soporta Ollama de forma nativa, lo que te permite correr modelos potentes (como Llama 3) 100% gratis y de forma local en tu GPU. Si tu máquina no es muy potente, puedes optar por poner tus propias API keys de OpenAI o Anthropic (pago por uso)." },
+      { "q": "¿Puedo instalarlo en un NAS, Raspberry Pi o servidor remoto?", "a": "Absolutamente. Joidy está empaquetado para correr vía Docker Compose. Ya sea en tu PC diario, una Raspberry Pi, un NAS de Synology o un VPS casero, solo necesitas clonar el repositorio y ejecutar docker compose up." }
+    ]
+  },
+  "donate": {
+    "title": "Donaciones",
+    "sponsors": "GitHub Sponsors",
+    "paypal": "PayPal",
+    "btc": "BTC"
+  },
+"cta": {
+    "title": "Empezar",
+    "docker": "$ docker compose up",
+    "github": "GitHub →",
+    "docs": "Documentación →",
+    "discord": "Discord →",
+    "copy": "Copiar comando",
+    "copied": "¡Copiado!"
+  },
+  "footer": {
+    "version": "joidy v0.1",
+    "license": "GPL v3",
+    "craft": "Crafted by D4MAG3_WIZ4RD",
+    "nav": "Navegación",
+    "connect": "Conectar",
+    "links": {
+      "github": "GitHub",
+      "docs": "Documentación",
+      "issues": "Issues",
+      "discussions": "Discusiones",
+      "license": "Licencia"
+    }
+  },
+  "header": {
+    "nav": ["Features", "Arquitectura", "Roadmap", "FAQ", "Privacidad"],
+    "docs": "Docs"
+  }
+}

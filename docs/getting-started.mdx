@@ -1,0 +1,127 @@
+---
+title: Getting Started
+description: Get Joidy up and running in minutes with Docker Compose.
+---
+
+# Getting Started
+
+Welcome to Joidy! This guide will help you get up and running quickly.
+
+## What You'll Need
+
+- Docker & Docker Compose
+- 4GB+ RAM
+- (Optional) NVIDIA GPU for local AI
+
+## 1. Clone & Configure
+
+```bash
+git clone https://github.com/d4mag3/Joidy
+cd Joidy
+
+# Copy example config
+cp .env.example .env
+
+# Edit with your settings
+vim .env
+```
+
+## 2. Start Services
+
+```bash
+docker compose up -d
+```
+
+Wait ~30 seconds for all services to start.
+
+## 3. Verify
+
+Open http://localhost:3000 — you should see the Joidy dashboard.
+
+Check service health:
+```bash
+docker compose ps
+curl http://localhost:8000/health
+```
+
+## 4. Configure Obsidian (Optional)
+
+Add your vault path to `.env`:
+```bash
+OBSIDIAN_VAULT_PATH=/home/user/obsidian-vault
+```
+
+Restart the worker:
+```bash
+docker compose restart worker
+```
+
+## 5. Enable AI Features (Optional)
+
+For local AI (recommended):
+```bash
+# Pull models
+docker exec -it joidy-ollama ollama pull nomic-embed-text
+docker exec -it joidy-ollama ollama pull llama3.2
+```
+
+For cloud AI, add API keys to `.env`:
+```bash
+GEMINI_API_KEY=your-key
+# or
+OPENAI_API_KEY=your-key
+```
+
+## 6. Create Your First Note
+
+1. Open http://localhost:3000
+2. Click "New Note" or create a `.md` file in your Obsidian vault
+3. Watch your plant grow and XP increase!
+
+## Next Steps
+
+- [Configuration](/docs/configuration) - Full configuration reference
+- [Architecture](/docs/architecture) - How it works under the hood
+- [API Reference](/docs/api-reference) - Integrate with Joidy
+- [GitHub Issues](https://github.com/d4mag3/Joidy/issues) - Report bugs
+- [Discussions](https://github.com/d4mag3/Joidy/discussions) - Ask questions
+
+## Troubleshooting
+
+### Services Won't Start
+```bash
+# Check logs
+docker compose logs -f
+
+# Common: port conflicts
+# Change ports in docker-compose.yml
+```
+
+### Ollama Not Working
+```bash
+# Check Ollama logs
+docker compose logs ollama
+
+# Ensure GPU access if using NVIDIA
+# Add to docker-compose.yml:
+# deploy:
+#   resources:
+#     reservations:
+#       devices:
+#         - driver: nvidia
+#           count: all
+#           capabilities: [gpu]
+```
+
+### Permission Issues
+```bash
+# Fix data directory permissions
+sudo chown -R 1000:1000 ./data
+```
+
+### Database Errors
+```bash
+# Reset database (loses all data!)
+docker compose down -v
+docker compose up -d
+```

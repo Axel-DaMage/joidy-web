@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Configured for Vercel deployment (serverless API routes enabled)
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default nextConfig;

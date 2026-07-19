@@ -1,0 +1,42 @@
+# Joidy Documentation
+
+Welcome to the Joidy documentation. Joidy is a private, self-hosted PKM system that turns notes into XP, an evolving plant, and a living knowledge graph — on your hardware, under your control.
+
+## Quick Links
+
+- [Getting Started](/docs/getting-started)
+- [Installation](/docs/installation)
+- [Configuration](/docs/configuration)
+- [Architecture](/docs/architecture)
+- [API Reference](/docs/api)
+- [Contributing](/docs/contributing)
+
+## What is Joidy?
+
+Joidy is a **Personal Knowledge Management (PKM)** system designed for privacy-conscious users who want full control over their data. It transforms your notes into an interactive experience with:
+
+- **Gamification**: XP, streaks, and an evolving plant that grows with your knowledge
+- **Knowledge Graph**: Automatic connections between notes, tags, and skills
+- **Semantic Search**: Vector search powered by sqlite-vec
+- **Local AI**: Optional Ollama integration for fully local AI classification
+- **Obsidian Sync**: Bidirectional sync with your existing Obsidian vault
+
+## Philosophy
+
+> Your knowledge is the most valuable thing you own. It should not live on someone else's server.
+
+Joidy runs entirely on your machine via Docker Compose. No cloud dependency, no tracking, no telemetry.
+
+## Quick Start
+
+```bash
+git clone https://github.com/d4mag3/Joidy
+cd Joidy
+docker compose up
+```
+
+Then open http://localhost:3000
+
+## License
+
+Joidy is licensed under GPL v3. See [LICENSE](https://github.com/d4mag3/Joidy/blob/main/LICENSE) for details.

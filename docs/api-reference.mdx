@@ -1,0 +1,280 @@
+---
+title: API Reference
+description: Complete REST API reference for Joidy.
+---
+
+# API Reference
+
+Base URL: `http://localhost:8000`
+
+## Authentication
+
+All endpoints require JWT authentication except `/health` and `/auth/login`.
+
+```bash
+# Login to get token
+curl -X POST http://localhost:8000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "your-password"}'
+
+# Use token in requests
+curl -H "Authorization: Bearer <token>" http://localhost:8000/api/notes
+```
+
+## Notes
+
+### List Notes
+
+```http
+GET /api/notes?page=1&per_page=20&tag=rust
+```
+
+**Query Parameters:**
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `page` | integer | 1 | Page number |
+| `per_page` | integer | 20 | Items per page (max 100) |
+| `tag` | string | - | Filter by tag |
+| `search` | string | - | Full-text search |
+
+**Response:**
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "title": "Note Title",
+      "content": "Note content...",
+      "path": "/vault/note.md",
+      "tags": ["rust", "programming"],
+      "skills": ["programming", "rust"],
+      "xp": 150,
+      "created_at": "2024-01-15T10:30:00Z",
+      "updated_at": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "meta": {
+    "page": 1,
+    "per_page": 20,
+    "total": 150,
+    "total_pages": 8
+  }
+}
+```
+
+### Get Note
+
+```http
+GET /api/notes/{id}
+```
+
+### Create Note
+
+```http
+POST /api/notes
+Content-Type: application/json
+
+{
+  "title": "New Note",
+  "content": "Note content...",
+  "tags": ["tag1", "tag2"],
+  "skills": ["skill1"]
+}
+```
+
+### Update Note
+
+```http
+PUT /api/notes/{id}
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "content": "Updated content...",
+  "tags": ["tag1", "tag3"]
+}
+```
+
+### Delete Note
+
+```http
+DELETE /api/notes/{id}
+```
+
+### Semantic Search
+
+```http
+GET /api/notes/search?q=machine learning&limit=10
+```
+
+## Tags
+
+### List Tags
+
+```http
+GET /api/tags
+```
+
+### Get Tag Details
+
+```http
+GET /api/tags/{name}
+```
+
+### Tag Co-occurrence Graph
+
+```http
+GET /api/tags/graph?min_weight=2
+```
+
+## Skills
+
+### Get Skill Tree
+
+```http
+GET /api/skills
+```
+
+### Get Skill Details
+
+```http
+GET /api/skills/{id}
+```
+
+### Award XP to Skill
+
+```http
+POST /api/skills/{id}/xp
+Content-Type: application/json
+
+{
+  "amount": 50,
+  "reason": "Completed tutorial"
+}
+```
+
+## Gamification
+
+### XP Summary
+
+```http
+GET /api/xp
+```
+
+**Response:**
+```json
+{
+  "total_xp": 15420,
+  "level": 12,
+  "xp_to_next_level": 3580,
+  "recent_events": [
+    {"amount": 50, "reason": "Note created", "created_at": "..."}
+  ]
+}
+```
+
+### Streaks
+
+```http
+GET /api/streaks
+```
+
+### Complete Streak Task
+
+```http
+POST /api/streaks/{id}/complete
+```
+
+### Plant State
+
+```http
+GET /api/plant
+```
+
+**Response:**
+```json
+{
+  "stage": "tree",
+  "growth": 0.75,
+  "total_xp": 15420,
+  "name": "Oak"
+}
+```
+
+## Goals
+
+### List Goals
+
+```http
+GET /api/goals
+```
+
+### Create Goal
+
+```http
+POST /api/goals
+Content-Type: application/json
+
+{
+  "title": "Learn Rust",
+  "target": 100,
+  "unit": "hours",
+  "failure_mode": "rollover"
+}
+```
+
+### Update Goal Progress
+
+```http
+POST /api/goals/{id}/progress
+Content-Type: application/json
+
+{
+  "increment": 2
+}
+```
+
+## System
+
+### Health Check
+
+```http
+GET /health
+```
+
+### Metrics (Prometheus)
+
+```http
+GET /metrics
+```
+
+## Error Responses
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid input",
+    "details": {
+      "field": "title",
+      "issue": "String must contain at least 1 character"
+    }
+  }
+}
+```
+
+**Error Codes:**
+| Code | HTTP | Description |
+|------|------|-------------|
+| `UNAUTHORIZED` | 401 | Invalid or missing token |
+| `FORBIDDEN` | 403 | Insufficient permissions |
+| `NOT_FOUND` | 404 | Resource not found |
+| `VALIDATION_ERROR` | 422 | Invalid request body |
+| `RATE_LIMITED` | 429 | Too many requests |
+| `INTERNAL_ERROR` | 500 | Server error |
+
+## Rate Limiting
+
+- Default: 100 requests/minute per IP
+- Authenticated: 1000 requests/minute per user
+- Configure via `RATE_LIMIT_REQUESTS` and `RATE_LIMIT_WINDOW`
