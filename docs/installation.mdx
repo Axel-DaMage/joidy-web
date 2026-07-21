@@ -1,146 +1,63 @@
 ---
 title: Installation
-description: Install Joidy using Docker Compose or from source.
+description: Install Joidy using Docker, curl, Homebrew, or AUR.
 ---
 
 # Installation
 
-## Quick Start (Docker Compose)
+## Quick Start (Docker)
 
 ```bash
-git clone https://github.com/d4mag3/Joidy
-cd Joidy
+docker compose up -d
+```
+
+Images are pulled automatically from Docker Hub. Requires Docker + Docker Compose.
+
+## One-Line Install
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
+```
+
+Clones the repo, copies `.env.example`, and you're ready to configure.
+
+## Homebrew
+
+```bash
+brew tap Axel-DaMage/homebrew-tap
+brew install joidy
+joidy up
+```
+
+## AUR (Arch Linux)
+
+```bash
+yay -S joidy
+# or
+paru -S joidy
+```
+
+## Manual
+
+```bash
+git clone https://github.com/Axel-DaMage/joidy.git
+cd joidy
 cp .env.example .env
 docker compose up -d
 ```
 
-## Manual Installation
+## Configuration
 
-### Prerequisites
-
-| Component | Version |
-|-----------|---------|
-| Python | 3.11+ |
-| Node.js | 20+ |
-| SQLite | 3.35+ (with vec extension) |
-| Ollama | Latest (for local AI) |
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev  # http://localhost:3000
-```
-
-### API
-
-```bash
-cd api
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn main:app --reload  # http://localhost:8000
-```
-
-### Worker
-
-```bash
-cd worker
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python watcher.py
-```
-
-### AI Service
-
-```bash
-cd ai-service
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --port 8002
-```
-
-### Ollama
-
-```bash
-# Install
-curl -fsSL https://ollama.com/install.sh | sh
-
-# Pull models
-ollama pull nomic-embed-text
-ollama pull llama3.2
-```
-
-## System Requirements
-
-### Minimum
-
-- 2 CPU cores
-- 4GB RAM
-- 5GB disk space
-- Linux/macOS/Windows (WSL2)
-
-### Recommended
-
-- 4+ CPU cores
-- 8GB+ RAM
-- 20GB+ SSD
-- NVIDIA GPU (for local AI)
-
-### With GPU Acceleration
-
-Add to `docker-compose.yml`:
-
-```yaml
-services:
-  ollama:
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-```
-
-## Ports
-
-| Service | Port | Protocol |
-|---------|------|----------|
-| Frontend | 3000 | HTTP |
-| API | 8000 | HTTP |
-| AI Service | 8002 | HTTP |
-| Ollama | 11434 | HTTP |
-
-## Directory Structure
-
-```
-joidy/
-├── data/           # SQLite DB, vector index
-├── vault/          # Obsidian vault (mount)
-├── ollama/         # Ollama models
-├── frontend/       # Next.js app
-├── api/            # FastAPI backend
-├── worker/         # File watcher
-├── ai-service/     # Embeddings/classification
-└── docker-compose.yml
-```
-
-## Environment Variables
-
-See [Configuration](/docs/configuration) for full reference.
+See [Configuration](/docs/configuration) for environment variables.
 
 ## Updating
 
 ```bash
-git pull
 docker compose pull
 docker compose up -d
 ```
+
+Or with Homebrew: `brew upgrade joidy && joidy up`
 
 ## Uninstall
 

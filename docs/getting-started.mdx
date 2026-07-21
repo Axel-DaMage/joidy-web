@@ -11,28 +11,51 @@ Welcome to Joidy! This guide will help you get up and running quickly.
 
 - Docker & Docker Compose
 - 4GB+ RAM
-- (Optional) NVIDIA GPU for local AI
+- (Optional) An AI API key (Gemini, OpenAI, etc.)
 
-## 1. Clone & Configure
+## 1. Install
 
-```bash
-git clone https://github.com/d4mag3/Joidy
-cd Joidy
+Choose one method:
 
-# Copy example config
-cp .env.example .env
-
-# Edit with your settings
-vim .env
-```
-
-## 2. Start Services
-
+**Docker (easiest):**
 ```bash
 docker compose up -d
 ```
 
-Wait ~30 seconds for all services to start.
+**One-liner:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
+```
+
+**Homebrew:**
+```bash
+brew tap Axel-DaMage/homebrew-tap
+brew install joidy
+joidy up
+```
+
+**AUR:**
+```bash
+yay -S joidy
+```
+
+**Manual:**
+```bash
+git clone https://github.com/Axel-DaMage/joidy.git
+cd joidy
+cp .env.example .env
+docker compose up -d
+```
+
+## 2. Configure
+
+Edit `.env` with your settings:
+
+```bash
+vim .env
+```
+
+At minimum, set `GEMINI_API_KEY` (or another AI provider key) and `SECRET_KEY`.
 
 ## 3. Verify
 
@@ -58,14 +81,7 @@ docker compose restart worker
 
 ## 5. Enable AI Features (Optional)
 
-For local AI (recommended):
-```bash
-# Pull models
-docker exec -it joidy-ollama ollama pull nomic-embed-text
-docker exec -it joidy-ollama ollama pull llama3.2
-```
-
-For cloud AI, add API keys to `.env`:
+Add API keys to `.env`:
 ```bash
 GEMINI_API_KEY=your-key
 # or
@@ -83,8 +99,8 @@ OPENAI_API_KEY=your-key
 - [Configuration](/docs/configuration) - Full configuration reference
 - [Architecture](/docs/architecture) - How it works under the hood
 - [API Reference](/docs/api-reference) - Integrate with Joidy
-- [GitHub Issues](https://github.com/d4mag3/Joidy/issues) - Report bugs
-- [Discussions](https://github.com/d4mag3/Joidy/discussions) - Ask questions
+- [GitHub Issues](https://github.com/Axel-DaMage/joidy/issues) - Report bugs
+- [Discussions](https://github.com/Axel-DaMage/joidy/discussions) - Ask questions
 
 ## Troubleshooting
 
@@ -95,22 +111,6 @@ docker compose logs -f
 
 # Common: port conflicts
 # Change ports in docker-compose.yml
-```
-
-### Ollama Not Working
-```bash
-# Check Ollama logs
-docker compose logs ollama
-
-# Ensure GPU access if using NVIDIA
-# Add to docker-compose.yml:
-# deploy:
-#   resources:
-#     reservations:
-#       devices:
-#         - driver: nvidia
-#           count: all
-#           capabilities: [gpu]
 ```
 
 ### Permission Issues

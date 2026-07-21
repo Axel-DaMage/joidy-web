@@ -156,7 +156,7 @@ export default async function DocPage({ params }: DocPageProps) {
           </h3>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="https://github.com/d4mag3/Joidy"
+              href="https://github.com/Axel-DaMage/joidy"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mono text-xs tracking-wider text-[#888888] hover:text-white border border-[#1a1a1a] hover:border-[#333333] px-4 py-2 transition-all"
@@ -164,7 +164,7 @@ export default async function DocPage({ params }: DocPageProps) {
               GitHub Repository
             </Link>
             <Link
-              href="https://github.com/d4mag3/Joidy/issues"
+              href="https://github.com/Axel-DaMage/joidy/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mono text-xs tracking-wider text-[#888888] hover:text-white border border-[#1a1a1a] hover:border-[#333333] px-4 py-2 transition-all"
@@ -172,7 +172,7 @@ export default async function DocPage({ params }: DocPageProps) {
               Report Issue
             </Link>
             <Link
-              href="https://github.com/d4mag3/Joidy/discussions"
+              href="https://github.com/Axel-DaMage/joidy/discussions"
               target="_blank"
               rel="noopener noreferrer"
               className="font-mono text-xs tracking-wider text-[#888888] hover:text-white border border-[#1a1a1a] hover:border-[#333333] px-4 py-2 transition-all"
