@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "framer-motion": "^12.42.2",
     "gray-matter": "^4.0.3",
     "marked": "^18.0.6",
