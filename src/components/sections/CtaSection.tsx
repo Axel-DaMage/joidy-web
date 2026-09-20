@@ -1,9 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
 
 export function CtaSection() {
+  const { t } = useI18n();
   return (
     <section id="sponsor" className="relative border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_#050505_0%,_#000000_70%)]" />
@@ -27,8 +29,7 @@ export function CtaSection() {
             </svg>
           </div>
           <p className="font-mono text-sm md:text-base text-[#888888] leading-relaxed mb-8">
-            El proyecto sobrevive gracias a la comunidad open-source y no solo al trabajo de uno. 
-            Si deseas apoyar al creador, puedes donar aquí.
+            {t.donate.message}
           </p>
 
           <a
@@ -44,7 +45,7 @@ export function CtaSection() {
             >
               <path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 0 0 8 13.393a20.561 20.561 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"></path>
             </svg>
-            SPONSOR PROJECT
+            {t.donate.button.toUpperCase()}
           </a>
         </motion.div>
       </Container>

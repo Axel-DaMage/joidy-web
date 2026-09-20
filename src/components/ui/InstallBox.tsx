@@ -1,18 +1,26 @@
 "use client";
 
 import { useState } from "react";
+import { useI18n } from "@/i18n";
 
 const installMethods = [
   {
     id: "docker",
     label: "Docker",
-    command: "docker compose up -d",
+    command:
+      "git clone https://github.com/Axel-DaMage/joidy.git && cd joidy && cp .env.example .env && docker compose up -d",
   },
   {
     id: "curl",
     label: "curl",
     command:
       "curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash",
+  },
+  {
+    id: "powershell",
+    label: "PS",
+    command:
+      "irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex",
   },
   {
     id: "brew",
@@ -25,15 +33,10 @@ const installMethods = [
     label: "aur",
     command: "yay -S joidy",
   },
-  {
-    id: "direct",
-    label: "git",
-    command:
-      "git clone https://github.com/Axel-DaMage/joidy.git && cd joidy && cp .env.example .env && docker compose up -d",
-  },
 ];
 
 export function InstallBox({ className = "" }: { className?: string }) {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState(installMethods[0]);
   const [copied, setCopied] = useState(false);
 
@@ -75,7 +78,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
           onClick={() => copyToClipboard(activeTab.command)}
           className="font-mono text-[10px] text-[#555555] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
         >
-          {copied ? "Copiado" : "Copiar"}
+          {copied ? t.cta.copied : t.cta.copy}
         </button>
       </div>
     </div>

@@ -42,15 +42,15 @@ export function RoadmapSection() {
   }, []);
 
   return (
-    <Section id="roadmap" title={t.roadmap.title || 'Roadmap & Progreso'}>
+    <Section id="roadmap" title={t.roadmap.title || 'Roadmap'}>
       <div className="w-full max-w-6xl mx-auto">
         {loading ? (
           <div className="font-mono text-sm text-[#555555] text-center py-20 animate-pulse">
-            Fetching GitHub data...
+            {t.roadmap.loading}
           </div>
         ) : items.length === 0 ? (
           <div className="font-mono text-sm text-[#555555] text-center py-20">
-            No hay datos disponibles en el repositorio.
+            {t.roadmap.empty}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">

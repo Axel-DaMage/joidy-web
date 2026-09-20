@@ -3,9 +3,9 @@
 import { motion } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
-import { ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon } from '@/components/ui/Icons';
+import { ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon, UsersIcon, ShieldIcon } from '@/components/ui/Icons';
 
-const featureIcons = [ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon];
+const featureIcons = [ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon, UsersIcon, ShieldIcon];
 
 const hoverColors = [
   'group-hover:text-blue-400',

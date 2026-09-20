@@ -1,8 +1,7 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas.",
-    "cta": "Explorar"
+    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas."
   },
   "whatIs": {
     "title": "¿Qué es Joidy?",
@@ -36,16 +35,7 @@
       { "title": "Tus Datos, Tu Hardware", "desc": "Joidy corre en tu máquina via Docker Compose. Sin nube, sin terceros." },
       { "title": "Cero Telemetría", "desc": "Sin analytics, sin tracking, sin phone-home. Lo que escribes se queda." },
       { "title": "IA Local, Nube Opcional", "desc": "Usa Ollama para IA local. Sin API key. IA en nube solo si tú decides." },
-      { "title": "SQLite en Tu Disco", "desc": "Un archivo portable con búsqueda vectorial. Cópialo, versiona, encripta — tu base de datos es tuya." }
-    ]
-  },
-  "howItWorks": {
-    "title": "Cómo Funciona",
-    "steps": [
-      { "label": "Obsidian Vault", "desc": "El watcher detecta cambios en tus archivos .md" },
-      { "label": "Worker", "desc": "Importa la nota y la envía a la API" },
-      { "label": "API", "desc": "Otorga XP, actualiza el skill tree y el grafo de tags" },
-      { "label": "AI Service", "desc": "Genera embeddings, clasifica tags y permite búsqueda semántica" }
+      { "title": "PostgreSQL en Tu Disco", "desc": "Postgres 16 + pgvector en un contenedor local. Expórtala, respáldala, encríptala — tu base de datos es tuya." }
     ]
   },
   "features": {
@@ -54,13 +44,15 @@
       { "title": "Gamificación", "desc": "XP events, rachas, planta evolutiva (semilla → árbol). Cada nota te sube de nivel.", "highlight": "Ningún otro PKM convierte conocimiento en crecimiento" },
       { "title": "Grafo de Conocimiento", "desc": "Visualización de co-ocurrencia de tags que revela conexiones ocultas.", "highlight": "Conexiones que ninguna otra herramienta muestra" },
       { "title": "Skill Tree", "desc": "Generado de tus tags. Ve tu expertise crecer y ramificarse al escribir.", "highlight": "Habilidades que evolucionan en tiempo real" },
-      { "title": "Búsqueda Semántica", "desc": "Búsqueda vectorial con sqlite-vec. Encuentra notas por significado.", "highlight": "Busca por significado, no por keyword" },
-      { "title": "Clasificación por IA", "desc": "Tags sugeridos por Gemini, OpenAI, Anthropic o completamente local con Ollama.", "highlight": "Tu IA, tus reglas, tu hardware" },
+      { "title": "Búsqueda Semántica", "desc": "Búsqueda vectorial con pgvector (PostgreSQL). Encuentra notas por significado.", "highlight": "Busca por significado, no por keyword" },
+      { "title": "Clasificación por IA", "desc": "Tags sugeridos por Gemini, OpenAI, Anthropic, Cohere u OpenRouter — o completamente local con Ollama.", "highlight": "Tu IA, tus reglas, tu hardware" },
       { "title": "Conexiones Cruzadas", "desc": "Joidy enlaza automáticamente notas relacionadas en toda tu bóveda.", "highlight": "Enlaces entre dos notas cualesquiera" },
       { "title": "Metas y Objetivos", "desc": "Goal tracking con failure modes: rollover, snowball, reseteo diario.", "highlight": "Metas que se adaptan a tu ritmo" },
       { "title": "Rachas Personalizadas", "desc": "Streaks configurables para cualquier cosa: leer, meditar, gym, código.", "highlight": "Cualquier hábito, un solo sistema" },
-      { "title": "Sincronización Obsidian", "desc": "Sync bidireccional. Si tienes un vault, Joidy lo potencia.", "highlight": "Potencia tu vault existente" },
-      { "title": "Pomodoro", "desc": "Timer integrado conectado a tu sistema de XP y rachas.", "highlight": "Enfoque que alimenta tu crecimiento" }
+      { "title": "Sincronización Obsidian", "desc": "Sync bidireccional — watcher de archivos más push instantáneo por webhook. Si tienes un vault, Joidy lo potencia.", "highlight": "Potencia tu vault existente" },
+      { "title": "Pomodoro", "desc": "Timer integrado conectado a tu sistema de XP y rachas.", "highlight": "Enfoque que alimenta tu crecimiento" },
+      { "title": "Hub de Integraciones", "desc": "Sync con GitHub ya funciona; Google Calendar/Tasks, Strava y Spotify están en camino.", "highlight": "Tu vida digital, conectada" },
+      { "title": "Push y Offline", "desc": "PWA instalable con notificaciones web-push y modo offline que sincroniza al volver.", "highlight": "Funciona incluso cuando tú no" }
     ]
   },
   "techStack": {
@@ -81,54 +73,43 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "items": [
-      { "hash": "a1b2c3d", "message": "feat: integración Google Calendar" },
-      { "hash": "e4f5g6h", "message": "feat: editor WYSIWYG embebido" },
-      { "hash": "i7j8k9l", "message": "feat: migración a PostgreSQL + pgvector" },
-      { "hash": "m0n1o2p", "message": "feat: WebSockets en tiempo real" },
-      { "hash": "q3r4s5t", "message": "fix: rate limiting por usuario" },
-      { "hash": "u6v7w8x", "message": "docs: API pública documentada" },
-      { "hash": "y9z0a1b", "message": "feat: notificaciones Telegram" },
-      { "hash": "c2d3e4f", "message": "feat: tema oscuro/claro completo" }
-    ]
+    "loading": "Obteniendo datos de GitHub...",
+    "empty": "No hay datos disponibles en el repositorio."
   },
   "faq": {
     "title": "FAQs",
     "items": [
-      { "q": "¿Qué pasa si Joidy deja de existir mañana? ¿Pierdo todo?", "a": "No pierdes nada. Todas tus notas se guardan localmente como archivos Markdown simples en tu disco duro y tu progreso/grafo vive en una base de datos SQLite. No hay \"vendor lock-in\", eres libre de llevarte tus archivos a cualquier otro sistema cuando quieras." },
+      { "q": "¿Qué pasa si Joidy deja de existir mañana? ¿Pierdo todo?", "a": "No pierdes nada. Todas tus notas se guardan localmente como archivos Markdown simples en tu disco duro y tu progreso/grafo vive en una base de datos PostgreSQL local. No hay \"vendor lock-in\", eres libre de llevarte tus archivos a cualquier otro sistema cuando quieras." },
       { "q": "¿Puedo escribir desde mi celular si es auto-hospedado?", "a": "Actualmente puedes usar la app de Obsidian para sincronizar tu bóveda (vía Git u Obsidian Sync) a tu Android/iOS. Al encender tu PC, Joidy procesará los cambios y te otorgará los XP. A futuro, existirá una aplicación móvil nativa de Joidy con todas las capacidades integradas." },
       { "q": "¿Cómo calcula el sistema los XP y las subidas de nivel?", "a": "El algoritmo premia la profundidad y el hábito. Ganas XP base por la longitud de la nota, bonificaciones por crear enlaces (backlinks) entre ideas, y multiplicadores fuertes por rachas diarias (streaks)." },
-      { "q": "¿Tengo que pagar por usar la Inteligencia Artificial (Auto-Tagging, etc)?", "a": "Depende de tu hardware. Joidy soporta Ollama de forma nativa, lo que te permite correr modelos potentes (como Llama 3) 100% gratis y de forma local en tu GPU. Si tu máquina no es muy potente, puedes optar por poner tus propias API keys de OpenAI o Anthropic (pago por uso)." },
+      { "q": "¿Tengo que pagar por usar la Inteligencia Artificial (Auto-Tagging, etc)?", "a": "Depende de tu hardware. Joidy soporta Ollama de forma nativa, lo que te permite correr modelos potentes (como Llama 3) 100% gratis y de forma local en tu GPU. Si tu máquina no es muy potente, puedes optar por poner tus propias API keys de OpenAI, Anthropic, Cohere u OpenRouter (pago por uso)." },
       { "q": "¿Puedo instalarlo en un NAS, Raspberry Pi o servidor remoto?", "a": "Absolutamente. Joidy está empaquetado para correr vía Docker Compose. Ya sea en tu PC diario, una Raspberry Pi, un NAS de Synology o un VPS casero, solo necesitas clonar el repositorio y ejecutar docker compose up." }
     ]
   },
   "donate": {
     "title": "Donaciones",
-    "sponsors": "GitHub Sponsors",
-    "paypal": "PayPal",
-    "btc": "BTC"
+    "message": "El proyecto sobrevive gracias a la comunidad open-source y no solo al trabajo de uno. Si deseas apoyar al creador, puedes donar aquí.",
+    "button": "Sponsor Project"
   },
-"cta": {
-    "title": "Empezar",
-    "docker": "$ docker compose up",
-    "github": "GitHub →",
-    "docs": "Documentación →",
-    "discord": "Discord →",
-    "copy": "Copiar comando",
+  "cta": {
+    "copy": "Copiar",
     "copied": "¡Copiado!"
   },
   "footer": {
-    "version": "joidy v0.1",
-    "license": "GPL v3",
-    "craft": "Crafted by D4MAG3_WIZ4RD",
+    "tagline": "Un sistema de progresión disciplinario. Privado, open-source y alojado en tu propia máquina.",
     "nav": "Navegación",
-    "connect": "Conectar",
-    "links": {
+    "connect": "Comunidad y Enlaces",
+    "navLinks": {
+      "features": "Features",
+      "architecture": "Arquitectura",
+      "faq": "Preguntas Frecuentes",
+      "privacy": "Privacidad"
+    },
+    "connectLinks": {
       "github": "GitHub",
       "docs": "Documentación",
-      "issues": "Issues",
-      "discussions": "Discusiones",
-      "license": "Licencia"
+      "reportBug": "Reportar Bug",
+      "license": "Licencia (GPL v3)"
     }
   },
   "header": {
