@@ -19,12 +19,20 @@ Choose one method:
 
 **Docker (easiest):**
 ```bash
+git clone https://github.com/Axel-DaMage/joidy.git
+cd joidy
+cp .env.example .env
 docker compose up -d
 ```
 
-**One-liner:**
+**One-liner (Linux/macOS):**
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
+```
+
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex
 ```
 
 **Homebrew:**
@@ -39,14 +47,6 @@ joidy up
 yay -S joidy
 ```
 
-**Manual:**
-```bash
-git clone https://github.com/Axel-DaMage/joidy.git
-cd joidy
-cp .env.example .env
-docker compose up -d
-```
-
 ## 2. Configure
 
 Edit `.env` with your settings:
@@ -55,7 +55,9 @@ Edit `.env` with your settings:
 vim .env
 ```
 
-At minimum, set `GEMINI_API_KEY` (or another AI provider key) and `SECRET_KEY`.
+At minimum, set `SECRET_KEY` (`openssl rand -hex 32`), `OBSIDIAN_VAULT_PATH`,
+and `GEMINI_API_KEY` (or another AI provider key — Ollama needs none). If you
+plan to run with `APP_ENV=production`, also set `AUTH_PASSWORD`.
 
 ## 3. Verify
 
@@ -69,9 +71,9 @@ curl http://localhost:8000/health
 
 ## 4. Configure Obsidian (Optional)
 
-Add your vault path to `.env`:
+Add your vault path to `.env` (`~` is expanded to your home directory):
 ```bash
-OBSIDIAN_VAULT_PATH=/home/user/obsidian-vault
+OBSIDIAN_VAULT_PATH=~/Documents/obsidian/my-vault
 ```
 
 Restart the worker:
@@ -108,10 +110,11 @@ OPENAI_API_KEY=your-key
 ```bash
 # Check logs
 docker compose logs -f
-
-# Common: port conflicts
-# Change ports in docker-compose.yml
 ```
+
+**Port conflicts:** `joidy up` automatically tries subsequent ports. With plain
+`docker compose`, override `FRONTEND_PORT`, `API_PORT`, `AI_SERVICE_PORT`, or
+`WORKER_PORT` in `.env`.
 
 ### Permission Issues
 ```bash

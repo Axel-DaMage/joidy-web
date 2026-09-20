@@ -1,6 +1,6 @@
 ---
 title: Installation
-description: Install Joidy using Docker, curl, Homebrew, or AUR.
+description: Install Joidy using Docker, curl, PowerShell, Homebrew, or AUR.
 ---
 
 # Installation
@@ -8,18 +8,34 @@ description: Install Joidy using Docker, curl, Homebrew, or AUR.
 ## Quick Start (Docker)
 
 ```bash
+git clone https://github.com/Axel-DaMage/joidy.git
+cd joidy
+cp .env.example .env
 docker compose up -d
 ```
 
-Images are pulled automatically from Docker Hub. Requires Docker + Docker Compose.
+Images are pulled automatically from Docker Hub (`d4mag3/joidy-*:latest`).
+Requires Docker + Docker Compose.
 
-## One-Line Install
+## One-Line Install (Linux / macOS)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
 ```
 
-Clones the repo, copies `.env.example`, and you're ready to configure.
+Clones the repo, copies `.env`, and installs the **`joidy` CLI** into
+`~/.local/bin` so you can manage the stack from anywhere. Edit `.env` with your
+credentials, then:
+
+```bash
+joidy up
+```
+
+## Windows (PowerShell)
+
+```powershell
+irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex
+```
 
 ## Homebrew
 
@@ -37,18 +53,26 @@ yay -S joidy
 paru -S joidy
 ```
 
-## Manual
+## The `joidy` CLI
+
+Installed by the curl script, Homebrew, and the AUR package:
 
 ```bash
-git clone https://github.com/Axel-DaMage/joidy.git
-cd joidy
-cp .env.example .env
-docker compose up -d
+joidy up        # Start the stack (auto-detects free ports if a default is taken)
+joidy down      # Stop all services
 ```
+
+On system installs (where the install dir is read-only), the CLI keeps your
+environment and data outside the install tree:
+
+- Config: `~/.config/joidy/.env`
+- Data: `~/.local/share/joidy/data`
 
 ## Configuration
 
-See [Configuration](/docs/configuration) for environment variables.
+Edit `.env` before starting — at minimum set `SECRET_KEY`, `GEMINI_API_KEY`
+(or another AI provider), and `OBSIDIAN_VAULT_PATH`. See
+[Configuration](/docs/configuration) for the full reference.
 
 ## Updating
 
@@ -59,8 +83,20 @@ docker compose up -d
 
 Or with Homebrew: `brew upgrade joidy && joidy up`
 
+If you run from a **git clone** (source), rebuild the images after every pull —
+`docker compose up` alone keeps serving the previously built images:
+
+```bash
+docker compose down
+docker build --no-cache --pull -t d4mag3/joidy-frontend:latest --target production ./frontend
+docker build --no-cache --pull -t d4mag3/joidy-api:latest        ./api
+docker build --no-cache --pull -t d4mag3/joidy-ai-service:latest ./ai-service
+docker build --no-cache --pull -t d4mag3/joidy-worker:latest     ./worker
+docker compose up -d
+```
+
 ## Uninstall
 
 ```bash
-docker compose down -v  # Removes all data!
+docker compose down -v  # Removes containers AND the postgres_data volume — all data!
 ```

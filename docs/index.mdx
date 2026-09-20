@@ -8,8 +8,8 @@ Welcome to the Joidy documentation. Joidy is a private, self-hosted PKM system t
 - [Installation](/docs/installation)
 - [Configuration](/docs/configuration)
 - [Architecture](/docs/architecture)
-- [API Reference](/docs/api)
-- [Contributing](/docs/contributing)
+- [API Reference](/docs/api-reference)
+- [Contributing](https://github.com/Axel-DaMage/joidy/blob/main/CONTRIBUTING.md)
 
 ## What is Joidy?
 
@@ -17,9 +17,11 @@ Joidy is a **Personal Knowledge Management (PKM)** system designed for privacy-c
 
 - **Gamification**: XP, streaks, and an evolving plant that grows with your knowledge
 - **Knowledge Graph**: Automatic connections between notes, tags, and skills
-- **Semantic Search**: Vector search powered by sqlite-vec
+- **Semantic Search**: Vector search powered by PostgreSQL + pgvector
 - **Local AI**: Optional Ollama integration for fully local AI classification
-- **Obsidian Sync**: Bidirectional sync with your existing Obsidian vault
+- **Obsidian Sync**: Bidirectional sync with your existing Obsidian vault — file watcher plus instant webhook push
+- **Integrations**: GitHub, with Google Calendar/Tasks, Strava, and Spotify scaffolds
+- **Monitoring**: Optional Prometheus + Grafana stack
 
 ## Philosophy
 
@@ -30,13 +32,14 @@ Joidy runs entirely on your machine via Docker Compose. No cloud dependency, no 
 ## Quick Start
 
 ```bash
-git clone https://github.com/d4mag3/Joidy
-cd Joidy
-docker compose up
+git clone https://github.com/Axel-DaMage/joidy.git
+cd joidy
+cp .env.example .env
+docker compose up -d
 ```
 
 Then open http://localhost:3000
 
 ## License
 
-Joidy is licensed under GPL v3. See [LICENSE](https://github.com/d4mag3/Joidy/blob/main/LICENSE) for details.
+Joidy is licensed under GPL v3. See [LICENSE](https://github.com/Axel-DaMage/joidy/blob/main/LICENSE) for details.
