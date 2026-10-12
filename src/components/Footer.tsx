@@ -2,12 +2,13 @@
 
 import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
+
+const LATEST_VERSION = 'v1.1.0-beta.5';
 
 export function Footer() {
   const { t } = useI18n();
-  const [version, setVersion] = useState('v0.1.0-alpha');
+  const [version, setVersion] = useState(LATEST_VERSION);
 
   useEffect(() => {
     fetch('/api/github/version')
@@ -22,16 +23,16 @@ export function Footer() {
 
   const footerLinks = {
     navigation: [
-      { href: '/#features', label: 'Características' },
-      { href: '/#architecture', label: 'Arquitectura' },
-      { href: '/#faq', label: 'Preguntas Frecuentes' },
-      { href: '/#privacy', label: 'Privacidad' },
+      { href: '/#features', label: t.footer.navLinks.features },
+      { href: '/#architecture', label: t.footer.navLinks.architecture },
+      { href: '/#faq', label: t.footer.navLinks.faq },
+      { href: '/#privacy', label: t.footer.navLinks.privacy },
     ],
     connect: [
-      { href: 'https://github.com/Axel-DaMage/Joidy', label: 'GitHub', external: true },
-      { href: '/docs', label: 'Documentación' },
-      { href: 'https://github.com/Axel-DaMage/Joidy/issues', label: 'Reportar Bug', external: true },
-      { href: 'https://github.com/Axel-DaMage/Joidy/blob/main/LICENSE', label: 'Licencia (GPL v3)', external: true },
+      { href: 'https://github.com/Axel-DaMage/joidy', label: t.footer.connectLinks.github, external: true },
+      { href: '/docs', label: t.footer.connectLinks.docs },
+      { href: 'https://github.com/Axel-DaMage/joidy/issues', label: t.footer.connectLinks.reportBug, external: true },
+      { href: 'https://github.com/Axel-DaMage/joidy/blob/main/LICENSE', label: t.footer.connectLinks.license, external: true },
     ],
   };
 
@@ -42,13 +43,13 @@ export function Footer() {
           <div>
             <p className="font-mono text-sm tracking-[0.15em] text-white mb-4">JOIDY</p>
             <p className="font-mono text-xs text-[#555555] leading-relaxed max-w-xs">
-              Un sistema de progresión disciplinario. Privado, open-source y alojado en tu propia máquina.
+              {t.footer.tagline}
             </p>
           </div>
 
           <nav>
             <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
-              Navegación
+              {t.footer.nav}
             </h4>
             <ul className="space-y-2">
               {footerLinks.navigation.map((link) => (
@@ -66,7 +67,7 @@ export function Footer() {
 
           <nav>
             <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
-              Comunidad y Enlaces
+              {t.footer.connect}
             </h4>
             <ul className="space-y-2">
               {footerLinks.connect.map((link) => (

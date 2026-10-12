@@ -1,8 +1,7 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Private. Self-hosted. Your knowledge, your rules.",
-    "cta": "Explore"
+    "subtitle": "Private. Self-hosted. Your knowledge, your rules."
   },
   "whatIs": {
     "title": "What is Joidy?",
@@ -36,16 +35,7 @@
       { "title": "Your Data, Your Hardware", "desc": "Joidy runs entirely on your machine via Docker Compose. No cloud dependency, no third party." },
       { "title": "Zero Telemetry", "desc": "No analytics, no tracking, no phone-home. What you write is what stays." },
       { "title": "Local AI, Optional Cloud", "desc": "Use Ollama for fully local AI. No API key required. Cloud AI (Gemini, OpenAI) only if you choose." },
-      { "title": "SQLite on Your Disk", "desc": "A single portable file with vector search. Copy, version, encrypt — your database is yours to control." }
-    ]
-  },
-  "howItWorks": {
-    "title": "How It Works",
-    "steps": [
-      { "label": "Obsidian Vault", "desc": "The watcher detects changes in your .md files" },
-      { "label": "Worker", "desc": "Imports the note and sends it to the API" },
-      { "label": "API", "desc": "Awards XP, updates the skill tree and tag graph" },
-      { "label": "AI Service", "desc": "Generates embeddings, classifies tags, enables semantic search" }
+      { "title": "PostgreSQL on Your Disk", "desc": "Postgres 16 + pgvector in a local container. Dump it, back it up, encrypt it — your database is yours to control." }
     ]
   },
   "features": {
@@ -54,13 +44,15 @@
       { "title": "Gamification", "desc": "XP events, streaks, evolving plant (seed → tree). Every note levels you up.", "highlight": "No other PKM turns knowledge into growth" },
       { "title": "Knowledge Graph", "desc": "Tag co-occurrence visualization revealing hidden connections across your vault.", "highlight": "Connections no other tool shows you" },
       { "title": "Skill Tree", "desc": "Auto-generated from your tags. Watch your expertise grow and branch as you write.", "highlight": "Skills that evolve in real time" },
-      { "title": "Semantic Search", "desc": "Vector search with sqlite-vec. Find notes by meaning, not just keywords.", "highlight": "Search by meaning, not by keyword" },
-      { "title": "AI Classification", "desc": "Tags suggested by Gemini, OpenAI, Anthropic, or fully local with Ollama.", "highlight": "Your AI, your rules, your hardware" },
+      { "title": "Semantic Search", "desc": "Vector search with pgvector (PostgreSQL). Find notes by meaning, not just keywords.", "highlight": "Search by meaning, not by keyword" },
+      { "title": "AI Classification", "desc": "Tags suggested by Gemini, OpenAI, Anthropic, Cohere, or OpenRouter — or fully local with Ollama.", "highlight": "Your AI, your rules, your hardware" },
       { "title": "Cross-Connections", "desc": "Joidy automatically links related notes across your entire vault.", "highlight": "Automatic links between any two notes" },
       { "title": "Goals & Objectives", "desc": "Goal tracking with failure modes: rollover, snowball, daily reset.", "highlight": "Goals that adapt to your rhythm" },
       { "title": "Custom Streaks", "desc": "Configurable streaks for anything: read, meditate, gym, code.", "highlight": "Any habit, one system" },
-      { "title": "Obsidian Sync", "desc": "Bidirectional sync. If you have a vault, Joidy enhances it.", "highlight": "Enhances your existing vault" },
-      { "title": "Pomodoro Timer", "desc": "Built-in timer connected to your XP and streak system.", "highlight": "Focus that feeds your growth" }
+      { "title": "Obsidian Sync", "desc": "Bidirectional sync — filesystem watcher plus instant webhook push. If you have a vault, Joidy enhances it.", "highlight": "Enhances your existing vault" },
+      { "title": "Pomodoro Timer", "desc": "Built-in timer connected to your XP and streak system.", "highlight": "Focus that feeds your growth" },
+      { "title": "Integrations Hub", "desc": "GitHub sync is live; Google Calendar/Tasks, Strava, and Spotify integrations are on the way.", "highlight": "Your digital life, connected" },
+      { "title": "Push & Offline", "desc": "Installable PWA with web-push notifications and an offline mode that syncs when you're back.", "highlight": "Works even when you don't" }
     ]
   },
   "techStack": {
@@ -81,56 +73,45 @@
   },
   "roadmap": {
     "title": "Roadmap",
-    "items": [
-      { "hash": "a1b2c3d", "message": "feat: Google Calendar integration" },
-      { "hash": "e4f5g6h", "message": "feat: embedded WYSIWYG editor" },
-      { "hash": "i7j8k9l", "message": "feat: PostgreSQL + pgvector migration" },
-      { "hash": "m0n1o2p", "message": "feat: real-time WebSocket notifications" },
-      { "hash": "q3r4s5t", "message": "fix: per-user rate limiting" },
-      { "hash": "u6v7w8x", "message": "docs: public API documentation" },
-      { "hash": "y9z0a1b", "message": "feat: Telegram notifications" },
-      { "hash": "c2d3e4f", "message": "feat: full dark/light theme" }
-    ]
+    "loading": "Fetching GitHub data...",
+    "empty": "No repository data available."
   },
   "faq": {
     "title": "FAQs",
     "items": [
       { "q": "Is Joidy free?", "a": "Yes. 100% open-source (GPL v3). Self-hosted. You control everything." },
       { "q": "Do I need Obsidian?", "a": "No. Obsidian integration is native, but the web UI works without it." },
-      { "q": "What about my data?", "a": "Everything stays on your machine. Local SQLite. No cloud, no tracking, no telemetry." },
-      { "q": "Do I need API keys?", "a": "Only for cloud AI (Gemini, OpenAI). Ollama runs fully local. Core features need none." },
+      { "q": "What about my data?", "a": "Everything stays on your machine — a local PostgreSQL database in your own Docker volume. No cloud, no tracking, no telemetry." },
+      { "q": "Do I need API keys?", "a": "Only for cloud AI (Gemini, OpenAI, Anthropic, Cohere, OpenRouter). Ollama runs fully local. Core features need none." },
       { "q": "Can anyone see my notes?", "a": "No. Joidy is self-hosted. No central server, no access. That is the entire point." },
       { "q": "Can I contribute?", "a": "Absolutely. GitHub. PRs, issues, ideas welcome." },
-      { "q": "What stack does it use?", "a": "SvelteKit, FastAPI, Gemini/OpenAI/Ollama, SQLite + sqlite-vec. Docker Compose orchestration." }
+      { "q": "What stack does it use?", "a": "SvelteKit, FastAPI, PostgreSQL + pgvector, and 6 AI providers. Docker Compose orchestration." }
     ]
   },
   "donate": {
     "title": "Donate",
-    "sponsors": "GitHub Sponsors",
-    "paypal": "PayPal",
-    "btc": "BTC"
+    "message": "The project survives thanks to the open-source community, not just one person's work. If you'd like to support the creator, you can donate here.",
+    "button": "Sponsor Project"
   },
-"cta": {
-    "title": "Get Started",
-    "docker": "$ docker compose up",
-    "github": "GitHub →",
-    "docs": "Documentation →",
-    "discord": "Discord →",
-    "copy": "Copy command",
+  "cta": {
+    "copy": "Copy",
     "copied": "Copied!"
   },
   "footer": {
-    "version": "joidy v0.1",
-    "license": "GPL v3",
-    "craft": "Crafted by D4MAG3_WIZ4RD",
+    "tagline": "A disciplined progression system. Private, open-source, and hosted on your own machine.",
     "nav": "Navigation",
-    "connect": "Connect",
-    "links": {
+    "connect": "Community & Links",
+    "navLinks": {
+      "features": "Features",
+      "architecture": "Architecture",
+      "faq": "FAQ",
+      "privacy": "Privacy"
+    },
+    "connectLinks": {
       "github": "GitHub",
       "docs": "Documentation",
-      "issues": "Issues",
-      "discussions": "Discussions",
-      "license": "License"
+      "reportBug": "Report Bug",
+      "license": "License (GPL v3)"
     }
   },
   "header": {

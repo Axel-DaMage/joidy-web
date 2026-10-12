@@ -5,7 +5,7 @@ export const revalidate = 86400; // Cache for 24 hours (86400 seconds)
 export async function GET() {
   try {
     // Fetch up to 30 items to give us room to mix them
-    const res = await fetch('https://api.github.com/repos/Axel-DaMage/Joidy/issues?state=all&per_page=30', {
+    const res = await fetch('https://api.github.com/repos/Axel-DaMage/joidy/issues?state=all&per_page=30', {
       headers: {
         'Accept': 'application/vnd.github.v3+json',
       },

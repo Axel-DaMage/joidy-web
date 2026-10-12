@@ -14,8 +14,8 @@ const lines = [
   { label: "OS", value: "Docker / Linux (x86_64)", color: "text-[#00FFFF]" },
   { label: "Frontend", value: "SvelteKit + TypeScript", color: "text-[#55AAFF]" },
   { label: "API", value: "Python (FastAPI)", color: "text-[#AA55FF]" },
-  { label: "AI", value: "Gemini / OpenAI / Anthropic / Ollama", color: "text-[#FF00FF]" },
-  { label: "DB", value: "SQLite + sqlite-vec", color: "text-[#FF55AA]" },
+  { label: "AI", value: "Gemini / OpenAI / Anthropic / Cohere / Ollama / OpenRouter", color: "text-[#FF00FF]" },
+  { label: "DB", value: "PostgreSQL 16 + pgvector", color: "text-[#FF55AA]" },
   { label: "Worker", value: "Python asyncio", color: "text-[#FFAA55]" },
   { label: "License", value: "GPL v3", color: "text-[#FFFF00]" },
 ];

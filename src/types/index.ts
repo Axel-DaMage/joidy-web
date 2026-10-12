@@ -4,7 +4,6 @@ export interface Dict {
   hero: {
     title: string;
     subtitle: string;
-    cta: string;
   };
   whatIs: {
     title: string;
@@ -21,10 +20,6 @@ export interface Dict {
     title: string;
     description: string;
     points: { title: string; desc: string }[];
-  };
-  howItWorks: {
-    title: string;
-    steps: { label: string; desc: string }[];
   };
   features: {
     title: string;
@@ -43,7 +38,8 @@ export interface Dict {
   };
   roadmap: {
     title: string;
-    items: { hash: string; message: string }[];
+    loading: string;
+    empty: string;
   };
   faq: {
     title: string;
@@ -51,30 +47,27 @@ export interface Dict {
   };
   donate: {
     title: string;
-    sponsors: string;
-    paypal: string;
-    btc: string;
+    message: string;
+    button: string;
   };
   cta: {
-    title: string;
-    docker: string;
-    github: string;
-    docs: string;
-    discord: string;
     copy: string;
     copied: string;
   };
   footer: {
-    version: string;
-    license: string;
-    craft: string;
+    tagline: string;
     nav: string;
     connect: string;
-    links: {
+    navLinks: {
+      features: string;
+      architecture: string;
+      faq: string;
+      privacy: string;
+    };
+    connectLinks: {
       github: string;
       docs: string;
-      issues: string;
-      discussions: string;
+      reportBug: string;
       license: string;
     };
   };
