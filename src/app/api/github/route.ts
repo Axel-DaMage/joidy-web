@@ -16,11 +16,11 @@ export async function GET() {
       throw new Error(`GitHub API error: ${res.status}`);
     }
 
-    const data = await res.json();
-    
+    const data = (await res.json()) as { pull_request?: unknown }[];
+
     // Separar Issues y PRs para forzar una mezcla equitativa si es posible
-    const prs = data.filter((item: any) => !!item.pull_request);
-    const issues = data.filter((item: any) => !item.pull_request);
+    const prs = data.filter((item) => !!item.pull_request);
+    const issues = data.filter((item) => !item.pull_request);
     
     const mixed = [];
     const maxLength = Math.max(prs.length, issues.length);
