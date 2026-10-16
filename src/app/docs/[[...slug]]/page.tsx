@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
+import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 
@@ -63,27 +64,28 @@ export async function generateMetadata({ params }: DocPageProps) {
 }
 
 // Función auxiliar para extraer texto de los children de React
-const extractText = (children: any): string => {
+const extractText = (children: ReactNode): string => {
   if (typeof children === 'string') return children;
+  if (typeof children === 'number') return String(children);
   if (Array.isArray(children)) return children.map(extractText).join('');
-  if (children?.props?.children) return extractText(children.props.children);
+  if (isValidElement<{ children?: ReactNode }>(children)) return extractText(children.props.children);
   return '';
 };
 
 // Componentes MDX personalizados para dar estilos y colores
 const mdxComponents = {
-  table: (props: any) => (
+  table: (props: ComponentPropsWithoutRef<'table'>) => (
     <div className="not-prose overflow-x-auto my-8 rounded-lg border border-[#333] shadow-lg">
       <table className="w-full text-sm text-left border-collapse m-0" {...props} />
     </div>
   ),
-  th: (props: any) => (
+  th: (props: ComponentPropsWithoutRef<'th'>) => (
     <th 
       className="px-6 py-4 bg-[#0a0a0a] border-b border-[#333] text-[#10b981] font-mono tracking-wider uppercase text-xs whitespace-nowrap" 
       {...props} 
     />
   ),
-  td: (props: any) => {
+  td: (props: ComponentPropsWithoutRef<'td'>) => {
     // Extraemos el texto recursivamente por si viene envuelto en otros nodos
     const text = extractText(props.children).trim();
     let colorClass = "text-[#cccccc]";
@@ -95,7 +97,7 @@ const mdxComponents = {
       <td className={`px-6 py-4 border-b border-[#222] bg-[#111111] ${colorClass}`} {...props} />
     )
   },
-  code: (props: any) => {
+  code: (props: ComponentPropsWithoutRef<'code'>) => {
     // Verificamos si es un bloque de código (pre > code) o código en línea
     const isBlock = props.className?.includes('language-');
     if (isBlock) {
@@ -108,7 +110,7 @@ const mdxComponents = {
       />
     );
   },
-  a: (props: any) => (
+  a: (props: ComponentPropsWithoutRef<'a'>) => (
     <a 
       className="text-[#10b981] hover:text-[#34d399] transition-colors decoration-dashed underline-offset-4" 
       {...props} 

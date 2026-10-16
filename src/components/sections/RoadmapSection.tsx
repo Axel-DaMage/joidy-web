@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
@@ -84,10 +85,12 @@ export function RoadmapSection() {
                       <span className="font-bold opacity-90">#{item.number}</span>
                       <span className="opacity-50 text-[10px] tracking-widest">[{pseudoHash}]</span>
                     </div>
-                    <img 
-                      src={item.user.avatar_url} 
-                      alt={item.user.login} 
-                      className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`} 
+                    <Image
+                      src={item.user.avatar_url}
+                      alt={item.user.login}
+                      width={24}
+                      height={24}
+                      className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
                       title={item.user.login}
                     />
                   </div>
