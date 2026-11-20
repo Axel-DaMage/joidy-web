@@ -49,6 +49,10 @@ export function HeroSection() {
 
     let animationFrameId: number;
     let time = 0;
+    let viewW = 0;
+    let viewH = 0;
+    let inView = false;
+    let running = false;
     
     // Store history to avoid the Canvas "dirty alpha" rounding issue
     // which leaves permanent grey trails.
@@ -56,21 +60,35 @@ export function HeroSection() {
     const MAX_AGE = 75; // Reducido para acortar la estela
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      viewW = canvas.clientWidth;
+      viewH = canvas.clientHeight;
+      canvas.width = Math.round(viewW * dpr);
+      canvas.height = Math.round(viewH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      history.length = 0;
     };
     window.addEventListener('resize', resize);
     resize();
+
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView && !running) {
+        running = true;
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    });
+    observer.observe(canvas);
 
     const draw = () => {
       time += 0.01;
       
       // Clear the canvas completely instead of using semi-transparent fill
       // This guarantees absolutely 0 grey residue on the black background.
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, viewW, viewH);
       
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const cx = viewW / 2;
+      const cy = viewH / 2;
       const a = 3;
       const b = 2;
       const delta = Math.PI / 2;
@@ -83,8 +101,8 @@ export function HeroSection() {
       const currentPoints = [];
       for(let i=0; i<5; i++) {
         const offset = i * 100;
-        const A = canvas.width * 0.4 - offset;
-        const B = canvas.height * 0.4 - offset;
+        const A = viewW * 0.4 - offset;
+        const B = viewH * 0.4 - offset;
         if(A <= 0 || B <= 0) continue;
         
         const localTime = time + i * 0.5;
@@ -121,19 +139,24 @@ export function HeroSection() {
         ctx.fillText(pt.char, pt.x, pt.y);
       }
       
-      animationFrameId = requestAnimationFrame(draw);
+      if (inView) {
+        animationFrameId = requestAnimationFrame(draw);
+      } else {
+        running = false;
+      }
     };
     draw();
 
     return () => {
       window.removeEventListener('resize', resize);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
-      <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-80" />
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 opacity-80" />
       
       <div className="relative z-10 flex flex-col items-center text-center pointer-events-none w-full px-4">
         <motion.div
