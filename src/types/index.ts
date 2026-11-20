@@ -40,6 +40,10 @@ export interface Dict {
     title: string;
     loading: string;
     empty: string;
+    pullRequest: string;
+    issue: string;
+    open: string;
+    closed: string;
   };
   faq: {
     title: string;
@@ -74,5 +78,11 @@ export interface Dict {
   header: {
     nav: string[];
     docs: string;
+  };
+  a11y: {
+    primaryNav: string;
+    footerNav: string;
+    communityNav: string;
+    docsNav: string;
   };
 }

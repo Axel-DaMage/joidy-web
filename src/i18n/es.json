@@ -74,7 +74,11 @@
   "roadmap": {
     "title": "Roadmap",
     "loading": "Obteniendo datos de GitHub...",
-    "empty": "No hay datos disponibles en el repositorio."
+    "empty": "No hay datos disponibles en el repositorio.",
+    "pullRequest": "Pull request",
+    "issue": "Issue",
+    "open": "abierto",
+    "closed": "cerrado"
   },
   "faq": {
     "title": "FAQs",
@@ -119,5 +123,11 @@
   "header": {
     "nav": ["Features", "Arquitectura", "Roadmap", "FAQ", "Privacidad"],
     "docs": "Docs"
+  },
+  "a11y": {
+    "primaryNav": "Principal",
+    "footerNav": "Pie de página",
+    "communityNav": "Comunidad",
+    "docsNav": "Documentación"
   }
 }

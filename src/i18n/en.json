@@ -74,7 +74,11 @@
   "roadmap": {
     "title": "Roadmap",
     "loading": "Fetching GitHub data...",
-    "empty": "No repository data available."
+    "empty": "No repository data available.",
+    "pullRequest": "Pull request",
+    "issue": "Issue",
+    "open": "open",
+    "closed": "closed"
   },
   "faq": {
     "title": "FAQs",
@@ -119,5 +123,11 @@
   "header": {
     "nav": ["Features", "Architecture", "Roadmap", "FAQ", "Privacy"],
     "docs": "Docs"
+  },
+  "a11y": {
+    "primaryNav": "Primary",
+    "footerNav": "Footer",
+    "communityNav": "Community",
+    "docsNav": "Docs"
   }
 }

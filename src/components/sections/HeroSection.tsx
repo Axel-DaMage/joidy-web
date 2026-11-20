@@ -132,7 +132,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
+    <section className="relative min-h-dvh flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
       <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-80" />
       
       <div className="relative z-10 flex flex-col items-center text-center pointer-events-none w-full px-4">

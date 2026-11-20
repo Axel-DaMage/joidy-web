@@ -47,10 +47,10 @@ export function Footer() {
             </p>
           </div>
 
-          <nav>
-            <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
+          <nav aria-label={t.a11y.footerNav}>
+            <h2 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
               {t.footer.nav}
-            </h4>
+            </h2>
             <ul className="space-y-2">
               {footerLinks.navigation.map((link) => (
                 <li key={link.label}>
@@ -65,10 +65,10 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav>
-            <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
+          <nav aria-label={t.a11y.communityNav}>
+            <h2 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
               {t.footer.connect}
-            </h4>
+            </h2>
             <ul className="space-y-2">
               {footerLinks.connect.map((link) => (
                 <li key={link.label}>

@@ -87,7 +87,7 @@ export function RoadmapSection() {
                     </div>
                     <Image
                       src={item.user.avatar_url}
-                      alt={item.user.login}
+                      alt=""
                       width={24}
                       height={24}
                       className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
@@ -97,6 +97,9 @@ export function RoadmapSection() {
 
                   {/* Title */}
                   <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#666666] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
+                    <span className="sr-only">
+                      {isPR ? t.roadmap.pullRequest : t.roadmap.issue}, {isOpen ? t.roadmap.open : t.roadmap.closed}:{' '}
+                    </span>
                     {item.title}
                   </div>
                 </motion.a>

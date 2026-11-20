@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { useI18n } from '@/i18n';
 
 const DOCS_INDEX = [
   { slug: 'getting-started', title: 'Getting Started' },
@@ -20,14 +21,15 @@ const DOCS_INDEX = [
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white">
+    <div className="flex flex-col min-h-dvh bg-black text-white">
       <Header />
       
       <div className="flex-1 w-full max-w-7xl mx-auto pt-24 px-6 md:px-10">
-        <div className="flex flex-col md:flex-row gap-8 md:gap-12 relative min-h-[calc(100vh-14rem)]">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-12 relative min-h-[calc(100dvh-14rem)]">
           {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center justify-between border-b border-[#1a1a1a] pb-4 mb-4">
             <span className="font-mono text-xs tracking-wider text-[#555555]">DOCUMENTATION MENU</span>
@@ -40,10 +42,12 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </div>
 
           {/* Sidebar */}
-          <aside className={`
+          <aside
+            aria-label={t.a11y.docsNav}
+            className={`
             ${mobileMenuOpen ? 'block' : 'hidden'} 
             md:block w-full md:w-64 flex-shrink-0 
-            md:sticky md:top-24 md:h-[calc(100vh-8rem)] 
+            md:sticky md:top-24 md:h-[calc(100dvh-8rem)] 
             overflow-y-auto pb-8 z-30 bg-black
           `}>
             <div className="space-y-8">
@@ -56,33 +60,35 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                   ← Docs Overview
                 </Link>
                 
-                <h3 className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-4">
+                <h3 id="docs-guides-heading" className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-4">
                   Guides
                 </h3>
-                <ul className="space-y-3">
-                  {DOCS_INDEX.map((doc) => {
-                    const href = `/docs/${doc.slug}`;
-                    const isActive = pathname === href;
-                    return (
-                      <li key={doc.slug}>
-                        <Link
-                          href={href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={`font-mono text-xs tracking-wider block transition-all relative pl-3 ${
-                            isActive 
-                              ? 'text-[#10b981]' 
-                              : 'text-[#888888] hover:text-white'
-                          }`}
-                        >
-                          {isActive && (
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#10b981] rounded-full" />
-                          )}
-                          {doc.title}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
+                <nav aria-labelledby="docs-guides-heading">
+                  <ul className="space-y-3">
+                    {DOCS_INDEX.map((doc) => {
+                      const href = `/docs/${doc.slug}`;
+                      const isActive = pathname === href;
+                      return (
+                        <li key={doc.slug}>
+                          <Link
+                            href={href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`font-mono text-xs tracking-wider block transition-all relative pl-3 ${
+                              isActive
+                                ? 'text-[#10b981]'
+                                : 'text-[#888888] hover:text-white'
+                            }`}
+                          >
+                            {isActive && (
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#10b981] rounded-full" />
+                            )}
+                            {doc.title}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
               </div>
             </div>
           </aside>

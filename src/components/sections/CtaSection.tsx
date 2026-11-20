@@ -7,7 +7,7 @@ import { Container } from '@/components/ui/Container';
 export function CtaSection() {
   const { t } = useI18n();
   return (
-    <section id="sponsor" className="relative border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden">
+    <section id="sponsor" className="relative scroll-mt-20 border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_#050505_0%,_#000000_70%)]" />
 
       <Container className="relative z-10">
@@ -18,6 +18,9 @@ export function CtaSection() {
           transition={{ duration: 0.5 }}
           className="flex flex-col items-center text-center w-full max-w-2xl mx-auto"
         >
+          <h2 className="mb-6 text-sm font-mono tracking-[0.2em] uppercase text-[#888888]">
+            {'// '}{t.donate.title}
+          </h2>
           <div className="mb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
