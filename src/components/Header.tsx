@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useI18n } from '@/i18n';
 
 const NAV_IDS = ['features', 'architecture', 'roadmap', 'faq', 'privacy'];
@@ -12,6 +12,21 @@ export function Header() {
   const { lang, setLang, t } = useI18n();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMenuOpen(false);
+  }
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [menuOpen]);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Si ya estamos en la página de inicio, hacemos scroll suave hacia arriba
@@ -60,22 +75,24 @@ export function Header() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label={t.header.menu}
           aria-expanded={menuOpen}
-          className="md:hidden font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          aria-controls="mobile-nav"
+          className="md:hidden font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {menuOpen ? '✕' : '≡'}
         </button>
         <button
           onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-          className="font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          aria-label={lang === 'es' ? 'English' : 'Español'}
+          className="font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {lang === 'es' ? 'EN' : 'ES'}
         </button>
       </div>
 
       {menuOpen && (
-        <nav className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
+        <nav id="mobile-nav" className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
           {t.header.nav.map((label, i) => (
             <Link
               key={label}

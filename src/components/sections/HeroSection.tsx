@@ -171,8 +171,8 @@ export function HeroSection() {
             onClick={() => document.getElementById('what-is')?.scrollIntoView({
               behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
             })}
-            className="flex flex-col items-center gap-1 font-mono text-base text-[#555555] hover:text-white transition-colors mx-auto motion-safe:animate-bounce"
-            aria-label="Scroll down"
+            className="flex flex-col items-center gap-1 font-mono text-base text-[#777777] hover:text-white transition-colors mx-auto motion-safe:animate-bounce"
+            aria-label={t.hero.scrollDown}
           >
             <span className="inline-block rotate-90 tracking-tighter opacity-80">&gt;&gt;</span>
           </button>

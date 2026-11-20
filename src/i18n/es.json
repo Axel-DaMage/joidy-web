@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas."
+    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas.",
+    "scrollDown": "Desplazarse hacia abajo"
   },
   "whatIs": {
     "title": "¿Qué es Joidy?",
@@ -118,6 +119,10 @@
   },
   "header": {
     "nav": ["Features", "Arquitectura", "Roadmap", "FAQ", "Privacidad"],
-    "docs": "Docs"
+    "docs": "Docs",
+    "menu": "Menú"
+  },
+  "a11y": {
+    "skipToContent": "Saltar al contenido"
   }
 }

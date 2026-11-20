@@ -62,6 +62,10 @@
   .glow-hover:hover {
     box-shadow: 0 0 30px rgba(255,255,255,0.06);
   }
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+  }
 }
 
 @keyframes blink {
