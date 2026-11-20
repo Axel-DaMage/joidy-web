@@ -1,11 +1,11 @@
 # Joidy Web
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?style=for-the-badge&logo=vercel)](https://vercel.com)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL_v3-blue.svg?style=for-the-badge)](https://github.com/Axel-DaMage/Joidy/blob/main/LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL_v3-blue.svg?style=for-the-badge)](https://github.com/Axel-DaMage/joidy/blob/main/LICENSE)
 
-Sitio web oficial y documentación de **[Joidy](https://github.com/Axel-DaMage/Joidy)**. 
+Sitio web oficial y documentación de **[Joidy](https://github.com/Axel-DaMage/joidy)**. 
 Joidy es un sistema de progresión disciplinario (PKM) que convierte tus notas en puntos de experiencia. Privado, open-source y alojado en tu propia máquina.
 
 ## Inicio Rápido (Desarrollo Local)
@@ -41,4 +41,4 @@ Este proyecto incluye una API Serverless interna configurada para obtener datos 
 
 ## Licencia
 
-Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/Joidy).
+Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/joidy).

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 export const revalidate = 86400; // Cache for 24 hours
 
-const LATEST_VERSION = 'v1.1.0-beta.5';
+const LATEST_VERSION = 'v1.1.0-beta.7';
 const REPO = 'Axel-DaMage/joidy';
 const GH_HEADERS = { 'Accept': 'application/vnd.github.v3+json' };
 

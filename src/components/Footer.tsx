@@ -4,7 +4,7 @@ import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
 import { useEffect, useState } from 'react';
 
-const LATEST_VERSION = 'v1.1.0-beta.5';
+const LATEST_VERSION = 'v1.1.0-beta.7';
 
 export function Footer() {
   const { t } = useI18n();

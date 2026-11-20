@@ -3,9 +3,9 @@
 import { motion } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
-import { ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon, UsersIcon, ShieldIcon } from '@/components/ui/Icons';
+import { ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, TargetIcon, BookIcon, SyncIcon, CalendarIcon, ClockIcon, RocketIcon, ShieldIcon } from '@/components/ui/Icons';
 
-const featureIcons = [ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, LinkIcon, TargetIcon, ClockIcon, SyncIcon, RocketIcon, UsersIcon, ShieldIcon];
+const featureIcons = [ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, TargetIcon, BookIcon, SyncIcon, CalendarIcon, ClockIcon, RocketIcon, ShieldIcon];
 
 const hoverColors = [
   'group-hover:text-blue-400',
@@ -20,7 +20,7 @@ const hoverColors = [
   'group-hover:text-yellow-400',
 ];
 
-function FeatureCard({ title, desc, index, total }: { title: string; desc: string; index: number; total: number }) {
+function FeatureCard({ title, desc, highlight, index, total }: { title: string; desc: string; highlight?: string; index: number; total: number }) {
   const Icon = featureIcons[index];
   const colorClass = hoverColors[index % hoverColors.length];
 
@@ -40,6 +40,9 @@ function FeatureCard({ title, desc, index, total }: { title: string; desc: strin
       </div>
       <h3 className="text-sm font-mono text-white mb-2 tracking-wide">{title}</h3>
       <p className="text-xs text-[#888888] leading-relaxed flex-1">{desc}</p>
+      {highlight && (
+        <p className="text-[10px] font-mono text-[#555555] mt-3 tracking-wide">{highlight}</p>
+      )}
     </motion.div>
   );
 }
