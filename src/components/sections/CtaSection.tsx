@@ -7,7 +7,7 @@ import { Container } from '@/components/ui/Container';
 export function CtaSection() {
   const { t } = useI18n();
   return (
-    <section id="sponsor" className="relative border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden">
+    <section id="sponsor" className="relative border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden cv-auto">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_#050505_0%,_#000000_70%)]" />
 
       <Container className="relative z-10">
