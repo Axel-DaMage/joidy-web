@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { m } from 'framer-motion';
-import { useI18n } from '@/i18n';
-import { Section } from '@/components/ui/Section';
+import { m } from "framer-motion";
+import { useI18n } from "@/i18n";
+import { Section } from "@/components/ui/Section";
 
 function WindowDots() {
   return (
@@ -145,9 +145,7 @@ function AppWindow() {
             <span
               key={item}
               className={`text-[10px] tracking-wide px-2 py-1 rounded ${
-                i === 0
-                  ? 'text-[#00FFFF] bg-white/5'
-                  : 'text-[#555555]'
+                i === 0 ? "text-[#00FFFF] bg-white/5" : "text-[#555555]"
               }`}
             >
               {item}
@@ -162,7 +160,9 @@ function AppWindow() {
                 key={s.label}
                 className="border border-[#1a1a1a] p-2.5 flex flex-col items-center"
               >
-                <span className="text-sm md:text-base text-white">{s.value}</span>
+                <span className="text-sm md:text-base text-white">
+                  {s.value}
+                </span>
                 <span className="text-[9px] tracking-widest uppercase text-[#555555] mt-1">
                   {s.label}
                 </span>
@@ -178,7 +178,9 @@ function AppWindow() {
                 {app.notes.map((note) => (
                   <div key={note} className="flex items-center gap-2">
                     <span className="w-1 h-1 bg-[#00FFFF] shrink-0" />
-                    <span className="text-[10px] text-[#aaaaaa] truncate">{note}</span>
+                    <span className="text-[10px] text-[#aaaaaa] truncate">
+                      {note}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -191,11 +193,18 @@ function AppWindow() {
                 {app.goals.map((goal) => (
                   <div key={goal.name}>
                     <div className="flex justify-between gap-2 mb-1">
-                      <span className="text-[10px] text-[#aaaaaa] truncate">{goal.name}</span>
-                      <span className="text-[10px] text-[#555555] shrink-0">{goal.progress}</span>
+                      <span className="text-[10px] text-[#aaaaaa] truncate">
+                        {goal.name}
+                      </span>
+                      <span className="text-[10px] text-[#555555] shrink-0">
+                        {goal.progress}
+                      </span>
                     </div>
                     <div className="h-1 w-full bg-[#1a1a1a]">
-                      <div className="h-1 bg-[#00FFFF]" style={{ width: goal.progress }} />
+                      <div
+                        className="h-1 bg-[#00FFFF]"
+                        style={{ width: goal.progress }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -227,7 +236,7 @@ export function DemoSection() {
         <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
           <TerminalWindow />
@@ -237,7 +246,7 @@ export function DemoSection() {
         <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
+          viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
         >
           <AppWindow />

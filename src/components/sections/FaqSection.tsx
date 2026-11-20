@@ -1,11 +1,19 @@
-'use client';
+"use client";
 
-import { useId, useState } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
-import { useI18n } from '@/i18n';
-import { Section } from '@/components/ui/Section';
+import { useId, useState } from "react";
+import { m, AnimatePresence } from "framer-motion";
+import { useI18n } from "@/i18n";
+import { Section } from "@/components/ui/Section";
 
-function AccordionItem({ q, a, index }: { q: string; a: string; index: number }) {
+function AccordionItem({
+  q,
+  a,
+  index,
+}: {
+  q: string;
+  a: string;
+  index: number;
+}) {
   const [open, setOpen] = useState(false);
   const id = useId();
   const buttonId = `faq-button-${id}`;
@@ -15,7 +23,7 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
     <m.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
+      viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.3, delay: index * 0.04 }}
       className="border-b border-[#1a1a1a]"
     >
@@ -27,7 +35,9 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
         className="w-full flex items-center justify-between py-4 text-left font-mono text-sm text-[#888888] hover:text-white transition-colors"
       >
         <span className="flex items-center gap-3">
-          <span className="text-[#777777] text-xs" aria-hidden="true">[?]</span>
+          <span className="text-[#777777] text-xs" aria-hidden="true">
+            [?]
+          </span>
           {q}
         </span>
         <m.span
@@ -46,12 +56,14 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
             role="region"
             aria-labelledby={buttonId}
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
+            animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <p className="pb-4 text-sm text-[#888888] leading-relaxed pl-7">{a}</p>
+            <p className="pb-4 text-sm text-[#888888] leading-relaxed pl-7">
+              {a}
+            </p>
           </m.div>
         )}
       </AnimatePresence>

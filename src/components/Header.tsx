@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { m } from 'framer-motion';
-import { useEffect, useState } from 'react';
-import { useI18n } from '@/i18n';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { m } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useI18n } from "@/i18n";
 
 export function Header() {
   const { lang, setLang, t } = useI18n();
@@ -20,19 +20,21 @@ export function Header() {
   useEffect(() => {
     if (!menuOpen) return;
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key === "Escape") setMenuOpen(false);
     };
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Si ya estamos en la página de inicio, hacemos scroll suave hacia arriba
-    if (pathname === '/') {
+    if (pathname === "/") {
       e.preventDefault();
       window.scrollTo({
         top: 0,
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
       });
     }
   };
@@ -78,19 +80,22 @@ export function Header() {
           aria-controls="mobile-nav"
           className="md:hidden font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
-          {menuOpen ? '✕' : '≡'}
+          {menuOpen ? "✕" : "≡"}
         </button>
         <button
-          onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-          aria-label={lang === 'es' ? 'English' : 'Español'}
+          onClick={() => setLang(lang === "es" ? "en" : "es")}
+          aria-label={lang === "es" ? "English" : "Español"}
           className="font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
-          {lang === 'es' ? 'EN' : 'ES'}
+          {lang === "es" ? "EN" : "ES"}
         </button>
       </div>
 
       {menuOpen && (
-        <nav id="mobile-nav" className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
+        <nav
+          id="mobile-nav"
+          className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4"
+        >
           {t.header.nav.map((item) => (
             <Link
               key={item.id}
