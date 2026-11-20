@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Private. Self-hosted. Your knowledge, your rules."
+    "subtitle": "Private. Self-hosted. Your knowledge, your rules.",
+    "scrollDown": "Scroll down"
   },
   "whatIs": {
     "title": "What is Joidy?",
@@ -118,6 +119,10 @@
   },
   "header": {
     "nav": ["Features", "Architecture", "Roadmap", "FAQ", "Privacy"],
-    "docs": "Docs"
+    "docs": "Docs",
+    "menu": "Menu"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
   }
 }
