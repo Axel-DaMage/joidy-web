@@ -46,7 +46,7 @@ export function RoadmapSection() {
     <Section id="roadmap" title={t.roadmap.title || 'Roadmap'}>
       <div className="w-full max-w-6xl mx-auto">
         {loading ? (
-          <div className="font-mono text-sm text-[#555555] text-center py-20 animate-pulse">
+          <div className="font-mono text-sm text-[#555555] text-center py-20 motion-safe:animate-pulse">
             {t.roadmap.loading}
           </div>
         ) : items.length === 0 ? (
