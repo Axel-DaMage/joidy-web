@@ -70,7 +70,10 @@ export function HeroSection() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       history.length = 0;
     };
-    window.addEventListener('resize', resize);
+    // ResizeObserver tracks the element box itself — covers window resizes,
+    // dvh changes from mobile browser chrome, and content reflows.
+    const ro = new ResizeObserver(resize);
+    ro.observe(canvas);
     resize();
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -150,7 +153,7 @@ export function HeroSection() {
     draw();
 
     return () => {
-      window.removeEventListener('resize', resize);
+      ro.disconnect();
       observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
@@ -158,7 +161,9 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-dvh flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
-      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 opacity-80" />
+      {/* size-full overrides the width/height attribute presentational hints
+          that would otherwise pin the canvas to its bitmap size in the corner */}
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 size-full z-0 opacity-80" />
       
       <div className="relative z-10 flex flex-col items-center text-center pointer-events-none w-full px-4">
         <m.div

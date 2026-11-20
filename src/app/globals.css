@@ -44,10 +44,6 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .cv-auto {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 800px;
-  }
 }
 
 /* Premium Markdown Styling */
