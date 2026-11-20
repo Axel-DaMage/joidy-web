@@ -144,7 +144,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-mono text-7xl md:text-9xl font-light tracking-[-0.06em] text-white mb-6 drop-shadow-md">
-            <GlitchText text={t.hero.title || 'JOIDY'} />
+            <GlitchText key={t.hero.title} text={t.hero.title || 'JOIDY'} />
           </h1>
           <p className="font-mono text-sm md:text-base text-[#aaaaaa] font-light max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
