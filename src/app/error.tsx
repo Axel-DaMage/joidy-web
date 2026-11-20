@@ -7,10 +7,10 @@ import { Footer } from '@/components/Footer';
 import { Container } from '@/components/ui/Container';
 
 export default function Error({
-  reset,
+  retry,
 }: {
   error: Error & { digest?: string };
-  reset: () => void;
+  retry: () => void;
 }) {
   const { t } = useI18n();
 
@@ -31,7 +31,7 @@ export default function Error({
             </p>
             <div className="flex flex-wrap justify-center gap-3">
               <button
-                onClick={reset}
+                onClick={retry}
                 className="font-mono text-xs tracking-wider uppercase text-black bg-white hover:bg-[#cccccc] px-5 py-2.5 transition-colors"
               >
                 {t.error.retry}
