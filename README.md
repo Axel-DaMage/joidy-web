@@ -40,6 +40,8 @@ Este proyecto incluye una API Serverless interna configurada para obtener datos 
 - `/api/github/version`: Obtiene el último *release* de Joidy desde GitHub y lo almacena en caché durante 24 horas.
 - `/api/github`: Obtiene issues y PRs recientes del repositorio de Joidy (mezclados) para alimentar el roadmap de la landing. Caché de 24 horas.
 
+Opcionalmente puedes definir `GITHUB_TOKEN` (ver `.env.example`) para autenticar las llamadas a la API de GitHub y elevar el límite de peticiones por encima de las 60 req/h no autenticadas.
+
 ## Licencia
 
 Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/joidy).
