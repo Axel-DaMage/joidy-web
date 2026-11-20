@@ -58,9 +58,6 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   // Configured for Vercel deployment (serverless API routes enabled)
   poweredByHeader: false,
-  images: {
-    unoptimized: true,
-  },
   // Guarantee the .mdx sources ship inside the /docs serverless function trace.
   outputFileTracingIncludes: {
     '/docs/\\[\\[\\.\\.\\.slug\\]\\]': ['./docs/**/*.mdx'],

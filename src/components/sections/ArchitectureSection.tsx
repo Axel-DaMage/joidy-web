@@ -18,11 +18,11 @@ export function ArchitectureSection() {
       >
         <div className="flex flex-col items-center overflow-hidden w-full">
           <pre className="text-[#555555] leading-tight">
-            <div>{`┌──────────────────────────────────────────────────────────────┐`}</div>
-            <div>{`│                        HOST / DOCKER                         │`}</div>
-            <div>{`│                                                              │`}</div>
-            <div>{`│    ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │`}</div>
-            <div>
+            <span className="block">{`┌──────────────────────────────────────────────────────────────┐`}</span>
+            <span className="block">{`│                        HOST / DOCKER                         │`}</span>
+            <span className="block">{`│                                                              │`}</span>
+            <span className="block">{`│    ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │`}</span>
+            <span className="block">
               {`│    │ `}
               <span className="text-cyan-400 font-semibold">Frontend</span>
               {` │ │   `}
@@ -32,13 +32,13 @@ export function ArchitectureSection() {
               {`    │ │  `}
               <span className="text-amber-400 font-semibold">Worker</span>
               {`  │       │`}
-            </div>
-            <div>
+            </span>
+            <span className="block">
               {`│    │`}
               <span className="text-cyan-400">SvelteKit</span>
               {` │ │ FastAPI  │ │ FastAPI  │ │ asyncio  │       │`}
-            </div>
-            <div>
+            </span>
+            <span className="block">
               {`│    │  `}
               <span className="text-emerald-400">:3000</span>
               {`   │ │  `}
@@ -48,43 +48,43 @@ export function ArchitectureSection() {
               {`   │ │  `}
               <span className="text-emerald-400">:8001</span>
               {`   │       │`}
-            </div>
-            <div>{`│    └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘       │`}</div>
-            <div>{`│         │            │            │            │             │`}</div>
-            <div>{`│         └─────┬──────┘            └─────┬──────┘             │`}</div>
-            <div>{`│               │                         │                    │`}</div>
-            <div>{`│               └────────────┬────────────┘                    │`}</div>
-            <div>{`│                            │                                 │`}</div>
-            <div>{`│                     ┌─────────────┐                          │`}</div>
-            <div>
+            </span>
+            <span className="block">{`│    └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘       │`}</span>
+            <span className="block">{`│         │            │            │            │             │`}</span>
+            <span className="block">{`│         └─────┬──────┘            └─────┬──────┘             │`}</span>
+            <span className="block">{`│               │                         │                    │`}</span>
+            <span className="block">{`│               └────────────┬────────────┘                    │`}</span>
+            <span className="block">{`│                            │                                 │`}</span>
+            <span className="block">{`│                     ┌─────────────┐                          │`}</span>
+            <span className="block">
               {`│                     │  `}
               <span className="text-rose-400 font-semibold">PostgreSQL</span>
               {` │                          │`}
-            </div>
-            <div>
+            </span>
+            <span className="block">
               {`│                     │  `}
               <span className="text-rose-400">+ pgvector</span>
               {` │                          │`}
-            </div>
-            <div>
+            </span>
+            <span className="block">
               {`│                     │    `}
               <span className="text-emerald-400">:5432</span>
               {`    │                          │`}
-            </div>
-            <div>{`│                     └─────────────┘                          │`}</div>
-            <div>{`│                                                              │`}</div>
-            <div>{`└──────────────────────────────────────────────────────────────┘`}</div>
-            <div>{`                                                              `}</div>
-            <div>
+            </span>
+            <span className="block">{`│                     └─────────────┘                          │`}</span>
+            <span className="block">{`│                                                              │`}</span>
+            <span className="block">{`└──────────────────────────────────────────────────────────────┘`}</span>
+            <span className="block">{`                                                              `}</span>
+            <span className="block">
               <span className="text-[#555555]">{`published `}</span>
               <span className="text-emerald-400">{`:3000 (ui) · :8000 (api)`}</span>
               <span className="text-[#555555]">{`  → 127.0.0.1 (BIND_ADDR)`}</span>
-            </div>
-            <div>
+            </span>
+            <span className="block">
               <span className="text-[#555555]">{`internal  `}</span>
               <span className="text-[#888888]">{`:8002 (ai) · :8001 (worker)`}</span>
               <span className="text-[#555555]">{`  → compose network only`}</span>
-            </div>
+            </span>
           </pre>
         </div>
       </m.div>

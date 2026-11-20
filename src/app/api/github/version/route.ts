@@ -1,9 +1,8 @@
 import { NextResponse } from 'next/server';
+import { LATEST_VERSION } from '@/lib/version';
 import { githubFetch, OUTAGE_TTL_MS } from '@/lib/github';
 
 export const revalidate = 86400; // Cache for 24 hours
-
-const LATEST_VERSION = 'v1.1.0-beta.7';
 const REPO = 'Axel-DaMage/joidy';
 
 // Best-effort, per-instance fallback state. Module state is not shared

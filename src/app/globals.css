@@ -1,18 +1,6 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #000000;
-  --color-surface: #0a0a0a;
-  --color-elevated: #111111;
-  --color-border: #1a1a1a;
-  --color-border-hover: #333333;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #cccccc;
-  --color-text-muted: #888888;
-  --color-text-dim: #555555;
-  --color-accent: #e0e0e0;
-  --color-success: #10b981;
-  --color-error: #ef4444;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-fira-code), 'JetBrains Mono', monospace;
 }
@@ -56,43 +44,10 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .text-gradient {
-    background: linear-gradient(135deg, #ffffff 0%, #888888 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .glow {
-    box-shadow: 0 0 20px rgba(255,255,255,0.03);
-  }
-  .glow-hover:hover {
-    box-shadow: 0 0 30px rgba(255,255,255,0.06);
-  }
   .cv-auto {
     content-visibility: auto;
     contain-intrinsic-size: auto 800px;
   }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.2); }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .animate-blink { animation: blink 1.2s steps(1) infinite; }
-  .animate-pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
-  .animate-slide-up { animation: slide-up 0.6s ease-out forwards; }
 }
 
 /* Premium Markdown Styling */
