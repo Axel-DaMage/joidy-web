@@ -14,13 +14,13 @@ const installMethods = [
     id: "curl",
     label: "curl",
     command:
-      "curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash",
+      "curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/development/scripts/install.sh | bash",
   },
   {
     id: "powershell",
     label: "PS",
     command:
-      "irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex",
+      "irm https://raw.githubusercontent.com/Axel-DaMage/joidy/development/scripts/install.ps1 | iex",
   },
   {
     id: "brew",

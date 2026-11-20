@@ -73,39 +73,17 @@ export function ArchitectureSection() {
             <div>{`│                     └─────────────┘                          │`}</div>
             <div>{`│                                                              │`}</div>
             <div>{`└──────────────────────────────────────────────────────────────┘`}</div>
-            <div>{`                         │                          `}</div>
-            <div>{`                         ▼                          `}</div>
-            <div>{`┌──────────────────────────────────────────────────┐`}</div>
+            <div>{`                                                              `}</div>
             <div>
-              {`│ `}
-              <span className="text-emerald-400 font-semibold">{`> Exponer entorno local a internet`}</span>
-              {`               │`}
-            </div>
-            <div>{`├──────────────────────────────────────────────────┤`}</div>
-            <div>
-              {`│ `}
-              <span className="text-[#888888]">{`# Usando Cloudflare Tunnels (recomendado)`}</span>
-              {`        │`}
+              <span className="text-[#555555]">{`published `}</span>
+              <span className="text-emerald-400">{`:3000 (ui) · :8000 (api)`}</span>
+              <span className="text-[#555555]">{`  → 127.0.0.1 (BIND_ADDR)`}</span>
             </div>
             <div>
-              {`│ `}
-              <span className="text-pink-400">cloudflared</span>
-              <span className="text-blue-300">{` tunnel --url http://localhost:8000`}</span>
-              {`   │`}
+              <span className="text-[#555555]">{`internal  `}</span>
+              <span className="text-[#888888]">{`:8002 (ai) · :8001 (worker)`}</span>
+              <span className="text-[#555555]">{`  → compose network only`}</span>
             </div>
-            <div>{`│                                                  │`}</div>
-            <div>
-              {`│ `}
-              <span className="text-[#888888]">{`# O usando ngrok`}</span>
-              {`                                 │`}
-            </div>
-            <div>
-              {`│ `}
-              <span className="text-pink-400">ngrok</span>
-              <span className="text-blue-300">{` http 8000`}</span>
-              {`                                  │`}
-            </div>
-            <div>{`└──────────────────────────────────────────────────┘`}</div>
           </pre>
         </div>
       </motion.div>

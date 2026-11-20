@@ -41,17 +41,17 @@
   "features": {
     "title": "Features Clave",
     "items": [
-      { "title": "Gamificación", "desc": "XP events, rachas, planta evolutiva (semilla → árbol). Cada nota te sube de nivel.", "highlight": "Ningún otro PKM convierte conocimiento en crecimiento" },
+      { "title": "Gamificación", "desc": "XP events, rachas, planta evolutiva (semilla → árbol) y logros persistidos en PostgreSQL. Cada nota te sube de nivel.", "highlight": "Ningún otro PKM convierte conocimiento en crecimiento" },
       { "title": "Grafo de Conocimiento", "desc": "Visualización de co-ocurrencia de tags que revela conexiones ocultas.", "highlight": "Conexiones que ninguna otra herramienta muestra" },
       { "title": "Skill Tree", "desc": "Generado de tus tags. Ve tu expertise crecer y ramificarse al escribir.", "highlight": "Habilidades que evolucionan en tiempo real" },
-      { "title": "Búsqueda Semántica", "desc": "Búsqueda vectorial con pgvector (PostgreSQL). Encuentra notas por significado.", "highlight": "Busca por significado, no por keyword" },
-      { "title": "Clasificación por IA", "desc": "Tags sugeridos por Gemini, OpenAI, Anthropic, Cohere u OpenRouter — o completamente local con Ollama.", "highlight": "Tu IA, tus reglas, tu hardware" },
-      { "title": "Conexiones Cruzadas", "desc": "Joidy enlaza automáticamente notas relacionadas en toda tu bóveda.", "highlight": "Enlaces entre dos notas cualesquiera" },
-      { "title": "Metas y Objetivos", "desc": "Goal tracking con failure modes: rollover, snowball, reseteo diario.", "highlight": "Metas que se adaptan a tu ritmo" },
-      { "title": "Rachas Personalizadas", "desc": "Streaks configurables para cualquier cosa: leer, meditar, gym, código.", "highlight": "Cualquier hábito, un solo sistema" },
+      { "title": "Búsqueda Semántica", "desc": "Búsqueda vectorial con pgvector (PostgreSQL 16). Encuentra notas por significado.", "highlight": "Busca por significado, no por keyword" },
+      { "title": "Asistente IA", "desc": "Chatea con tus notas en /ai, auto-tagging y RAG semántico. 6 providers: Gemini, OpenAI, Anthropic, Cohere, Ollama, OpenRouter (+ compatible con OpenAI).", "highlight": "Tu IA, tus reglas, tu hardware" },
+      { "title": "Metas y Objetivos", "desc": "Prioridades, notas enlazadas, tareas one-off, archivado y modos rollover/snowball/daily-reset. Iconos auto-sugeridos. Rachas que nunca fallan.", "highlight": "Metas que se adaptan a tu ritmo" },
+      { "title": "Rachas y Mood", "desc": "Rachas configurables con check-ins, freezes y categorías — además de un check-in diario de ánimo con historial y estadísticas.", "highlight": "Cualquier hábito, un solo sistema" },
       { "title": "Sincronización Obsidian", "desc": "Sync bidireccional — watcher de archivos más push instantáneo por webhook. Si tienes un vault, Joidy lo potencia.", "highlight": "Potencia tu vault existente" },
-      { "title": "Pomodoro", "desc": "Timer integrado conectado a tu sistema de XP y rachas.", "highlight": "Enfoque que alimenta tu crecimiento" },
-      { "title": "Hub de Integraciones", "desc": "Sync con GitHub ya funciona; Google Calendar/Tasks, Strava y Spotify están en camino.", "highlight": "Tu vida digital, conectada" },
+      { "title": "Calendario y Tareas", "desc": "Google Calendar ya funciona: sync incremental, caché local y vista mensual — además de tareas planificables con prioridades, recurrencia y recordatorios.", "highlight": "Tu agenda, dentro de tu PKM" },
+      { "title": "Pomodoro", "desc": "+15 XP por sesión completada, con múltiples estilos de reloj y timer.", "highlight": "Enfoque que alimenta tu crecimiento" },
+      { "title": "Hub de Integraciones", "desc": "Sync con GitHub, bandeja unificada de Gmail vía n8n y bot de Telegram para quick-capture — con scaffold OAuth de Spotify y Strava.", "highlight": "Tu vida digital, conectada" },
       { "title": "Push y Offline", "desc": "PWA instalable con notificaciones web-push y modo offline que sincroniza al volver.", "highlight": "Funciona incluso cuando tú no" }
     ]
   },
@@ -79,11 +79,15 @@
   "faq": {
     "title": "FAQs",
     "items": [
-      { "q": "¿Qué pasa si Joidy deja de existir mañana? ¿Pierdo todo?", "a": "No pierdes nada. Todas tus notas se guardan localmente como archivos Markdown simples en tu disco duro y tu progreso/grafo vive en una base de datos PostgreSQL local. No hay \"vendor lock-in\", eres libre de llevarte tus archivos a cualquier otro sistema cuando quieras." },
-      { "q": "¿Puedo escribir desde mi celular si es auto-hospedado?", "a": "Actualmente puedes usar la app de Obsidian para sincronizar tu bóveda (vía Git u Obsidian Sync) a tu Android/iOS. Al encender tu PC, Joidy procesará los cambios y te otorgará los XP. A futuro, existirá una aplicación móvil nativa de Joidy con todas las capacidades integradas." },
-      { "q": "¿Cómo calcula el sistema los XP y las subidas de nivel?", "a": "El algoritmo premia la profundidad y el hábito. Ganas XP base por la longitud de la nota, bonificaciones por crear enlaces (backlinks) entre ideas, y multiplicadores fuertes por rachas diarias (streaks)." },
-      { "q": "¿Tengo que pagar por usar la Inteligencia Artificial (Auto-Tagging, etc)?", "a": "Depende de tu hardware. Joidy soporta Ollama de forma nativa, lo que te permite correr modelos potentes (como Llama 3) 100% gratis y de forma local en tu GPU. Si tu máquina no es muy potente, puedes optar por poner tus propias API keys de OpenAI, Anthropic, Cohere u OpenRouter (pago por uso)." },
-      { "q": "¿Puedo instalarlo en un NAS, Raspberry Pi o servidor remoto?", "a": "Absolutamente. Joidy está empaquetado para correr vía Docker Compose. Ya sea en tu PC diario, una Raspberry Pi, un NAS de Synology o un VPS casero, solo necesitas clonar el repositorio y ejecutar docker compose up." }
+      { "q": "¿Joidy es gratis?", "a": "Sí. 100% open-source (GPL v3). Auto-hospedado. Tú controlas todo." },
+      { "q": "¿Necesito Obsidian?", "a": "No. La integración con Obsidian es nativa, pero la UI web funciona sin ella." },
+      { "q": "¿Qué pasa con mis datos?", "a": "Todo se queda en tu máquina — una base de datos PostgreSQL local en tu propio volumen Docker. Sin nube, sin tracking, sin telemetría." },
+      { "q": "¿Puedo usarlo desde mi celular?", "a": "Sí. Joidy es una PWA instalable (modo offline + notificaciones push), y el bot de Telegram te permite capturar notas, metas y check-ins de ánimo desde cualquier lugar." },
+      { "q": "¿Cómo funciona el sistema de XP?", "a": "XP fijo por acción: +10 por nota, +5 por edición, +15 por actividad diaria, +50 por meta completada, +15 por pomodoro. Los milestones de racha (7/30/100/365 días) otorgan +100 XP, y tu planta evoluciona de semilla a árbol." },
+      { "q": "¿Necesito API keys?", "a": "Solo para IA en la nube (Gemini, OpenAI, Anthropic, Cohere, OpenRouter). Ollama corre 100% local. Las funciones core no necesitan ninguna." },
+      { "q": "¿Alguien puede ver mis notas?", "a": "No. Joidy es auto-hospedado. Sin servidor central, sin acceso. Ese es exactamente el punto." },
+      { "q": "¿Puedo contribuir?", "a": "Claro. GitHub. PRs, issues e ideas son bienvenidas." },
+      { "q": "¿Qué stack usa?", "a": "SvelteKit, FastAPI, PostgreSQL + pgvector y 6 providers de IA. Orquestación con Docker Compose." }
     ]
   },
   "donate": {
