@@ -54,7 +54,7 @@ export function FeaturesSection() {
     <Section id="features" title={t.features.title}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-5xl">
         {t.features.items.map((f, i) => (
-          <FeatureCard key={f.title} title={f.title} desc={f.desc} index={i} total={t.features.items.length} />
+          <FeatureCard key={f.title} title={f.title} desc={f.desc} highlight={f.highlight} index={i} total={t.features.items.length} />
         ))}
       </div>
     </Section>
