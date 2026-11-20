@@ -14,11 +14,33 @@ type GitHubItem = {
   html_url: string;
   pull_request?: object;
   body: string | null;
+  // GitHub returns `user: null` for deleted/ghost accounts
   user: {
     login: string;
     avatar_url: string;
-  };
+  } | null;
 };
+
+function isGitHubItem(item: unknown): item is GitHubItem {
+  if (typeof item !== 'object' || item === null) return false;
+  const candidate = item as Partial<GitHubItem>;
+  if (
+    typeof candidate.id !== 'number' ||
+    typeof candidate.number !== 'number' ||
+    typeof candidate.title !== 'string' ||
+    typeof candidate.html_url !== 'string' ||
+    (candidate.state !== 'open' && candidate.state !== 'closed')
+  ) {
+    return false;
+  }
+  return (
+    candidate.user === null ||
+    (typeof candidate.user === 'object' &&
+      candidate.user !== null &&
+      typeof candidate.user.login === 'string' &&
+      typeof candidate.user.avatar_url === 'string')
+  );
+}
 
 export function RoadmapSection() {
   const { t } = useI18n();
@@ -28,16 +50,18 @@ export function RoadmapSection() {
   useEffect(() => {
     fetch('/api/github')
       .then(res => res.json())
-      .then(data => {
+      .then((data: unknown) => {
         if (Array.isArray(data)) {
           // Mezclar aleatoriamente y tomar solo 3
-          const shuffled = data.sort(() => 0.5 - Math.random());
+          const shuffled = data.filter(isGitHubItem).sort(() => 0.5 - Math.random());
           setItems(shuffled.slice(0, 3));
         }
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        if (process.env.NODE_ENV === 'development') {
+          console.error(err);
+        }
         setLoading(false);
       });
   }, []);
@@ -85,14 +109,24 @@ export function RoadmapSection() {
                       <span className="font-bold opacity-90">#{item.number}</span>
                       <span className="opacity-50 text-[10px] tracking-widest">[{pseudoHash}]</span>
                     </div>
-                    <Image
-                      src={item.user.avatar_url}
-                      alt=""
-                      width={24}
-                      height={24}
-                      className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
-                      title={item.user.login}
-                    />
+                    {item.user ? (
+                      <Image
+                        src={item.user.avatar_url}
+                        alt=""
+                        width={24}
+                        height={24}
+                        className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
+                        title={item.user.login}
+                      />
+                    ) : (
+                      <span
+                        aria-hidden="true"
+                        title="ghost"
+                        className={`w-6 h-6 rounded-sm flex items-center justify-center font-mono text-xs select-none border ${borderColor} text-[#555555]`}
+                      >
+                        ?
+                      </span>
+                    )}
                   </div>
 
                   {/* Title */}
