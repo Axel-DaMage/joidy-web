@@ -8,7 +8,7 @@ import { ZapIcon, ShieldIcon, GraphIcon } from '@/components/ui/Icons';
 const pillarIcons = [ZapIcon, ShieldIcon, GraphIcon];
 
 function PillarCard({ title, desc, index }: { title: string; desc: string; index: number }) {
-  const Icon = pillarIcons[index];
+  const Icon = pillarIcons[index % pillarIcons.length];
   
   // Colores primarios: Cyan, Magenta, Amarillo
   const hoverStyles = [
@@ -24,7 +24,7 @@ function PillarCard({ title, desc, index }: { title: string; desc: string; index
       transition={{ duration: 0.5, delay: 0.1 + index * 0.15 }}
       className="group border border-[#1a1a1a] hover:border-[#333333] transition-colors p-8 flex flex-col items-center text-center"
     >
-      <div className={`mb-6 text-white/60 transition-all duration-300 ${hoverStyles[index]}`}>
+      <div className={`mb-6 text-white/60 transition-all duration-300 ${hoverStyles[index % hoverStyles.length]}`}>
         <Icon size={28} />
       </div>
       <h3 className="text-lg font-mono font-light text-white mb-3">{title}</h3>

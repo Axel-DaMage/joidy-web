@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 
 function AccordionItem({ q, a, index }: { q: string; a: string; index: number }) {
   const [open, setOpen] = useState(false);
+  const id = useId();
+  const buttonId = `faq-button-${id}`;
+  const panelId = `faq-panel-${id}`;
 
   return (
     <motion.div
@@ -16,17 +19,21 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
       className="border-b border-[#1a1a1a]"
     >
       <button
+        id={buttonId}
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={panelId}
         className="w-full flex items-center justify-between py-4 text-left font-mono text-sm text-[#888888] hover:text-white transition-colors"
       >
         <span className="flex items-center gap-3">
-          <span className="text-[#555555] text-xs">[?]</span>
+          <span className="text-[#777777] text-xs" aria-hidden="true">[?]</span>
           {q}
         </span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="text-[#555555] text-xs"
+          className="text-[#777777] text-xs"
+          aria-hidden="true"
         >
           ▼
         </motion.span>
@@ -34,13 +41,16 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
       <AnimatePresence>
         {open && (
           <motion.div
+            id={panelId}
+            role="region"
+            aria-labelledby={buttonId}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <p className="pb-4 text-sm text-[#666666] leading-relaxed pl-7">{a}</p>
+            <p className="pb-4 text-sm text-[#888888] leading-relaxed pl-7">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>

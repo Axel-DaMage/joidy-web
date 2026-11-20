@@ -14,4 +14,6 @@ export const DOCS_INDEX: DocMeta[] = [
   { slug: 'api-reference', title: 'API Reference', description: 'Complete REST API documentation' },
   { slug: 'operations', title: 'Operations', description: 'joidy CLI, backups, monitoring, and power management' },
   { slug: 'security', title: 'Security', description: 'Authentication model, hardening, and disclosure' },
+  { slug: 'troubleshooting', title: 'Troubleshooting', description: 'Diagnose and fix common startup, API, vault, and AI issues' },
+  { slug: 'faq', title: 'FAQ', description: 'Frequently asked questions about running Joidy' },
 ];
