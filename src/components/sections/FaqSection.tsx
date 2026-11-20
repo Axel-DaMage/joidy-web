@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 
@@ -9,9 +9,10 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
   const [open, setOpen] = useState(false);
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.3, delay: index * 0.04 }}
       className="border-b border-[#1a1a1a]"
     >
@@ -23,17 +24,17 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
           <span className="text-[#555555] text-xs">[?]</span>
           {q}
         </span>
-        <motion.span
+        <m.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
           className="text-[#555555] text-xs"
         >
           ▼
-        </motion.span>
+        </m.span>
       </button>
       <AnimatePresence>
         {open && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -41,10 +42,10 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
             className="overflow-hidden"
           >
             <p className="pb-4 text-sm text-[#666666] leading-relaxed pl-7">{a}</p>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </m.div>
   );
 }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 import { ZapIcon, ShieldIcon, GraphIcon } from '@/components/ui/Icons';
@@ -18,9 +18,10 @@ function PillarCard({ title, desc, index }: { title: string; desc: string; index
   ];
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.5, delay: 0.1 + index * 0.15 }}
       className="group border border-[#1a1a1a] hover:border-[#333333] transition-colors p-8 flex flex-col items-center text-center"
     >
@@ -29,7 +30,7 @@ function PillarCard({ title, desc, index }: { title: string; desc: string; index
       </div>
       <h3 className="text-lg font-mono font-light text-white mb-3">{title}</h3>
       <p className="text-sm text-[#888888] leading-relaxed">{desc}</p>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -38,14 +39,15 @@ export function WhatIsSection() {
 
   return (
     <Section id="what-is" title={t.whatIs.title}>
-      <motion.p
+      <m.p
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.5 }}
         className="text-base md:text-lg text-[#888888] leading-relaxed max-w-3xl mb-16 text-center"
       >
         {t.whatIs.description}
-      </motion.p>
+      </m.p>
 
       <div className="grid md:grid-cols-3 gap-4 w-full max-w-4xl">
         {t.whatIs.pillars.map((p, i) => (

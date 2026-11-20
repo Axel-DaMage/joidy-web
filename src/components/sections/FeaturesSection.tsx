@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 import { ZapIcon, GraphIcon, BrainIcon, SearchIcon, CpuIcon, TargetIcon, BookIcon, SyncIcon, CalendarIcon, ClockIcon, RocketIcon, ShieldIcon } from '@/components/ui/Icons';
@@ -29,9 +29,10 @@ function FeatureCard({ title, desc, highlight, index, total }: { title: string; 
   const colClass = isLastAndOrphanOnLg ? 'lg:col-start-2' : '';
 
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.4, delay: 0.03 + index * 0.03 }}
       className={`group border border-[#1a1a1a] hover:border-[#333333] transition-all p-5 hover:bg-[#0a0a0a] flex flex-col items-center text-center ${colClass}`}
     >
@@ -43,7 +44,7 @@ function FeatureCard({ title, desc, highlight, index, total }: { title: string; 
       {highlight && (
         <p className="text-[10px] font-mono text-[#555555] mt-3 tracking-wide">{highlight}</p>
       )}
-    </motion.div>
+    </m.div>
   );
 }
 

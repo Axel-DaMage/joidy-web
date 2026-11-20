@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
 
@@ -11,7 +11,7 @@ export function CtaSection() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_#050505_0%,_#000000_70%)]" />
 
       <Container className="relative z-10">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -47,7 +47,7 @@ export function CtaSection() {
             </svg>
             {t.donate.button.toUpperCase()}
           </a>
-        </motion.div>
+        </m.div>
       </Container>
     </section>
   );

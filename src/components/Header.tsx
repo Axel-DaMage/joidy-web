@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useState } from 'react';
 import { useI18n } from '@/i18n';
 
@@ -22,7 +22,7 @@ export function Header() {
   };
 
   return (
-    <motion.header
+    <m.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -92,6 +92,6 @@ export function Header() {
           </Link>
         </nav>
       )}
-    </motion.header>
+    </m.header>
   );
 }
