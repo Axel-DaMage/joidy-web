@@ -4,6 +4,7 @@ export interface Dict {
   hero: {
     title: string;
     subtitle: string;
+    scrollDown: string;
   };
   whatIs: {
     title: string;
@@ -12,9 +13,8 @@ export interface Dict {
   };
   problem: {
     title: string;
-    tagline: string;
-    before: string[];
-    after: string[];
+    before: { title?: string; text: string }[];
+    after: { title?: string; text: string }[];
   };
   privacy: {
     title: string;
@@ -31,10 +31,23 @@ export interface Dict {
   architecture: {
     title: string;
   };
+  demo: {
+    title: string;
+    description: string;
+    terminalCaption: string;
+    appCaption: string;
+    app: {
+      nav: string[];
+      stats: { label: string; value: string }[];
+      notesTitle: string;
+      notes: string[];
+      goalsTitle: string;
+      goals: { name: string; progress: string }[];
+    };
+  };
   audience: {
     title: string;
     items: { title: string; desc: string }[];
-    message: string;
   };
   roadmap: {
     title: string;
@@ -46,13 +59,24 @@ export interface Dict {
     items: { q: string; a: string }[];
   };
   donate: {
-    title: string;
     message: string;
     button: string;
   };
-  cta: {
+  clipboard: {
     copy: string;
     copied: string;
+  };
+  notFound: {
+    title: string;
+    description: string;
+    backHome: string;
+    browseDocs: string;
+  };
+  error: {
+    title: string;
+    description: string;
+    retry: string;
+    backHome: string;
   };
   footer: {
     tagline: string;
@@ -72,7 +96,11 @@ export interface Dict {
     };
   };
   header: {
-    nav: string[];
+    nav: { id: string; label: string }[];
     docs: string;
+    menu: string;
+  };
+  a11y: {
+    skipToContent: string;
   };
 }

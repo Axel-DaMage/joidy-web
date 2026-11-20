@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Private. Self-hosted. Your knowledge, your rules."
+    "subtitle": "Private. Self-hosted. Your knowledge, your rules.",
+    "scrollDown": "Scroll down"
   },
   "whatIs": {
     "title": "What is Joidy?",
@@ -14,18 +15,17 @@
   },
   "problem": {
     "title": "The Problem",
-    "tagline": "knowledge_systems_comparison.sh",
     "before": [
-      "Scattered notes with zero connections between them",
-      "No motivation to maintain the writing habit",
-      "No visibility into your own learning progress",
-      "Your data trapped in proprietary clouds"
+      { "text": "Scattered notes with zero connections between them" },
+      { "text": "No motivation to maintain the writing habit" },
+      { "text": "No visibility into your own learning progress" },
+      { "text": "Your data trapped in proprietary clouds" }
     ],
     "after": [
-      "Every note automatically linked, classified, searchable by meaning",
-      "XP, streaks, and plant evolution make note-taking a daily habit",
-      "Real-time graph shows what you know and what you don't",
-      "Your data stays on your machine. 100% yours, 100% private."
+      { "text": "Every note automatically linked, classified, searchable by meaning" },
+      { "text": "XP, streaks, and plant evolution make note-taking a daily habit" },
+      { "text": "Real-time graph shows what you know and what you don't" },
+      { "text": "Your data stays on your machine. 100% yours, 100% private." }
     ]
   },
   "privacy": {
@@ -61,6 +61,32 @@
   "architecture": {
     "title": "Architecture"
   },
+  "demo": {
+    "title": "See It in Action",
+    "description": "One command to install, one to launch. Joidy runs as a self-hosted web app on your own hardware — this is what it actually looks like.",
+    "terminalCaption": "joidy — the CLI that orchestrates the whole stack",
+    "appCaption": "localhost:3000 — the web dashboard",
+    "app": {
+      "nav": ["Dashboard", "Notes", "Goals", "Graph", "Skills", "Streaks", "AI Chat", "Calendar"],
+      "stats": [
+        { "label": "Level", "value": "12" },
+        { "label": "XP", "value": "4,380" },
+        { "label": "Plant", "value": "joven" },
+        { "label": "Day streak", "value": "21" }
+      ],
+      "notesTitle": "Recent notes",
+      "notes": [
+        "Async rituals for remote teams",
+        "pgvector index tuning",
+        "Book notes: Thinking in Systems"
+      ],
+      "goalsTitle": "Active goals",
+      "goals": [
+        { "name": "Ship joidy v1.1", "progress": "72%" },
+        { "name": "Read 20 pages a day", "progress": "45%" }
+      ]
+    }
+  },
   "audience": {
     "title": "Who Is It For?",
     "items": [
@@ -68,8 +94,7 @@
       { "title": "Knowledge Workers", "desc": "Professionals managing large volumes of interconnected information." },
       { "title": "Developers", "desc": "Who want an open-source, self-hosted PKM they can trust and extend." },
       { "title": "Researchers & Students", "desc": "Who need to connect ideas across disciplines and uncover hidden relationships." }
-    ],
-    "message": "100% open-source · self-hosted · your control, your data"
+    ]
   },
   "roadmap": {
     "title": "Roadmap",
@@ -91,13 +116,24 @@
     ]
   },
   "donate": {
-    "title": "Donate",
     "message": "The project survives thanks to the open-source community, not just one person's work. If you'd like to support the creator, you can donate here.",
     "button": "Sponsor Project"
   },
-  "cta": {
+  "clipboard": {
     "copy": "Copy",
     "copied": "Copied!"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home",
+    "browseDocs": "Browse documentation"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try again or head back home.",
+    "retry": "Try again",
+    "backHome": "Back to home"
   },
   "footer": {
     "tagline": "A disciplined progression system. Private, open-source, and hosted on your own machine.",
@@ -117,7 +153,17 @@
     }
   },
   "header": {
-    "nav": ["Features", "Architecture", "Roadmap", "FAQ", "Privacy"],
-    "docs": "Docs"
+    "nav": [
+      { "id": "features", "label": "Features" },
+      { "id": "architecture", "label": "Architecture" },
+      { "id": "roadmap", "label": "Roadmap" },
+      { "id": "faq", "label": "FAQ" },
+      { "id": "privacy", "label": "Privacy" }
+    ],
+    "docs": "Docs",
+    "menu": "Menu"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
   }
 }

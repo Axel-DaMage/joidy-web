@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/i18n";
 
 const installMethods = [
@@ -39,12 +39,35 @@ export function InstallBox({ className = "" }: { className?: string }) {
   const { t } = useI18n();
   const [activeTab, setActiveTab] = useState(installMethods[0]);
   const [copied, setCopied] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Clipboard API unavailable (insecure context or denied permission)
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+      } catch {
+        // Give up silently — the command remains selectable manually
+      }
+      document.body.removeChild(ta);
+    }
+    setCopied(true);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -60,7 +83,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
             className={`px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-colors whitespace-nowrap shrink-0 ${
               activeTab.id === method.id
                 ? "text-[#00FFFF] bg-white/5 border-b border-[#00FFFF]"
-                : "text-[#555555] hover:text-[#aaaaaa] hover:bg-white/5 border-b border-transparent"
+                : "text-[#777777] hover:text-[#aaaaaa] hover:bg-white/5 border-b border-transparent"
             }`}
           >
             {method.label}
@@ -70,15 +93,16 @@ export function InstallBox({ className = "" }: { className?: string }) {
 
       {/* Área del Comando (Usando Grid estricto para evitar expansión horizontal absoluta) */}
       <div className="p-4 grid grid-cols-[1fr_64px] items-center gap-4 w-full">
-        <span className="font-mono text-xs text-[#cccccc] block overflow-hidden text-ellipsis whitespace-nowrap text-left min-w-0">
+        <div className="font-mono text-xs text-[#cccccc] overflow-x-auto whitespace-nowrap min-w-0">
           <span className="text-[#00FFFF] mr-3 select-none">$</span>
           {activeTab.command}
-        </span>
+        </div>
         <button
           onClick={() => copyToClipboard(activeTab.command)}
-          className="font-mono text-[10px] text-[#555555] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
+          aria-live="polite"
+          className="font-mono text-[10px] text-[#777777] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
         >
-          {copied ? t.cta.copied : t.cta.copy}
+          {copied ? t.clipboard.copied : t.clipboard.copy}
         </button>
       </div>
     </div>
