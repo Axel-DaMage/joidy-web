@@ -61,6 +61,10 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Guarantee the .mdx sources ship inside the /docs serverless function trace.
+  outputFileTracingIncludes: {
+    '/docs/\\[\\[\\.\\.\\.slug\\]\\]': ['./docs/**/*.mdx'],
+  },
   async headers() {
     return [
       {
