@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { InstallBox } from '@/components/ui/InstallBox';
 
@@ -8,6 +8,7 @@ function GlitchText({ text }: { text: string }) {
   const [display, setDisplay] = useState(text);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const interval = setInterval(() => {
       // 20% chance to trigger a glitch cycle
       if (Math.random() > 0.8) {
@@ -44,11 +45,16 @@ export function HeroSection() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     let animationFrameId: number;
     let time = 0;
+    let viewW = 0;
+    let viewH = 0;
+    let inView = false;
+    let running = false;
     
     // Store history to avoid the Canvas "dirty alpha" rounding issue
     // which leaves permanent grey trails.
@@ -56,21 +62,35 @@ export function HeroSection() {
     const MAX_AGE = 75; // Reducido para acortar la estela
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      viewW = canvas.clientWidth;
+      viewH = canvas.clientHeight;
+      canvas.width = Math.round(viewW * dpr);
+      canvas.height = Math.round(viewH * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      history.length = 0;
     };
     window.addEventListener('resize', resize);
     resize();
+
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView && !running) {
+        running = true;
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    });
+    observer.observe(canvas);
 
     const draw = () => {
       time += 0.01;
       
       // Clear the canvas completely instead of using semi-transparent fill
       // This guarantees absolutely 0 grey residue on the black background.
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, viewW, viewH);
       
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const cx = viewW / 2;
+      const cy = viewH / 2;
       const a = 3;
       const b = 2;
       const delta = Math.PI / 2;
@@ -83,8 +103,8 @@ export function HeroSection() {
       const currentPoints = [];
       for(let i=0; i<5; i++) {
         const offset = i * 100;
-        const A = canvas.width * 0.4 - offset;
-        const B = canvas.height * 0.4 - offset;
+        const A = viewW * 0.4 - offset;
+        const B = viewH * 0.4 - offset;
         if(A <= 0 || B <= 0) continue;
         
         const localTime = time + i * 0.5;
@@ -121,58 +141,65 @@ export function HeroSection() {
         ctx.fillText(pt.char, pt.x, pt.y);
       }
       
-      animationFrameId = requestAnimationFrame(draw);
+      if (inView) {
+        animationFrameId = requestAnimationFrame(draw);
+      } else {
+        running = false;
+      }
     };
     draw();
 
     return () => {
       window.removeEventListener('resize', resize);
+      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
     <section className="relative min-h-dvh flex flex-col items-center justify-center px-6 overflow-hidden bg-black">
-      <canvas ref={canvasRef} className="absolute inset-0 z-0 opacity-80" />
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 opacity-80" />
       
       <div className="relative z-10 flex flex-col items-center text-center pointer-events-none w-full px-4">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-mono text-7xl md:text-9xl font-light tracking-[-0.06em] text-white mb-6 drop-shadow-md">
-            <GlitchText text={t.hero.title || 'JOIDY'} />
+            <GlitchText key={t.hero.title} text={t.hero.title || 'JOIDY'} />
           </h1>
           <p className="font-mono text-sm md:text-base text-[#aaaaaa] font-light max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Unified Install Box - subtle in the hero */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
           className="mt-10 pointer-events-auto w-full max-w-lg"
         >
           <InstallBox className="shadow-2xl" />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
           className="mt-16 pointer-events-auto"
         >
           <button
-            onClick={() => document.getElementById('what-is')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center gap-1 font-mono text-base text-[#555555] hover:text-white transition-colors mx-auto animate-bounce"
-            aria-label="Scroll down"
+            onClick={() => document.getElementById('what-is')?.scrollIntoView({
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            })}
+            className="flex flex-col items-center gap-1 font-mono text-base text-[#777777] hover:text-white transition-colors mx-auto motion-safe:animate-bounce"
+            aria-label={t.hero.scrollDown}
           >
             <span className="inline-block rotate-90 tracking-tighter opacity-80">&gt;&gt;</span>
           </button>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

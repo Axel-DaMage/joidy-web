@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas."
+    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas.",
+    "scrollDown": "Desplazarse hacia abajo"
   },
   "whatIs": {
     "title": "¿Qué es Joidy?",
@@ -14,18 +15,17 @@
   },
   "problem": {
     "title": "El Problema",
-    "tagline": "analisis_sistemas_de_notas.sh",
     "before": [
-      "Falta de motivación: escribir se vuelve una tarea aburrida y terminas abandonando tus apuntes diarios.",
-      "Grafos caóticos: visualizaciones que se ven bien pero terminan siendo una bola gigante de conexiones inútiles.",
-      "Privacidad nula: tus ideas alimentan la IA de empresas privadas o quedan atrapadas en nubes de suscripción.",
-      "Alta fricción: pierdes más tiempo configurando plugins y plantillas que realmente sentándote a escribir."
+      { "title": "Falta de motivación", "text": "escribir se vuelve una tarea aburrida y terminas abandonando tus apuntes diarios." },
+      { "title": "Grafos caóticos", "text": "visualizaciones que se ven bien pero terminan siendo una bola gigante de conexiones inútiles." },
+      { "title": "Privacidad nula", "text": "tus ideas alimentan la IA de empresas privadas o quedan atrapadas en nubes de suscripción." },
+      { "title": "Alta fricción", "text": "pierdes más tiempo configurando plugins y plantillas que realmente sentándote a escribir." }
     ],
     "after": [
-      "Gamificación real: el sistema de XP y las rachas transforman la escritura en un hábito diario adictivo.",
-      "Conexiones estructuradas: un árbol de habilidades automático que refleja visualmente tu maestría y progreso.",
-      "Privacidad absoluta: base de datos local en tu disco duro, sin telemetría y sin dependencias externas.",
-      "Enfoque total: cero configuraciones complejas. Tú solo escribes y el entorno clasifica todo por ti."
+      { "title": "Gamificación real", "text": "el sistema de XP y las rachas transforman la escritura en un hábito diario adictivo." },
+      { "title": "Conexiones estructuradas", "text": "un árbol de habilidades automático que refleja visualmente tu maestría y progreso." },
+      { "title": "Privacidad absoluta", "text": "base de datos local en tu disco duro, sin telemetría y sin dependencias externas." },
+      { "title": "Enfoque total", "text": "cero configuraciones complejas. Tú solo escribes y el entorno clasifica todo por ti." }
     ]
   },
   "privacy": {
@@ -61,6 +61,32 @@
   "architecture": {
     "title": "Arquitectura"
   },
+  "demo": {
+    "title": "Míralo en Acción",
+    "description": "Un comando para instalar, uno para lanzar. Joidy corre como una app web auto-hospedada en tu propio hardware — así se ve de verdad.",
+    "terminalCaption": "joidy — el CLI que orquesta todo el stack",
+    "appCaption": "localhost:3000 — el dashboard web",
+    "app": {
+      "nav": ["Dashboard", "Notas", "Metas", "Grafo", "Skills", "Rachas", "Chat IA", "Calendario"],
+      "stats": [
+        { "label": "Nivel", "value": "12" },
+        { "label": "XP", "value": "4,380" },
+        { "label": "Planta", "value": "joven" },
+        { "label": "Días de racha", "value": "21" }
+      ],
+      "notesTitle": "Notas recientes",
+      "notes": [
+        "Rituales async para equipos remotos",
+        "Tuning de índices en pgvector",
+        "Notas del libro: Thinking in Systems"
+      ],
+      "goalsTitle": "Metas activas",
+      "goals": [
+        { "name": "Lanzar joidy v1.1", "progress": "72%" },
+        { "name": "Leer 20 páginas al día", "progress": "45%" }
+      ]
+    }
+  },
   "audience": {
     "title": "¿Para Quién es?",
     "items": [
@@ -68,8 +94,7 @@
       { "title": "Knowledge Workers", "desc": "Profesionales con grandes volúmenes de información interconectada." },
       { "title": "Desarrolladores", "desc": "Que quieren un PKM open-source, auto-hospedado, extensible y confiable." },
       { "title": "Investigadores y Estudiantes", "desc": "Que necesitan conectar ideas entre disciplinas." }
-    ],
-    "message": "100% open-source · self-hosted · tu control, tus datos"
+    ]
   },
   "roadmap": {
     "title": "Roadmap",
@@ -95,13 +120,25 @@
     ]
   },
   "donate": {
-    "title": "Donaciones",
+    "title": "Donar",
     "message": "El proyecto sobrevive gracias a la comunidad open-source y no solo al trabajo de uno. Si deseas apoyar al creador, puedes donar aquí.",
     "button": "Sponsor Project"
   },
-  "cta": {
+  "clipboard": {
     "copy": "Copiar",
     "copied": "¡Copiado!"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "backHome": "Volver al inicio",
+    "browseDocs": "Ver documentación"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Puedes intentarlo de nuevo o volver al inicio.",
+    "retry": "Reintentar",
+    "backHome": "Volver al inicio"
   },
   "footer": {
     "tagline": "Un sistema de progresión disciplinario. Privado, open-source y alojado en tu propia máquina.",
@@ -121,10 +158,18 @@
     }
   },
   "header": {
-    "nav": ["Features", "Arquitectura", "Roadmap", "FAQ", "Privacidad"],
-    "docs": "Docs"
+    "nav": [
+      { "id": "features", "label": "Features" },
+      { "id": "architecture", "label": "Arquitectura" },
+      { "id": "roadmap", "label": "Roadmap" },
+      { "id": "faq", "label": "FAQ" },
+      { "id": "privacy", "label": "Privacidad" }
+    ],
+    "docs": "Docs",
+    "menu": "Menú"
   },
   "a11y": {
+    "skipToContent": "Saltar al contenido",
     "primaryNav": "Principal",
     "footerNav": "Pie de página",
     "communityNav": "Comunidad",

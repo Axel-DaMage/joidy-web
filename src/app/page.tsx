@@ -6,6 +6,7 @@ import { PrivacySection } from '@/components/sections/PrivacySection';
 import { FeaturesSection } from '@/components/sections/FeaturesSection';
 import { TechStackSection } from '@/components/sections/TechStackSection';
 import { ArchitectureSection } from '@/components/sections/ArchitectureSection';
+import { DemoSection } from '@/components/sections/DemoSection';
 import { AudienceSection } from '@/components/sections/AudienceSection';
 import { RoadmapSection } from '@/components/sections/RoadmapSection';
 import { FaqSection } from '@/components/sections/FaqSection';
@@ -17,7 +18,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main-content">
         <HeroSection />
         <WhatIsSection />
         <ProblemSection />
@@ -25,6 +26,7 @@ export default function Home() {
         <FeaturesSection />
         <TechStackSection />
         <ArchitectureSection />
+        <DemoSection />
         <AudienceSection />
         <RoadmapSection />
         <FaqSection />

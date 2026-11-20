@@ -1,17 +1,17 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
 
 export function CtaSection() {
   const { t } = useI18n();
   return (
-    <section id="sponsor" className="relative scroll-mt-20 border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden">
+    <section id="sponsor" className="relative scroll-mt-20 border-t border-[#1a1a1a] py-24 md:py-32 overflow-hidden cv-auto">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_#050505_0%,_#000000_70%)]" />
 
       <Container className="relative z-10">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -26,7 +26,8 @@ export function CtaSection() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="w-8 h-8 text-rose-500 mx-auto animate-pulse"
+              aria-hidden="true"
+              className="w-8 h-8 text-rose-500 mx-auto motion-safe:animate-pulse"
             >
               <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
             </svg>
@@ -44,13 +45,14 @@ export function CtaSection() {
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 16 16" 
+              aria-hidden="true"
               className="w-4 h-4 fill-[#555555] group-hover:fill-[#ea4aaa] transition-colors"
             >
               <path d="M4.25 2.5c-1.336 0-2.75 1.164-2.75 3 0 2.15 1.58 4.144 3.365 5.682A20.565 20.565 0 0 0 8 13.393a20.561 20.561 0 0 0 3.135-2.211C12.92 9.644 14.5 7.65 14.5 5.5c0-1.836-1.414-3-2.75-3-1.373 0-2.609.986-3.029 2.456a.75.75 0 0 1-1.442 0C6.859 3.486 5.623 2.5 4.25 2.5Z"></path>
             </svg>
             {t.donate.button.toUpperCase()}
           </a>
-        </motion.div>
+        </m.div>
       </Container>
     </section>
   );

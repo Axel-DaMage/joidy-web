@@ -1,28 +1,46 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
-import { useI18n } from '@/i18n';
-
-const NAV_IDS = ['features', 'architecture', 'roadmap', 'faq', 'privacy'];
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { m } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useI18n } from "@/i18n";
 
 export function Header() {
   const { lang, setLang, t } = useI18n();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
+    setMenuOpen(false);
+  }
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [menuOpen]);
+
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     // Si ya estamos en la página de inicio, hacemos scroll suave hacia arriba
-    if (pathname === '/') {
+    if (pathname === "/") {
       e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({
+        top: 0,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
     }
   };
 
   return (
-    <motion.header
+    <m.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -37,13 +55,13 @@ export function Header() {
       </Link>
 
       <nav aria-label={t.a11y.primaryNav} className="hidden md:flex items-center gap-8">
-        {t.header.nav.map((label, i) => (
+        {t.header.nav.map((item) => (
           <Link
-            key={label}
-            href={`/#${NAV_IDS[i]}`}
+            key={item.id}
+            href={`/#${item.id}`}
             className="font-mono text-xs tracking-[0.1em] text-[#888888] hover:text-white transition-colors uppercase"
           >
-            {label}
+            {item.label}
           </Link>
         ))}
         <Link
@@ -57,30 +75,36 @@ export function Header() {
       <div className="flex items-center gap-3">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label={t.header.menu}
           aria-expanded={menuOpen}
-          className="md:hidden font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          aria-controls="mobile-nav"
+          className="md:hidden font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
-          {menuOpen ? '✕' : '≡'}
+          {menuOpen ? "✕" : "≡"}
         </button>
         <button
-          onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-          className="font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          onClick={() => setLang(lang === "es" ? "en" : "es")}
+          aria-label={lang === "es" ? "English" : "Español"}
+          className="font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
-          {lang === 'es' ? 'EN' : 'ES'}
+          {lang === "es" ? "EN" : "ES"}
         </button>
       </div>
 
       {menuOpen && (
-        <nav aria-label={t.a11y.primaryNav} className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
-          {t.header.nav.map((label, i) => (
+        <nav
+          id="mobile-nav"
+          aria-label={t.a11y.primaryNav}
+          className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4"
+        >
+          {t.header.nav.map((item) => (
             <Link
-              key={label}
-              href={`/#${NAV_IDS[i]}`}
+              key={item.id}
+              href={`/#${item.id}`}
               onClick={() => setMenuOpen(false)}
               className="font-mono text-xs tracking-[0.1em] text-[#888888] hover:text-white transition-colors uppercase"
             >
-              {label}
+              {item.label}
             </Link>
           ))}
           <Link
@@ -92,6 +116,6 @@ export function Header() {
           </Link>
         </nav>
       )}
-    </motion.header>
+    </m.header>
   );
 }

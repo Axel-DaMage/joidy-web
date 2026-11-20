@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 
@@ -13,9 +13,8 @@ type GitHubItem = {
   state: 'open' | 'closed';
   html_url: string;
   pull_request?: object;
-  body: string | null;
   // GitHub returns `user: null` for deleted/ghost accounts
-  user: {
+  user?: {
     login: string;
     avatar_url: string;
   } | null;
@@ -34,7 +33,7 @@ function isGitHubItem(item: unknown): item is GitHubItem {
     return false;
   }
   return (
-    candidate.user === null ||
+    candidate.user == null ||
     (typeof candidate.user === 'object' &&
       candidate.user !== null &&
       typeof candidate.user.login === 'string' &&
@@ -52,8 +51,12 @@ export function RoadmapSection() {
       .then(res => res.json())
       .then((data: unknown) => {
         if (Array.isArray(data)) {
-          // Mezclar aleatoriamente y tomar solo 3
-          const shuffled = data.filter(isGitHubItem).sort(() => 0.5 - Math.random());
+          // Fisher–Yates shuffle, then take only 3
+          const shuffled = data.filter(isGitHubItem);
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
           setItems(shuffled.slice(0, 3));
         }
         setLoading(false);
@@ -67,14 +70,14 @@ export function RoadmapSection() {
   }, []);
 
   return (
-    <Section id="roadmap" title={t.roadmap.title || 'Roadmap'}>
+    <Section id="roadmap" title={t.roadmap.title}>
       <div className="w-full max-w-6xl mx-auto">
         {loading ? (
-          <div className="font-mono text-sm text-[#555555] text-center py-20 animate-pulse">
+          <div className="font-mono text-sm text-[#777777] text-center py-20 motion-safe:animate-pulse">
             {t.roadmap.loading}
           </div>
         ) : items.length === 0 ? (
-          <div className="font-mono text-sm text-[#555555] text-center py-20">
+          <div className="font-mono text-sm text-[#777777] text-center py-20">
             {t.roadmap.empty}
           </div>
         ) : (
@@ -92,7 +95,7 @@ export function RoadmapSection() {
               const pseudoHash = item.id.toString(16).slice(0, 7).padStart(7, '0');
               
               return (
-                <motion.a
+                <m.a
                   href={item.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -105,16 +108,17 @@ export function RoadmapSection() {
                 >
                   {/* Header: ID, Hash, Avatar */}
                   <div className="flex items-start justify-between mb-3 gap-2">
-                    <div className={`font-mono text-xs flex items-center gap-2 ${isOpen ? baseColor : 'text-[#555555]'}`}>
+                    <div className={`font-mono text-xs flex items-center gap-2 ${isOpen ? baseColor : 'text-[#777777]'}`}>
                       <span className="font-bold opacity-90">#{item.number}</span>
                       <span className="opacity-50 text-[10px] tracking-widest">[{pseudoHash}]</span>
                     </div>
-                    {item.user ? (
+                    {item.user?.avatar_url ? (
                       <Image
                         src={item.user.avatar_url}
-                        alt=""
+                        alt={item.user.login}
                         width={24}
                         height={24}
+                        unoptimized
                         className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
                         title={item.user.login}
                       />
@@ -122,7 +126,7 @@ export function RoadmapSection() {
                       <span
                         aria-hidden="true"
                         title="ghost"
-                        className={`w-6 h-6 rounded-sm flex items-center justify-center font-mono text-xs select-none border ${borderColor} text-[#555555]`}
+                        className={`w-6 h-6 rounded-sm border ${borderColor} flex items-center justify-center font-mono text-[10px] text-[#555555] select-none`}
                       >
                         ?
                       </span>
@@ -130,13 +134,13 @@ export function RoadmapSection() {
                   </div>
 
                   {/* Title */}
-                  <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#666666] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
+                  <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#777777] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
                     <span className="sr-only">
                       {isPR ? t.roadmap.pullRequest : t.roadmap.issue}, {isOpen ? t.roadmap.open : t.roadmap.closed}:{' '}
                     </span>
                     {item.title}
                   </div>
-                </motion.a>
+                </m.a>
               );
             })}
           </div>

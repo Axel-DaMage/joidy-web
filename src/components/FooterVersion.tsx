@@ -1,6 +1,7 @@
-const LATEST_VERSION = 'v1.1.0-beta.7';
+import { LATEST_VERSION } from '@/lib/version';
+import { githubFetch } from '@/lib/github';
+
 const REPO = 'Axel-DaMage/joidy';
-const GH_HEADERS = { 'Accept': 'application/vnd.github.v3+json' };
 
 /**
  * Server-rendered latest release tag for the footer.
@@ -11,8 +12,7 @@ export async function FooterVersion() {
   let version = LATEST_VERSION;
 
   try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
-      headers: GH_HEADERS,
+    const res = await githubFetch(`https://api.github.com/repos/${REPO}/releases/latest`, {
       next: { revalidate: 86400 },
     });
 
@@ -23,8 +23,7 @@ export async function FooterVersion() {
       }
     } else if (res.status === 404) {
       // 404 = no stable release yet (project ships beta tags) — fall back to latest tag
-      const tagsRes = await fetch(`https://api.github.com/repos/${REPO}/tags?per_page=1`, {
-        headers: GH_HEADERS,
+      const tagsRes = await githubFetch(`https://api.github.com/repos/${REPO}/tags?per_page=1`, {
         next: { revalidate: 86400 },
       });
       if (tagsRes.ok) {
