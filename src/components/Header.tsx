@@ -75,14 +75,14 @@ export function Header() {
           aria-label={t.header.menu}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav"
-          className="md:hidden font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          className="md:hidden font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {menuOpen ? '✕' : '≡'}
         </button>
         <button
           onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
           aria-label={lang === 'es' ? 'English' : 'Español'}
-          className="font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          className="font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {lang === 'es' ? 'EN' : 'ES'}
         </button>
