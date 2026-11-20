@@ -53,7 +53,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${firaCode.variable} ${inter.variable}`} suppressHydrationWarning>
+    <html
+      lang="es"
+      className={`${firaCode.variable} ${inter.variable}`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{

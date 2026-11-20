@@ -19,8 +19,15 @@
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    color-scheme: dark;
+  }
+  /* Next.js 16 no longer overrides `scroll-behavior` during route transitions.
+     The `data-scroll-behavior="smooth"` attribute on <html> opts back into the
+     override, so SPA navigations scroll instantly while in-page anchor jumps
+     keep smooth scrolling. */
   @media (prefers-reduced-motion: no-preference) {
-    html {
+    html[data-scroll-behavior="smooth"] {
       scroll-behavior: smooth;
     }
   }
