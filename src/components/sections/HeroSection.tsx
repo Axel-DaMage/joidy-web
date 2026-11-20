@@ -8,6 +8,7 @@ function GlitchText({ text }: { text: string }) {
   const [display, setDisplay] = useState(text);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const interval = setInterval(() => {
       // 20% chance to trigger a glitch cycle
       if (Math.random() > 0.8) {
@@ -44,6 +45,7 @@ export function HeroSection() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -166,8 +168,10 @@ export function HeroSection() {
           className="mt-16 pointer-events-auto"
         >
           <button
-            onClick={() => document.getElementById('what-is')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center gap-1 font-mono text-base text-[#777777] hover:text-white transition-colors mx-auto animate-bounce"
+            onClick={() => document.getElementById('what-is')?.scrollIntoView({
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            })}
+            className="flex flex-col items-center gap-1 font-mono text-base text-[#777777] hover:text-white transition-colors mx-auto motion-safe:animate-bounce"
             aria-label={t.hero.scrollDown}
           >
             <span className="inline-block rotate-90 tracking-tighter opacity-80">&gt;&gt;</span>
