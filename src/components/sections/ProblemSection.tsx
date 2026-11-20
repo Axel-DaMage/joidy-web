@@ -2,7 +2,6 @@
 
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
-import { ShieldIcon, DatabaseIcon, LockIcon, CpuIcon } from '@/components/ui/Icons';
 
 function ProblemPanel({ side, items, color }: { side: 'before' | 'after'; items: string[]; color: 'red' | 'green' }) {
   const borderColor = color === 'red' ? 'border-red-900/40' : 'border-emerald-900/40';

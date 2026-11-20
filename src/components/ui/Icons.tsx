@@ -3,7 +3,7 @@ import type { SVGProps } from 'react';
 type IconProps = SVGProps<SVGSVGElement> & { size?: number };
 
 function createIcon(children: React.ReactNode, viewBox = '0 0 24 24') {
-  return ({ size = 20, className = '', ...props }: IconProps) => (
+  const Icon = ({ size = 20, className = '', ...props }: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={viewBox}
@@ -20,6 +20,7 @@ function createIcon(children: React.ReactNode, viewBox = '0 0 24 24') {
       {children}
     </svg>
   );
+  return Icon;
 }
 
 export const LockIcon = createIcon(<><rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></>);
