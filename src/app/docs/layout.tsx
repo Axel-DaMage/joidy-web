@@ -16,6 +16,8 @@ const DOCS_INDEX = [
   { slug: 'api-reference', title: 'API Reference' },
   { slug: 'operations', title: 'Operations' },
   { slug: 'security', title: 'Security' },
+  { slug: 'troubleshooting', title: 'Troubleshooting' },
+  { slug: 'faq', title: 'FAQ' },
 ];
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
