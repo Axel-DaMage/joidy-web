@@ -1,0 +1,42 @@
+---
+title: Security
+description: Authentication model, hardening, and disclosure policy.
+---
+
+# Security
+
+## Authentication model
+
+- **JWT required** on all data/mutation endpoints — `Authorization: Bearer <token>` from `POST /auth/login`
+- Public surface is minimal: `/`, `/health*`, `/config/setup-status`, `POST /config/setup` (loopback-only, password policy), `/auth/*`
+- WebSocket `/ws` authenticates via `?token=`
+- Webhooks have their own schemes: `OBSIDIAN_WEBHOOK_SECRET`, Telegram secret validation
+- Internal traffic: API → ai-service uses `X-Internal-Secret: <INTERNAL_SECRET>`; service calls (n8n) use `Bearer <INTERNAL_API_TOKEN>`
+
+## Network exposure
+
+- Only `frontend:3000` and `api:8000` publish to the host, bound to `127.0.0.1` by default (`BIND_ADDR` to change)
+- `ai-service:8002`, `worker:8001`, and `postgres:5432` are Compose-network only
+
+## Hardening
+
+- Security headers: CSP, `nosniff`, `frame-ancestors`
+- OAuth state nonces (CSRF) on Google, GitHub, Spotify, Strava flows
+- SSRF validation of web-push subscription endpoints
+- Rate limiting — 60/min anon, 120/min authenticated; `X-Forwarded-For` trusted only from `TRUSTED_PROXIES`
+- `.env` and backup dumps written 0600
+- Vault path sanitization on all filesystem operations
+- Uploads: authenticated, mime-derived extensions, sanitized paths
+- First-run `/config/setup` is loopback-only and enforces a password policy
+
+## Power management risk
+
+`POWER_MANAGEMENT_ENABLED` mounts the Docker socket — root-equivalent host access. Off by default; keep it off unless you need `/system/power/*`.
+
+## Accessibility
+
+The UI targets WCAG 2.1 AA (see `docs/A11Y.md` upstream).
+
+## Disclosure
+
+Report vulnerabilities via `SECURITY.md` in [the repository](https://github.com/Axel-DaMage/joidy).

@@ -1,105 +1,93 @@
 ---
 title: Configuration
-description: Complete configuration reference for Joidy via environment variables.
+description: Environment variable reference for Joidy.
 ---
 
 # Configuration
 
-All configuration is done via environment variables in `.env`. After a git
-clone, copy `.env.example` to `.env`; system installs (curl script, Homebrew,
-AUR) keep it at `~/.config/joidy/.env`.
-
-## Required
-
-| Variable | Description |
-|----------|-------------|
-| `GEMINI_API_KEY` | Google Gemini API key — [AI Studio](https://aistudio.google.com/app/apikey). AI features are disabled without a provider key, but the app still works |
-| `OBSIDIAN_VAULT_PATH` | Absolute host path to your Obsidian vault (`~` is expanded). Mounted read-write at `/vault` in the worker |
-| `SECRET_KEY` | Session/JWT signing key — generate with `openssl rand -hex 32` |
-
-## AI Providers
-
-Joidy supports 6 providers through a factory in `ai-service`. Set the API key
-for the providers you want, then pick the active one with `LLM_MODEL`.
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GEMINI_API_KEY` | — | Google Gemini |
-| `OPENAI_API_KEY` | — | OpenAI |
-| `ANTHROPIC_API_KEY` | — | Anthropic |
-| `COHERE_API_KEY` | — | Cohere |
-| `OPENROUTER_API_KEY` | — | OpenRouter |
-| `OLLAMA_BASE_URL` | `http://host.docker.internal:11434` | Local Ollama endpoint — no key needed |
-| `LLM_MODEL` | `gemini:gemini-2.0-flash` | Active chat/classification model, `provider:model` format |
-| `EMBEDDING_MODEL` | `gemini:models/text-embedding-004` | Embedding model, `provider:model` format |
-| `AI_SERVICE_ENABLED` | `true` | Set `false` to disable AI calls entirely |
-
-## Obsidian
-
-| Variable | Description |
-|----------|-------------|
-| `OBSIDIAN_VAULT_PATH` | Host path to vault; also used by the API for vault file ops |
-| `OBSIDIAN_WEBHOOK_SECRET` | Shared secret for `POST /webhook/obsidian` — enables instant push sync (see [API Reference](/docs/api-reference#obsidian-webhook)) |
+Joidy is configured via `.env` in the repo root (or `~/.config/joidy/.env` for system installs). On first `joidy up`, all secrets are auto-generated if missing — you only need to set `OBSIDIAN_VAULT_PATH` and any AI keys you want.
 
 ## Database
 
-| Variable | Description |
-|----------|-------------|
-| `POSTGRES_USER` | `joidy` by default |
-| `POSTGRES_PASSWORD` | Password for the `postgres` container. **Only applies at `initdb`** — changing it on an existing volume breaks auth unless you update the role in Postgres |
-| `POSTGRES_DB` | `joidy` by default |
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | `postgresql://joidy:joidy@postgres:5432/joidy` | Postgres 16 + pgvector DSN |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` | `joidy` | DB credentials — password auto-generated on first run |
 
-`DATABASE_URL` is composed automatically inside compose
-(`postgresql://joidy:<password>@postgres:5432/joidy`).
+⚠️ `POSTGRES_PASSWORD` and `DATABASE_URL` can drift if you rotate one without the other — keep them in sync.
 
-## Integrations (optional)
-
-| Variable | Description |
-|----------|-------------|
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth app |
-| `GITHUB_TOKEN` / `GITHUB_USERNAME` | Classic token sync alternative |
-| `GITHUB_OAUTH_WEB_URL` / `GITHUB_WEBHOOK_URL` | OAuth callback base / webhook endpoint |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` / `GOOGLE_REDIRECT_URI` | Google Calendar & Tasks OAuth (default redirect `http://localhost:8000/integrations/google/callback`) |
-| `STRAVA_CLIENT_ID` / `STRAVA_CLIENT_SECRET` / `STRAVA_REDIRECT_URI` | Strava integration |
-| `SPOTIFY_CLIENT_ID` / `SPOTIFY_CLIENT_SECRET` / `SPOTIFY_REDIRECT_URI` | Spotify integration |
-| `TELEGRAM_BOT_TOKEN` / `TELEGRAM_ALLOWED_USER_ID` | Telegram notifications |
-
-## Push Notifications
-
-| Variable | Description |
-|----------|-------------|
-| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` | Web Push VAPID keypair — without it, push is disabled gracefully |
-| `VAPID_CLAIM_EMAIL` | `mailto:` contact for the VAPID claim |
-
-## Server
+## Networking
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `SECRET_KEY` | — | JWT signing key (required) |
-| `APP_ENV` | `development` | `development` or `production` |
-| `CORS_ALLOWED_ORIGINS` | localhost dev fallback | Comma-separated allowed origins |
-| `AUTH_PASSWORD` | — | Single-user password for `POST /auth/login`. **Required when `APP_ENV=production`** — the API refuses to start without it |
-| `FRONTEND_PORT` / `API_PORT` / `AI_SERVICE_PORT` / `WORKER_PORT` | `3000` / `8000` / `8002` / `8001` | Host port overrides |
-| `GRAFANA_ADMIN_PASSWORD` | — | Required only when using `docker-compose.monitoring.yml` |
+| `BIND_ADDR` | `127.0.0.1` | Host interface for published ports. Only `frontend` and `api` publish to the host |
+| `FRONTEND_PORT` / `API_PORT` | `3000` / `8000` | Published ports (`joidy up` auto-falls-back up to 5 ports) |
+| `CORS_ALLOWED_ORIGINS` | `http://localhost:3000` | Comma-separated origins |
+| `TRUSTED_PROXIES` | — | CIDRs whose `X-Forwarded-For` is trusted for rate limiting |
 
-## Example `.env`
+## Auth & internal secrets
 
-```bash
-SECRET_KEY=change_this_to_a_random_secret_key
-GEMINI_API_KEY=your-key
-OBSIDIAN_VAULT_PATH=~/Documents/obsidian/my-vault
-POSTGRES_PASSWORD=a-strong-password
+| Variable | Description |
+|----------|-------------|
+| `SECRET_KEY` | JWT signing key (auto-generated) |
+| `INTERNAL_SECRET` | Shared secret for API → ai-service (`X-Internal-Secret` header) |
+| `INTERNAL_API_TOKEN` | Bearer token for service-to-service calls (e.g. n8n → `/emails`) |
 
-# Optional
-LLM_MODEL=gemini:gemini-2.0-flash
-TELEGRAM_BOT_TOKEN=
-CORS_ALLOWED_ORIGINS=http://localhost:3000
-```
+## AI providers
 
-## Generating SECRET_KEY
+| Variable | Description |
+|----------|-------------|
+| `GEMINI_API_KEY` | Primary provider |
+| `OPENAI_API_KEY` / `OPENAI_BASE_URL` | OpenAI or any OpenAI-compatible endpoint |
+| `ANTHROPIC_API_KEY` | Claude |
+| `COHERE_API_KEY` | Cohere |
+| `OPENROUTER_API_KEY` | OpenRouter |
+| `OLLAMA_BASE_URL` | Local Ollama — no key needed |
+| `LLM_MODEL` / `EMBEDDING_MODEL` / `LLM_MAX_TOKENS` | Model overrides |
+| `AI_SERVICE_ENABLED` | Toggle the ai-service container |
 
-```bash
-openssl rand -hex 32
-# or
-python -c "import secrets; print(secrets.token_hex(32))"
-```
+## Vault & Obsidian
+
+| Variable | Description |
+|----------|-------------|
+| `OBSIDIAN_VAULT_PATH` | **Required** — path mounted into the worker (watched for changes) |
+| `OBSIDIAN_WEBHOOK_SECRET` | Secret for the bidirectional-sync webhook |
+
+## Integrations
+
+| Prefix | Notes |
+|--------|-------|
+| `GITHUB_*` | Personal access token / OAuth |
+| `GOOGLE_*` | Calendar & Tasks OAuth (`CALENDAR_SYNC_INTERVAL` = worker poll seconds, default 900) |
+| `STRAVA_*` / `SPOTIFY_*` | OAuth scaffolding |
+| `TELEGRAM_*` | `TELEGRAM_BOT_TOKEN`, webhook secret, allowed user id |
+
+## Backups
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `BACKUP_ENABLED` | `true` | Sidecar profile, on with `joidy up` |
+| `BACKUP_SCHEDULE` | `0 3 * * *` | Cron in `USER_TIMEZONE` |
+| `BACKUP_RETENTION_DAYS` | `14` | Daily dumps kept |
+| `BACKUP_RETENTION_WEEKS` | `4` | Sunday dumps kept |
+| `USER_TIMEZONE` | `UTC` | Timezone for schedules |
+| `JOIDY_BACKUP_DIR` | `data/backups/` | Dump destination (files written 0600) |
+
+## Power & idle (opt-in)
+
+| Variable | Description |
+|----------|-------------|
+| `POWER_MANAGEMENT_ENABLED` | Adds `docker-compose.power.yml`, mounts the Docker socket — **grants root-equivalent host access** |
+| `DOCKER_GID` | Real `docker` group GID (required by power overlay) |
+| `DOCKER_SOCK_PATH` | Socket path override |
+| `JOIDY_IDLE_TIMEOUT` | Auto-sleep after N minutes idle (default 15) |
+
+## Other
+
+| Variable | Description |
+|----------|-------------|
+| `APP_ENV` | `development` / `production` |
+| `VAPID_*` | Web-push keys |
+| `GRAFANA_ADMIN_PASSWORD` | Monitoring overlay (auto-generated) |
+| `N8N_PORT` / `N8N_ENCRYPTION_KEY` | n8n workflow container |
+| `JOIDY_ENV_FILE` / `JOIDY_DATA_DIR` | CLI path overrides |

@@ -1,0 +1,51 @@
+---
+title: Operations
+description: The joidy CLI, backups, idle watchdog, power management, and monitoring.
+---
+
+# Operations
+
+## The `joidy` CLI
+
+```text
+joidy up        start the stack (auto port-fallback, up to 5 ports)
+joidy down      stop everything
+joidy sleep     stop containers, keep data
+joidy wake      resume a slept stack
+joidy restart   restart services
+joidy status    health overview
+joidy pull      pull images + source
+joidy logs      tail logs
+joidy idle enable|disable|status   idle watchdog control
+joidy backup    manual pg_dump backup
+joidy restore <file> [--force]     restore a dump
+joidy help
+```
+
+## Backups
+
+- Sidecar container, enabled by default under `joidy up`
+- `pg_dump -Fc` compressed dumps into `data/backups/` (permissions 0600)
+- Schedule: `BACKUP_SCHEDULE` cron in `USER_TIMEZONE` (default `0 3 * * *`)
+- Retention: `BACKUP_RETENTION_DAYS=14` daily + `BACKUP_RETENTION_WEEKS=4` (Sundays)
+- Verify with `make backup-verify` — round-trip restore into a throwaway DB
+
+## Idle watchdog
+
+Auto-sleeps the stack after `JOIDY_IDLE_TIMEOUT` minutes without activity (default 15). An optional systemd user unit is available for wake-on-demand setups.
+
+## Power management (opt-in)
+
+`POWER_MANAGEMENT_ENABLED=true` composes `docker-compose.power.yml`, registers `/system/power/*` endpoints, and mounts the Docker socket — **root-equivalent host access**. Requires the real `DOCKER_GID`. Disabled by default; without the flag the router is not registered.
+
+## Monitoring
+
+`docker-compose.monitoring.yml` adds Prometheus (:9090) + Grafana (:3001, `GRAFANA_ADMIN_PASSWORD`). Both api and worker expose `/metrics`.
+
+## Migrations
+
+Alembic-managed; run automatically on API start, or manually with `make migrate`.
+
+## n8n
+
+`make n8n` starts the workflow container for Gmail sync (port `N8N_PORT` 5678, key `N8N_ENCRYPTION_KEY`).
