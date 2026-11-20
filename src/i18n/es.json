@@ -100,6 +100,18 @@
     "copy": "Copiar",
     "copied": "¡Copiado!"
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "backHome": "Volver al inicio",
+    "browseDocs": "Ver documentación"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Puedes intentarlo de nuevo o volver al inicio.",
+    "retry": "Reintentar",
+    "backHome": "Volver al inicio"
+  },
   "footer": {
     "tagline": "Un sistema de progresión disciplinario. Privado, open-source y alojado en tu propia máquina.",
     "nav": "Navegación",
