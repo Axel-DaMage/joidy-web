@@ -43,7 +43,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
           <div>
             <p className="font-mono text-sm tracking-[0.15em] text-white mb-4">JOIDY</p>
-            <p className="font-mono text-xs text-[#555555] leading-relaxed max-w-xs">
+            <p className="font-mono text-xs text-[#777777] leading-relaxed max-w-xs">
               {t.footer.tagline}
             </p>
           </div>
@@ -57,7 +57,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="font-mono text-xs text-[#555555] hover:text-white transition-colors"
+                    className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -78,14 +78,14 @@ export function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-xs text-[#555555] hover:text-white transition-colors"
+                      className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
                     >
                       {link.label}
                     </a>
                   ) : (
                     <Link
                       href={link.href}
-                      className="font-mono text-xs text-[#555555] hover:text-white transition-colors"
+                      className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -97,7 +97,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-[#1a1a1a] flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="font-mono text-xs text-[#555555] text-center md:text-left">
+          <div className="font-mono text-xs text-[#777777] text-center md:text-left">
             {version} · <a href="https://github.com/Axel-DaMage" target="_blank" rel="noopener noreferrer" className="hover:text-[#aaaaaa] transition-colors">Axel-DaMage</a>
           </div>
         </div>
