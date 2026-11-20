@@ -15,7 +15,7 @@ export function Section({ id, children, className = '', title }: SectionProps) {
   return (
     <section
       id={id}
-      className={`relative border-b border-[#1a1a1a] py-24 md:py-32 ${className}`}
+      className={`relative border-b border-[#1a1a1a] py-24 md:py-32 cv-auto ${className}`}
     >
       <Container>
         {title && (

@@ -12,7 +12,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           <DocsSidebar />
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0 pb-16">
+          <main id="main-content" className="flex-1 min-w-0 pb-16">
             {children}
           </main>
         </div>

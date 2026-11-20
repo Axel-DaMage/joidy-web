@@ -1,0 +1,43 @@
+---
+title: FAQ
+description: Frequently asked questions about running and configuring Joidy.
+---
+
+# FAQ
+
+## Do I need an AI API key?
+
+No. Core features work without any key. Cloud providers (Gemini, OpenAI, Anthropic, Cohere, OpenRouter) need their own key; Ollama runs fully local with just `OLLAMA_BASE_URL`. See [Configuration](/docs/configuration).
+
+## Do I need Obsidian?
+
+No. The vault integration is native but optional — the web UI works without it. If you do use it, set `OBSIDIAN_VAULT_PATH` and the worker syncs your notes. See [Integrations](/docs/integrations).
+
+## Where does my data live?
+
+Everything stays on your machine: a local PostgreSQL database inside a Docker volume, plus your Obsidian vault. No cloud, no telemetry. See [Security](/docs/security).
+
+## How do I update Joidy?
+
+```bash
+joidy pull     # pulls images + source
+joidy restart
+```
+
+Database migrations run automatically on API start.
+
+## How do backups work?
+
+A sidecar container runs `pg_dump -Fc` on a cron schedule (`BACKUP_SCHEDULE`) into `data/backups/`, with daily + weekly retention. Manual: `joidy backup` / `joidy restore <file>`. See [Operations](/docs/operations).
+
+## Can I reach Joidy from other devices on my network?
+
+The frontend binds `127.0.0.1` by default. Set `BIND_ADDR` in `.env` to expose other interfaces, and review [Security](/docs/security) before opening it beyond loopback.
+
+## Can I use it from my phone?
+
+Yes — Joidy is an installable PWA, and the Telegram bot captures notes, goals, and mood check-ins from anywhere. See [Integrations](/docs/integrations).
+
+## Something is broken — where do I look?
+
+Start with [Troubleshooting](/docs/troubleshooting), then `joidy status` and `joidy logs`. If it is still broken, open an issue on [GitHub](https://github.com/Axel-DaMage/joidy/issues).

@@ -3,18 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-const DOCS_INDEX = [
-  { slug: 'getting-started', title: 'Getting Started' },
-  { slug: 'installation', title: 'Installation' },
-  { slug: 'configuration', title: 'Configuration' },
-  { slug: 'architecture', title: 'Architecture' },
-  { slug: 'features', title: 'Features' },
-  { slug: 'integrations', title: 'Integrations' },
-  { slug: 'api-reference', title: 'API Reference' },
-  { slug: 'operations', title: 'Operations' },
-  { slug: 'security', title: 'Security' },
-];
+import { DOCS_INDEX } from '@/lib/docs';
 
 export function DocsSidebar() {
   const pathname = usePathname();
@@ -24,9 +13,11 @@ export function DocsSidebar() {
     <>
       {/* Mobile Navigation Toggle */}
       <div className="md:hidden flex items-center justify-between border-b border-[#1a1a1a] pb-4 mb-4">
-        <span className="font-mono text-xs tracking-wider text-[#555555]">DOCUMENTATION MENU</span>
+        <span className="font-mono text-xs tracking-wider text-[#777777]">DOCUMENTATION MENU</span>
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="docs-nav"
           className="font-mono text-xs tracking-wider text-white border border-[#333333] hover:border-white px-3 py-1.5 transition-all"
         >
           {mobileMenuOpen ? 'CLOSE' : 'MENU'}
@@ -34,7 +25,7 @@ export function DocsSidebar() {
       </div>
 
       {/* Sidebar */}
-      <aside className={`
+      <aside id="docs-nav" className={`
         ${mobileMenuOpen ? 'block' : 'hidden'} 
         md:block w-full md:w-64 flex-shrink-0 
         md:sticky md:top-24 md:h-[calc(100vh-8rem)] 
@@ -50,7 +41,7 @@ export function DocsSidebar() {
               ← Docs Overview
             </Link>
             
-            <h3 className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-4">
+            <h3 className="font-mono text-[10px] tracking-widest text-[#777777] uppercase mb-4">
               Guides
             </h3>
             <ul className="space-y-3">

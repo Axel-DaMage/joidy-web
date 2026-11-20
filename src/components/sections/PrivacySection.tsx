@@ -25,7 +25,7 @@ export function PrivacySection() {
 
       <div className="grid sm:grid-cols-2 gap-4 max-w-3xl w-full">
         {points.map((point, i) => {
-          const Icon = privacyIcons[i];
+          const Icon = privacyIcons[i % privacyIcons.length];
           return (
             <m.div
               key={point.title}
