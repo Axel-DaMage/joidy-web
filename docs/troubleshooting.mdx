@@ -1,0 +1,144 @@
+---
+title: Troubleshooting
+description: Diagnose and fix the most common Joidy startup, API, vault, and AI issues.
+---
+
+# Troubleshooting
+
+Common failure modes and their fixes. When in doubt, start with `joidy status` and `joidy logs`.
+
+## Startup
+
+### `docker: command not found`
+
+Docker is not installed or not in `PATH`. Install Docker Engine ([Linux](https://docs.docker.com/engine/install/)) or Docker Desktop ([macOS](https://docs.docker.com/desktop/install/mac-install/) / [Windows](https://docs.docker.com/desktop/install/windows-install/)), then verify:
+
+```bash
+docker --version
+docker compose version
+```
+
+Restart your terminal after installing.
+
+### Port already allocated
+
+`port is already allocated` means another service owns the port. Change the published ports in `.env` and restart:
+
+```env
+FRONTEND_PORT=3001
+API_PORT=8001
+```
+
+```bash
+joidy restart
+```
+
+Only the frontend (`3000`) and API (`8000`) publish to the host, on loopback unless `BIND_ADDR` is set. `joidy up` also falls back to the next free port automatically (up to 5 attempts).
+
+### Missing `.env` or `OBSIDIAN_VAULT_PATH`
+
+```
+⚠ OBSIDIAN_VAULT_PATH not set in .env
+```
+
+Set an absolute path to your vault in `.env`:
+
+```env
+OBSIDIAN_VAULT_PATH=/home/user/Documents/Obsidian
+```
+
+On Windows, use forward slashes: `OBSIDIAN_VAULT_PATH=C:/Users/you/Documents/Obsidian`.
+
+## Windows
+
+### PowerShell execution policy
+
+`PSSecurityException` / "execution of scripts is disabled" — Windows defaults to `Restricted`. Either allow local scripts for your user:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+or use the `joidy.cmd` shim from any terminal:
+
+```cmd
+joidy.cmd up
+```
+
+### Docker Desktop not responding
+
+`failed to connect to the docker API at npipe:////./pipe/docker_engine` — Docker Desktop is not running or WSL 2 is missing.
+
+1. If needed, install WSL 2 from an elevated PowerShell: `wsl --install` (reboot if asked).
+2. Start Docker Desktop and accept the subscription agreement on first launch.
+3. Wait until the tray icon reports *Engine running*.
+
+## API and database
+
+### Service failed to start / health check fails
+
+```bash
+joidy logs          # find the failing service
+curl http://localhost:8000/health
+```
+
+### `relation "..." does not exist`
+
+Migrations did not run. Alembic runs on API start; force it manually with `make migrate`, or rebuild the stack with `joidy restart`.
+
+### Corrupted database
+
+`data page checksum verification failed` — take a dump first, then recreate:
+
+```bash
+joidy backup
+docker compose down -v
+joidy up
+joidy restore data/backups/joidy-YYYYMMDD-HHMMSS.dump --force
+```
+
+## Vault and worker
+
+### `FileNotFoundError: /vault` or `Permission denied`
+
+`OBSIDIAN_VAULT_PATH` points to a path that does not exist or is unreadable. Verify on the host, fix permissions, and restart:
+
+```bash
+ls -la /path/to/vault
+chmod -R u+rX /path/to/vault
+joidy restart
+```
+
+### Notes are not syncing
+
+```bash
+joidy logs                                   # look for worker errors
+docker compose exec worker ls -la /vault     # is the vault mounted?
+curl -X POST http://localhost:8000/vault/sync  # force a sync
+```
+
+## AI service
+
+### `429 Too Many Requests`
+
+Provider rate limit. Wait a minute, reduce auto-classification usage, or switch to Ollama for fully local inference (no key required — set `OLLAMA_BASE_URL`).
+
+### `400 Invalid API key`
+
+The cloud provider key is wrong or revoked. Generate a fresh one (Gemini keys at [Google AI Studio](https://aistudio.google.com/app/apikey)), update `.env`, and `joidy restart`.
+
+### `Connection refused to ai-service`
+
+The AI service is down or still starting. Check `joidy logs` and `joidy status`.
+
+## Still stuck?
+
+When reporting a bug, include:
+
+- OS and arch (`uname -a`)
+- `docker --version` and `docker compose version`
+- `joidy status` and relevant `joidy logs` output
+- `.env` contents **with all secrets removed**
+- Steps to reproduce, expected vs. actual behavior
+
+Open the issue at [github.com/Axel-DaMage/joidy/issues](https://github.com/Axel-DaMage/joidy/issues).

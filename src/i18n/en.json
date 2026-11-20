@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Private. Self-hosted. Your knowledge, your rules."
+    "subtitle": "Private. Self-hosted. Your knowledge, your rules.",
+    "scrollDown": "Scroll down"
   },
   "whatIs": {
     "title": "What is Joidy?",
@@ -60,6 +61,32 @@
   "architecture": {
     "title": "Architecture"
   },
+  "demo": {
+    "title": "See It in Action",
+    "description": "One command to install, one to launch. Joidy runs as a self-hosted web app on your own hardware — this is what it actually looks like.",
+    "terminalCaption": "joidy — the CLI that orchestrates the whole stack",
+    "appCaption": "localhost:3000 — the web dashboard",
+    "app": {
+      "nav": ["Dashboard", "Notes", "Goals", "Graph", "Skills", "Streaks", "AI Chat", "Calendar"],
+      "stats": [
+        { "label": "Level", "value": "12" },
+        { "label": "XP", "value": "4,380" },
+        { "label": "Plant", "value": "joven" },
+        { "label": "Day streak", "value": "21" }
+      ],
+      "notesTitle": "Recent notes",
+      "notes": [
+        "Async rituals for remote teams",
+        "pgvector index tuning",
+        "Book notes: Thinking in Systems"
+      ],
+      "goalsTitle": "Active goals",
+      "goals": [
+        { "name": "Ship joidy v1.1", "progress": "72%" },
+        { "name": "Read 20 pages a day", "progress": "45%" }
+      ]
+    }
+  },
   "audience": {
     "title": "Who Is It For?",
     "items": [
@@ -96,6 +123,18 @@
     "copy": "Copy",
     "copied": "Copied!"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home",
+    "browseDocs": "Browse documentation"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try again or head back home.",
+    "retry": "Try again",
+    "backHome": "Back to home"
+  },
   "footer": {
     "tagline": "A disciplined progression system. Private, open-source, and hosted on your own machine.",
     "nav": "Navigation",
@@ -121,6 +160,10 @@
       { "id": "faq", "label": "FAQ" },
       { "id": "privacy", "label": "Privacy" }
     ],
-    "docs": "Docs"
+    "docs": "Docs",
+    "menu": "Menu"
+  },
+  "a11y": {
+    "skipToContent": "Skip to content"
   }
 }
