@@ -21,6 +21,11 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body suppressHydrationWarning>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{if(localStorage.getItem('joidy-lang')==='en'){document.documentElement.lang='en'}}catch(e){}`,
+          }}
+        />
         <Providers>{children}</Providers>
         <Analytics />
         <SpeedInsights />

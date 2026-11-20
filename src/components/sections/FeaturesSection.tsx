@@ -41,7 +41,7 @@ function FeatureCard({ title, desc, highlight, index, total }: { title: string; 
       <h3 className="text-sm font-mono text-white mb-2 tracking-wide">{title}</h3>
       <p className="text-xs text-[#888888] leading-relaxed flex-1">{desc}</p>
       {highlight && (
-        <p className="text-[10px] font-mono text-[#555555] mt-3 tracking-wide">{highlight}</p>
+        <p className="text-[10px] font-mono text-[#777777] mt-3 tracking-wide">{highlight}</p>
       )}
     </motion.div>
   );

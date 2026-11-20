@@ -8,6 +8,7 @@ function GlitchText({ text }: { text: string }) {
   const [display, setDisplay] = useState(text);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const interval = setInterval(() => {
       // 20% chance to trigger a glitch cycle
       if (Math.random() > 0.8) {
@@ -44,6 +45,7 @@ export function HeroSection() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -142,7 +144,7 @@ export function HeroSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <h1 className="font-mono text-7xl md:text-9xl font-light tracking-[-0.06em] text-white mb-6 drop-shadow-md">
-            <GlitchText text={t.hero.title || 'JOIDY'} />
+            <GlitchText key={t.hero.title} text={t.hero.title || 'JOIDY'} />
           </h1>
           <p className="font-mono text-sm md:text-base text-[#aaaaaa] font-light max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
@@ -166,9 +168,11 @@ export function HeroSection() {
           className="mt-16 pointer-events-auto"
         >
           <button
-            onClick={() => document.getElementById('what-is')?.scrollIntoView({ behavior: 'smooth' })}
-            className="flex flex-col items-center gap-1 font-mono text-base text-[#555555] hover:text-white transition-colors mx-auto animate-bounce"
-            aria-label="Scroll down"
+            onClick={() => document.getElementById('what-is')?.scrollIntoView({
+              behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+            })}
+            className="flex flex-col items-center gap-1 font-mono text-base text-[#777777] hover:text-white transition-colors mx-auto motion-safe:animate-bounce"
+            aria-label={t.hero.scrollDown}
           >
             <span className="inline-block rotate-90 tracking-tighter opacity-80">&gt;&gt;</span>
           </button>

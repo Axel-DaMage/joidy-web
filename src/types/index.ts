@@ -4,6 +4,7 @@ export interface Dict {
   hero: {
     title: string;
     subtitle: string;
+    scrollDown: string;
   };
   whatIs: {
     title: string;
@@ -54,6 +55,18 @@ export interface Dict {
     copy: string;
     copied: string;
   };
+  notFound: {
+    title: string;
+    description: string;
+    backHome: string;
+    browseDocs: string;
+  };
+  error: {
+    title: string;
+    description: string;
+    retry: string;
+    backHome: string;
+  };
   footer: {
     tagline: string;
     nav: string;
@@ -74,5 +87,9 @@ export interface Dict {
   header: {
     nav: string[];
     docs: string;
+    menu: string;
+  };
+  a11y: {
+    skipToContent: string;
   };
 }

@@ -60,10 +60,10 @@ export function ProblemSection() {
       <div className="w-full flex flex-col md:flex-row gap-4 max-w-4xl mt-8">
         <ProblemPanel side="before" items={t.problem.before} color="red" />
         <div className="hidden md:flex items-center">
-          <div className="font-mono text-xs text-[#555555] tracking-wider rotate-90">vs</div>
+          <div className="font-mono text-xs text-[#777777] tracking-wider rotate-90">vs</div>
         </div>
         <div className="flex md:hidden items-center justify-center gap-2 py-2">
-          <span className="font-mono text-xs text-[#555555] tracking-wider">───── vs ─────</span>
+          <span className="font-mono text-xs text-[#777777] tracking-wider">───── vs ─────</span>
         </div>
         <ProblemPanel side="after" items={t.problem.after} color="green" />
       </div>
