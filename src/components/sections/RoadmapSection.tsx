@@ -13,11 +13,10 @@ type GitHubItem = {
   state: 'open' | 'closed';
   html_url: string;
   pull_request?: object;
-  body: string | null;
-  user: {
+  user?: {
     login: string;
     avatar_url: string;
-  };
+  } | null;
 };
 
 export function RoadmapSection() {
@@ -89,14 +88,20 @@ export function RoadmapSection() {
                       <span className="font-bold opacity-90">#{item.number}</span>
                       <span className="opacity-50 text-[10px] tracking-widest">[{pseudoHash}]</span>
                     </div>
-                    <Image
-                      src={item.user.avatar_url}
-                      alt={item.user.login}
-                      width={24}
-                      height={24}
-                      className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
-                      title={item.user.login}
-                    />
+                    {item.user?.avatar_url ? (
+                      <Image
+                        src={item.user.avatar_url}
+                        alt={item.user.login}
+                        width={24}
+                        height={24}
+                        className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
+                        title={item.user.login}
+                      />
+                    ) : (
+                      <span className={`w-6 h-6 rounded-sm border ${borderColor} flex items-center justify-center font-mono text-[10px] text-[#555555]`}>
+                        ?
+                      </span>
+                    )}
                   </div>
 
                   {/* Title */}
