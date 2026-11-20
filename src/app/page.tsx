@@ -1,5 +1,3 @@
-'use client';
-
 import { Header } from '@/components/Header';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { WhatIsSection } from '@/components/sections/WhatIsSection';
@@ -13,6 +11,7 @@ import { RoadmapSection } from '@/components/sections/RoadmapSection';
 import { FaqSection } from '@/components/sections/FaqSection';
 import { CtaSection } from '@/components/sections/CtaSection';
 import { Footer } from '@/components/Footer';
+import { FooterVersion } from '@/components/FooterVersion';
 
 export default function Home() {
   return (
@@ -31,7 +30,7 @@ export default function Home() {
         <FaqSection />
         <CtaSection />
       </main>
-      <Footer />
+      <Footer version={<FooterVersion />} />
     </>
   );
 }
