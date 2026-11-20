@@ -5,18 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-
-const DOCS_INDEX = [
-  { slug: 'getting-started', title: 'Getting Started' },
-  { slug: 'installation', title: 'Installation' },
-  { slug: 'configuration', title: 'Configuration' },
-  { slug: 'architecture', title: 'Architecture' },
-  { slug: 'features', title: 'Features' },
-  { slug: 'integrations', title: 'Integrations' },
-  { slug: 'api-reference', title: 'API Reference' },
-  { slug: 'operations', title: 'Operations' },
-  { slug: 'security', title: 'Security' },
-];
+import { DOCS_INDEX } from '@/lib/docs';
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

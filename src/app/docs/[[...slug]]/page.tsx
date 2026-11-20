@@ -5,24 +5,13 @@ import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
 import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { DOCS_INDEX } from '@/lib/docs';
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 
 interface DocPageProps {
   params: Promise<{ slug?: string[] }>;
 }
-
-const DOCS_INDEX = [
-  { slug: 'getting-started', title: 'Getting Started', description: 'Quick start guide to run Joidy in minutes' },
-  { slug: 'installation', title: 'Installation', description: 'Docker, curl, PowerShell, Homebrew, AUR, and the joidy CLI' },
-  { slug: 'configuration', title: 'Configuration', description: 'Environment variables and configuration reference' },
-  { slug: 'architecture', title: 'Architecture', description: 'System architecture, data flow, and component overview' },
-  { slug: 'features', title: 'Features', description: 'Gamification, goals, mood, Pomodoro, streaks, and PWA' },
-  { slug: 'integrations', title: 'Integrations', description: 'GitHub, Google Calendar, Gmail, Telegram, Obsidian, and more' },
-  { slug: 'api-reference', title: 'API Reference', description: 'Complete REST API documentation' },
-  { slug: 'operations', title: 'Operations', description: 'joidy CLI, backups, monitoring, and power management' },
-  { slug: 'security', title: 'Security', description: 'Authentication model, hardening, and disclosure' },
-];
 
 async function getDocContent(slug: string) {
   const filePath = path.join(DOCS_DIR, `${slug}.mdx`);
@@ -49,8 +38,9 @@ export async function generateMetadata({ params }: DocPageProps) {
   
   if (slugArray.length === 0) {
     return {
-      title: 'Documentation - Joidy',
+      title: { absolute: 'Documentation - Joidy Docs' },
       description: 'Complete guide to installing, configuring, and using Joidy.',
+      alternates: { canonical: '/docs' },
     };
   }
   
@@ -58,12 +48,13 @@ export async function generateMetadata({ params }: DocPageProps) {
   const doc = await getDocContent(slug);
   
   if (!doc) {
-    return { title: 'Not Found - Joidy Docs' };
+    return { title: { absolute: 'Not Found - Joidy Docs' } };
   }
   
   return {
-    title: `${doc.frontmatter.title} - Joidy Docs`,
+    title: { absolute: `${doc.frontmatter.title} - Joidy Docs` },
     description: doc.frontmatter.description,
+    alternates: { canonical: `/docs/${slug}` },
   };
 }
 
