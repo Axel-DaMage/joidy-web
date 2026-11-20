@@ -33,9 +33,12 @@ export async function GET() {
       return NextResponse.json({ version: LATEST_VERSION });
     }
 
-    throw new Error(`GitHub API error: ${res.status}`);
+    // Graceful degradation: the footer falls back to the same constant,
+    // so report 200 rather than a misleading 500 with a valid payload.
+    console.error(`GitHub API error: ${res.status}`);
+    return NextResponse.json({ version: LATEST_VERSION });
   } catch (error) {
     console.error('Error fetching GitHub release:', error);
-    return NextResponse.json({ version: LATEST_VERSION }, { status: 500 });
+    return NextResponse.json({ version: LATEST_VERSION });
   }
 }
