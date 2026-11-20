@@ -16,6 +16,8 @@ const DOCS_INDEX = [
   { slug: 'api-reference', title: 'API Reference' },
   { slug: 'operations', title: 'Operations' },
   { slug: 'security', title: 'Security' },
+  { slug: 'troubleshooting', title: 'Troubleshooting' },
+  { slug: 'faq', title: 'FAQ' },
 ];
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
@@ -30,9 +32,11 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <div className="flex flex-col md:flex-row gap-8 md:gap-12 relative min-h-[calc(100vh-14rem)]">
           {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center justify-between border-b border-[#1a1a1a] pb-4 mb-4">
-            <span className="font-mono text-xs tracking-wider text-[#555555]">DOCUMENTATION MENU</span>
+            <span className="font-mono text-xs tracking-wider text-[#777777]">DOCUMENTATION MENU</span>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="docs-nav"
               className="font-mono text-xs tracking-wider text-white border border-[#333333] hover:border-white px-3 py-1.5 transition-all"
             >
               {mobileMenuOpen ? 'CLOSE' : 'MENU'}
@@ -40,7 +44,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </div>
 
           {/* Sidebar */}
-          <aside className={`
+          <aside id="docs-nav" className={`
             ${mobileMenuOpen ? 'block' : 'hidden'} 
             md:block w-full md:w-64 flex-shrink-0 
             md:sticky md:top-24 md:h-[calc(100vh-8rem)] 
@@ -56,7 +60,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                   ← Docs Overview
                 </Link>
                 
-                <h3 className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-4">
+                <h3 className="font-mono text-[10px] tracking-widest text-[#777777] uppercase mb-4">
                   Guides
                 </h3>
                 <ul className="space-y-3">
@@ -88,7 +92,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0 pb-16">
+          <main id="main-content" className="flex-1 min-w-0 pb-16">
             {children}
           </main>
         </div>

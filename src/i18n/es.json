@@ -1,7 +1,8 @@
 {
   "hero": {
     "title": "JOIDY",
-    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas."
+    "subtitle": "Privado. Auto-hospedado. Tu conocimiento, tus reglas.",
+    "scrollDown": "Desplazarse hacia abajo"
   },
   "whatIs": {
     "title": "¿Qué es Joidy?",
@@ -61,6 +62,32 @@
   "architecture": {
     "title": "Arquitectura"
   },
+  "demo": {
+    "title": "Míralo en Acción",
+    "description": "Un comando para instalar, uno para lanzar. Joidy corre como una app web auto-hospedada en tu propio hardware — así se ve de verdad.",
+    "terminalCaption": "joidy — el CLI que orquesta todo el stack",
+    "appCaption": "localhost:3000 — el dashboard web",
+    "app": {
+      "nav": ["Dashboard", "Notas", "Metas", "Grafo", "Skills", "Rachas", "Chat IA", "Calendario"],
+      "stats": [
+        { "label": "Nivel", "value": "12" },
+        { "label": "XP", "value": "4,380" },
+        { "label": "Planta", "value": "joven" },
+        { "label": "Días de racha", "value": "21" }
+      ],
+      "notesTitle": "Notas recientes",
+      "notes": [
+        "Rituales async para equipos remotos",
+        "Tuning de índices en pgvector",
+        "Notas del libro: Thinking in Systems"
+      ],
+      "goalsTitle": "Metas activas",
+      "goals": [
+        { "name": "Lanzar joidy v1.1", "progress": "72%" },
+        { "name": "Leer 20 páginas al día", "progress": "45%" }
+      ]
+    }
+  },
   "audience": {
     "title": "¿Para Quién es?",
     "items": [
@@ -99,6 +126,18 @@
     "copy": "Copiar",
     "copied": "¡Copiado!"
   },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o fue movida.",
+    "backHome": "Volver al inicio",
+    "browseDocs": "Ver documentación"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Puedes intentarlo de nuevo o volver al inicio.",
+    "retry": "Reintentar",
+    "backHome": "Volver al inicio"
+  },
   "footer": {
     "tagline": "Un sistema de progresión disciplinario. Privado, open-source y alojado en tu propia máquina.",
     "nav": "Navegación",
@@ -118,6 +157,10 @@
   },
   "header": {
     "nav": ["Features", "Arquitectura", "Roadmap", "FAQ", "Privacidad"],
-    "docs": "Docs"
+    "docs": "Docs",
+    "menu": "Menú"
+  },
+  "a11y": {
+    "skipToContent": "Saltar al contenido"
   }
 }

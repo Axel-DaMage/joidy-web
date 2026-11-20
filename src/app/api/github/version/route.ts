@@ -50,7 +50,10 @@ export async function GET() {
       return versionResponse(LATEST_VERSION);
     }
 
-    throw new Error(`GitHub API error: ${res.status}`);
+    // Graceful degradation: the footer falls back to the same constant,
+    // so report 200 rather than a misleading 500 with a valid payload.
+    console.error(`GitHub API error: ${res.status}`);
+    return NextResponse.json({ version: LATEST_VERSION });
   } catch (error) {
     console.error('Error fetching GitHub release:', error);
     outageUntil = Date.now() + OUTAGE_TTL_MS;
