@@ -39,6 +39,8 @@ Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la 
 Este proyecto incluye una API Serverless interna configurada para obtener datos en tiempo real de GitHub protegiendo los límites de tarifa (rate-limit) mediante caché (ISR):
 - `/api/github/version`: Obtiene el último *release* de Joidy desde GitHub y lo almacena en caché durante 24 horas.
 
+Opcionalmente puedes definir `GITHUB_TOKEN` (ver `.env.example`) para autenticar las llamadas a la API de GitHub y elevar el límite de peticiones por encima de las 60 req/h no autenticadas.
+
 ## Licencia
 
 Este sitio web es de código abierto. Puedes consultar la licencia oficial del ecosistema Joidy en el [repositorio principal](https://github.com/Axel-DaMage/joidy).
