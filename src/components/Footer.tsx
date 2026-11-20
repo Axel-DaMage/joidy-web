@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
 import { useEffect, useState } from 'react';
@@ -54,12 +55,12 @@ export function Footer() {
             <ul className="space-y-2">
               {footerLinks.navigation.map((link) => (
                 <li key={link.label}>
-                  <a
+                  <Link
                     href={link.href}
                     className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -72,14 +73,23 @@ export function Footer() {
             <ul className="space-y-2">
               {footerLinks.connect.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
-                    target={link.external ? '_blank' : undefined}
-                    rel={link.external ? 'noopener noreferrer' : undefined}
-                    className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </a>
+                  {link.external ? (
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <Link
+                      href={link.href}
+                      className="font-mono text-xs text-[#777777] hover:text-white transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
