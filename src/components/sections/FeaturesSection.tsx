@@ -20,7 +20,7 @@ const hoverColors = [
   'group-hover:text-yellow-400',
 ];
 
-function FeatureCard({ title, desc, highlight, index, total }: { title: string; desc: string; highlight?: string; index: number; total: number }) {
+function FeatureCard({ title, desc, index, total }: { title: string; desc: string; index: number; total: number }) {
   const Icon = featureIcons[index];
   const colorClass = hoverColors[index % hoverColors.length];
 
@@ -51,7 +51,7 @@ export function FeaturesSection() {
     <Section id="features" title={t.features.title}>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full max-w-5xl">
         {t.features.items.map((f, i) => (
-          <FeatureCard key={f.title} title={f.title} desc={f.desc} highlight={f.highlight} index={i} total={t.features.items.length} />
+          <FeatureCard key={f.title} title={f.title} desc={f.desc} index={i} total={t.features.items.length} />
         ))}
       </div>
     </Section>
