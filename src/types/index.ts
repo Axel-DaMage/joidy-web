@@ -54,6 +54,18 @@ export interface Dict {
     copy: string;
     copied: string;
   };
+  notFound: {
+    title: string;
+    description: string;
+    backHome: string;
+    browseDocs: string;
+  };
+  error: {
+    title: string;
+    description: string;
+    retry: string;
+    backHome: string;
+  };
   footer: {
     tagline: string;
     nav: string;

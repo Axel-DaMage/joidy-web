@@ -99,6 +99,18 @@
     "copy": "Copy",
     "copied": "Copied!"
   },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home",
+    "browseDocs": "Browse documentation"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. You can try again or head back home.",
+    "retry": "Try again",
+    "backHome": "Back to home"
+  },
   "footer": {
     "tagline": "A disciplined progression system. Private, open-source, and hosted on your own machine.",
     "nav": "Navigation",
