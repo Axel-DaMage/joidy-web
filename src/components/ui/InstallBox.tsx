@@ -78,7 +78,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
           onClick={() => copyToClipboard(activeTab.command)}
           className="font-mono text-[10px] text-[#555555] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
         >
-          {copied ? t.cta.copied : t.cta.copy}
+          {copied ? t.clipboard.copied : t.clipboard.copy}
         </button>
       </div>
     </div>

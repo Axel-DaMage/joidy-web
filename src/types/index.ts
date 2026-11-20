@@ -12,9 +12,8 @@ export interface Dict {
   };
   problem: {
     title: string;
-    tagline: string;
-    before: string[];
-    after: string[];
+    before: { title?: string; text: string }[];
+    after: { title?: string; text: string }[];
   };
   privacy: {
     title: string;
@@ -34,7 +33,6 @@ export interface Dict {
   audience: {
     title: string;
     items: { title: string; desc: string }[];
-    message: string;
   };
   roadmap: {
     title: string;
@@ -46,11 +44,10 @@ export interface Dict {
     items: { q: string; a: string }[];
   };
   donate: {
-    title: string;
     message: string;
     button: string;
   };
-  cta: {
+  clipboard: {
     copy: string;
     copied: string;
   };
@@ -72,7 +69,7 @@ export interface Dict {
     };
   };
   header: {
-    nav: string[];
+    nav: { id: string; label: string }[];
     docs: string;
   };
 }
