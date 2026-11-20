@@ -210,6 +210,8 @@ export default async function DocPage({ params }: DocPageProps) {
           </p>
         )}
       </header>
+      {/* next-mdx-remote v6: blockJS/blockDangerousJS default to true — {expressions}
+          in MDX prose are silently stripped. See the docs-authoring note in AGENTS.md. */}
       <MDXRemote source={doc.content} components={mdxComponents} />
     </article>
   );
