@@ -46,11 +46,11 @@ export function RoadmapSection() {
     <Section id="roadmap" title={t.roadmap.title || 'Roadmap'}>
       <div className="w-full max-w-6xl mx-auto">
         {loading ? (
-          <div className="font-mono text-sm text-[#555555] text-center py-20 animate-pulse">
+          <div className="font-mono text-sm text-[#777777] text-center py-20 animate-pulse">
             {t.roadmap.loading}
           </div>
         ) : items.length === 0 ? (
-          <div className="font-mono text-sm text-[#555555] text-center py-20">
+          <div className="font-mono text-sm text-[#777777] text-center py-20">
             {t.roadmap.empty}
           </div>
         ) : (
@@ -81,7 +81,7 @@ export function RoadmapSection() {
                 >
                   {/* Header: ID, Hash, Avatar */}
                   <div className="flex items-start justify-between mb-3 gap-2">
-                    <div className={`font-mono text-xs flex items-center gap-2 ${isOpen ? baseColor : 'text-[#555555]'}`}>
+                    <div className={`font-mono text-xs flex items-center gap-2 ${isOpen ? baseColor : 'text-[#777777]'}`}>
                       <span className="font-bold opacity-90">#{item.number}</span>
                       <span className="opacity-50 text-[10px] tracking-widest">[{pseudoHash}]</span>
                     </div>
@@ -96,7 +96,7 @@ export function RoadmapSection() {
                   </div>
 
                   {/* Title */}
-                  <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#666666] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
+                  <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#777777] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
                     {item.title}
                   </div>
                 </motion.a>

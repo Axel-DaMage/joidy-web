@@ -59,13 +59,13 @@ export function Header() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
           aria-expanded={menuOpen}
-          className="md:hidden font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          className="md:hidden font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {menuOpen ? '✕' : '≡'}
         </button>
         <button
           onClick={() => setLang(lang === 'es' ? 'en' : 'es')}
-          className="font-mono text-xs tracking-wider text-[#555555] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
+          className="font-mono text-xs tracking-wider text-[#777777] hover:text-white transition-colors w-8 h-8 flex items-center justify-center border border-[#1a1a1a] rounded"
         >
           {lang === 'es' ? 'EN' : 'ES'}
         </button>

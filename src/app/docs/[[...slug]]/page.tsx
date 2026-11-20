@@ -157,7 +157,7 @@ export default async function DocPage({ params }: DocPageProps) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-[#1a1a1a]">
-          <h3 className="font-mono text-sm tracking-wider text-[#555555] uppercase mb-4">
+          <h3 className="font-mono text-sm tracking-wider text-[#777777] uppercase mb-4">
             Resources
           </h3>
           <div className="flex flex-wrap gap-3">

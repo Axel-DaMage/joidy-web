@@ -30,7 +30,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <div className="flex flex-col md:flex-row gap-8 md:gap-12 relative min-h-[calc(100vh-14rem)]">
           {/* Mobile Navigation Toggle */}
           <div className="md:hidden flex items-center justify-between border-b border-[#1a1a1a] pb-4 mb-4">
-            <span className="font-mono text-xs tracking-wider text-[#555555]">DOCUMENTATION MENU</span>
+            <span className="font-mono text-xs tracking-wider text-[#777777]">DOCUMENTATION MENU</span>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="font-mono text-xs tracking-wider text-white border border-[#333333] hover:border-white px-3 py-1.5 transition-all"
@@ -56,7 +56,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                   ← Docs Overview
                 </Link>
                 
-                <h3 className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-4">
+                <h3 className="font-mono text-[10px] tracking-widest text-[#777777] uppercase mb-4">
                   Guides
                 </h3>
                 <ul className="space-y-3">

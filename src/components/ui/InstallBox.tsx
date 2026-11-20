@@ -60,7 +60,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
             className={`px-4 py-2.5 font-mono text-[10px] uppercase tracking-widest transition-colors whitespace-nowrap shrink-0 ${
               activeTab.id === method.id
                 ? "text-[#00FFFF] bg-white/5 border-b border-[#00FFFF]"
-                : "text-[#555555] hover:text-[#aaaaaa] hover:bg-white/5 border-b border-transparent"
+                : "text-[#777777] hover:text-[#aaaaaa] hover:bg-white/5 border-b border-transparent"
             }`}
           >
             {method.label}
@@ -76,7 +76,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
         </span>
         <button
           onClick={() => copyToClipboard(activeTab.command)}
-          className="font-mono text-[10px] text-[#555555] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
+          className="font-mono text-[10px] text-[#777777] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
         >
           {copied ? t.cta.copied : t.cta.copy}
         </button>

@@ -20,13 +20,13 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
         className="w-full flex items-center justify-between py-4 text-left font-mono text-sm text-[#888888] hover:text-white transition-colors"
       >
         <span className="flex items-center gap-3">
-          <span className="text-[#555555] text-xs">[?]</span>
+          <span className="text-[#777777] text-xs">[?]</span>
           {q}
         </span>
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="text-[#555555] text-xs"
+          className="text-[#777777] text-xs"
         >
           ▼
         </motion.span>
@@ -40,7 +40,7 @@ function AccordionItem({ q, a, index }: { q: string; a: string; index: number })
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <p className="pb-4 text-sm text-[#666666] leading-relaxed pl-7">{a}</p>
+            <p className="pb-4 text-sm text-[#888888] leading-relaxed pl-7">{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
