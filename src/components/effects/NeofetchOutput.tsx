@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 
 const catAscii = [
   "       .^-^.",
@@ -22,9 +22,10 @@ const lines = [
 
 export function NeofetchOutput() {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6 }}
       className="font-mono text-xs md:text-sm bg-black border border-[#1a1a1a] p-6 md:p-8 max-w-3xl mx-auto rounded-none shadow-xl text-white overflow-hidden"
     >
@@ -85,6 +86,6 @@ export function NeofetchOutput() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

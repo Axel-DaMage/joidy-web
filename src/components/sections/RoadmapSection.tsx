@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { Section } from '@/components/ui/Section';
 
@@ -71,7 +71,7 @@ export function RoadmapSection() {
               const pseudoHash = item.id.toString(16).slice(0, 7).padStart(7, '0');
               
               return (
-                <motion.a
+                <m.a
                   href={item.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -108,7 +108,7 @@ export function RoadmapSection() {
                   <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#777777] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
                     {item.title}
                   </div>
-                </motion.a>
+                </m.a>
               );
             })}
           </div>

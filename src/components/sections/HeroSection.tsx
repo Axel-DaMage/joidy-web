@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useI18n } from '@/i18n';
 import { InstallBox } from '@/components/ui/InstallBox';
 
@@ -161,7 +161,7 @@ export function HeroSection() {
       <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 z-0 opacity-80" />
       
       <div className="relative z-10 flex flex-col items-center text-center pointer-events-none w-full px-4">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -172,19 +172,19 @@ export function HeroSection() {
           <p className="font-mono text-sm md:text-base text-[#aaaaaa] font-light max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Unified Install Box - subtle in the hero */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
           className="mt-10 pointer-events-auto w-full max-w-lg"
         >
           <InstallBox className="shadow-2xl" />
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
@@ -199,7 +199,7 @@ export function HeroSection() {
           >
             <span className="inline-block rotate-90 tracking-tighter opacity-80">&gt;&gt;</span>
           </button>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );
