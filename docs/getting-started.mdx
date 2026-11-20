@@ -1,130 +1,60 @@
 ---
 title: Getting Started
-description: Get Joidy up and running in minutes with Docker Compose.
+description: Get Joidy up and running in minutes.
 ---
 
 # Getting Started
 
-Welcome to Joidy! This guide will help you get up and running quickly.
-
-## What You'll Need
+## Requirements
 
 - Docker & Docker Compose
 - 4GB+ RAM
-- (Optional) An AI API key (Gemini, OpenAI, etc.)
+- (Optional) an AI API key — Gemini is the primary provider; Ollama works fully local with no cloud key
 
 ## 1. Install
 
-Choose one method:
+**One-liner (Linux/macOS):**
 
-**Docker (easiest):**
+```bash
+curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/development/scripts/install.sh | bash
+```
+
+**From source:**
+
 ```bash
 git clone https://github.com/Axel-DaMage/joidy.git
 cd joidy
-cp .env.example .env
-docker compose up -d
-```
-
-**One-liner (Linux/macOS):**
-```bash
-curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
-```
-
-**Windows (PowerShell):**
-```powershell
-irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex
-```
-
-**Homebrew:**
-```bash
-brew tap Axel-DaMage/homebrew-tap
-brew install joidy
 joidy up
 ```
 
-**AUR:**
-```bash
-yay -S joidy
-```
+`joidy up` generates all secrets on first run (`SECRET_KEY`, `INTERNAL_SECRET`, `INTERNAL_API_TOKEN`, `POSTGRES_PASSWORD`, `GRAFANA_ADMIN_PASSWORD`) and starts the full stack: frontend, API, AI service, worker, PostgreSQL, and the backup sidecar.
 
 ## 2. Configure
 
-Edit `.env` with your settings:
+The only variable you **must** set in `.env` is your Obsidian vault path:
 
 ```bash
-vim .env
+OBSIDIAN_VAULT_PATH=/path/to/your/vault
 ```
 
-At minimum, set `SECRET_KEY` (`openssl rand -hex 32`), `OBSIDIAN_VAULT_PATH`,
-and `GEMINI_API_KEY` (or another AI provider key — Ollama needs none). If you
-plan to run with `APP_ENV=production`, also set `AUTH_PASSWORD`.
+Add `GEMINI_API_KEY` (or any other provider key) to enable AI features. Ollama users need no key — just `OLLAMA_BASE_URL`.
 
-## 3. Verify
+## 3. First run
 
-Open http://localhost:3000 — you should see the Joidy dashboard.
+Open `http://localhost:3000`. The setup wizard (`POST /config/setup`) creates your account — it is loopback-only and enforces a password policy. Frontend binds `127.0.0.1` by default; expose other interfaces via `BIND_ADDR` if needed.
 
-Check service health:
+- UI: `http://localhost:3000`
+- API docs (Swagger): `http://localhost:8000/docs`
+
+## Useful commands
+
 ```bash
-docker compose ps
-curl http://localhost:8000/health
+joidy status      # stack health
+joidy logs        # tail service logs
+joidy backup      # manual pg_dump -Fc backup
+joidy down        # stop the stack
 ```
 
-## 4. Configure Obsidian (Optional)
+If `3000`/`8000` are taken, `joidy up` automatically falls back to the next port (up to 5 attempts) and writes the choice back to `.env`.
 
-Add your vault path to `.env` (`~` is expanded to your home directory):
-```bash
-OBSIDIAN_VAULT_PATH=~/Documents/obsidian/my-vault
-```
-
-Restart the worker:
-```bash
-docker compose restart worker
-```
-
-## 5. Enable AI Features (Optional)
-
-Add API keys to `.env`:
-```bash
-GEMINI_API_KEY=your-key
-# or
-OPENAI_API_KEY=your-key
-```
-
-## 6. Create Your First Note
-
-1. Open http://localhost:3000
-2. Click "New Note" or create a `.md` file in your Obsidian vault
-3. Watch your plant grow and XP increase!
-
-## Next Steps
-
-- [Configuration](/docs/configuration) - Full configuration reference
-- [Architecture](/docs/architecture) - How it works under the hood
-- [API Reference](/docs/api-reference) - Integrate with Joidy
-- [GitHub Issues](https://github.com/Axel-DaMage/joidy/issues) - Report bugs
-- [Discussions](https://github.com/Axel-DaMage/joidy/discussions) - Ask questions
-
-## Troubleshooting
-
-### Services Won't Start
-```bash
-# Check logs
-docker compose logs -f
-```
-
-**Port conflicts:** `joidy up` automatically tries subsequent ports. With plain
-`docker compose`, override `FRONTEND_PORT`, `API_PORT`, `AI_SERVICE_PORT`, or
-`WORKER_PORT` in `.env`.
-
-### Permission Issues
-```bash
-# Fix data directory permissions
-sudo chown -R 1000:1000 ./data
-```
-
-### Database Errors
-```bash
-# Reset database (loses all data!)
-docker compose down -v
-docker compose up -d
-```
+Next: [Configuration](/docs/configuration) for the full variable reference, or [Features](/docs/features) to see what you just installed.

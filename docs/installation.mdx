@@ -1,102 +1,69 @@
 ---
 title: Installation
-description: Install Joidy using Docker, curl, PowerShell, Homebrew, or AUR.
+description: All supported ways to install Joidy — installer script, PowerShell/WSL2, Homebrew, AUR, and manual.
 ---
 
 # Installation
 
-## Quick Start (Docker)
+## One-liner (Linux / macOS)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/development/scripts/install.sh | bash
+```
+
+Installs the `joidy` CLI, clones the stack, generates secrets, and starts services.
+
+## Windows
+
+Native PowerShell installer (uses Docker Desktop):
+
+```powershell
+irm https://raw.githubusercontent.com/Axel-DaMage/joidy/development/scripts/install.ps1 | iex
+```
+
+WSL2 is fully supported — see the Windows section in the upstream troubleshooting guide for common issues (line endings, Docker integration, paths).
+
+## Package managers
+
+```bash
+# Homebrew
+brew tap Axel-DaMage/homebrew-tap && brew install joidy
+
+# Arch (AUR)
+yay -S joidy
+```
+
+System installs keep config in `~/.config/joidy/.env` and data under `~/.local/share/joidy` (AUR). Uninstall removes `~/.local/bin/joidy` plus the config dir — your `data/` (database, backups) is preserved unless you delete it.
+
+## Manual / from source
 
 ```bash
 git clone https://github.com/Axel-DaMage/joidy.git
 cd joidy
 cp .env.example .env
-docker compose up -d
+# set OBSIDIAN_VAULT_PATH at minimum
+joidy up          # or: docker compose up -d
 ```
 
-Images are pulled automatically from Docker Hub (`d4mag3/joidy-*:latest`).
-Requires Docker + Docker Compose.
-
-## One-Line Install (Linux / macOS)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.sh | bash
-```
-
-Clones the repo, copies `.env`, and installs the **`joidy` CLI** into
-`~/.local/bin` so you can manage the stack from anywhere. Edit `.env` with your
-credentials, then:
-
-```bash
-joidy up
-```
-
-## Windows (PowerShell)
-
-```powershell
-irm https://raw.githubusercontent.com/Axel-DaMage/joidy/main/scripts/install.ps1 | iex
-```
-
-## Homebrew
-
-```bash
-brew tap Axel-DaMage/homebrew-tap
-brew install joidy
-joidy up
-```
-
-## AUR (Arch Linux)
-
-```bash
-yay -S joidy
-# or
-paru -S joidy
-```
-
-## The `joidy` CLI
-
-Installed by the curl script, Homebrew, and the AUR package:
-
-```bash
-joidy up        # Start the stack (auto-detects free ports if a default is taken)
-joidy down      # Stop all services
-```
-
-On system installs (where the install dir is read-only), the CLI keeps your
-environment and data outside the install tree:
-
-- Config: `~/.config/joidy/.env`
-- Data: `~/.local/share/joidy/data`
-
-## Configuration
-
-Edit `.env` before starting — at minimum set `SECRET_KEY`, `GEMINI_API_KEY`
-(or another AI provider), and `OBSIDIAN_VAULT_PATH`. See
-[Configuration](/docs/configuration) for the full reference.
+First boot takes ~2 min: images build, PostgreSQL initializes, and Alembic migrations run (`make migrate` to apply manually).
 
 ## Updating
 
 ```bash
-docker compose pull
-docker compose up -d
+joidy pull        # pull latest images + git pull
+joidy restart     # rebuild required after pulling source changes
 ```
 
-Or with Homebrew: `brew upgrade joidy && joidy up`
+## Port conflicts
 
-If you run from a **git clone** (source), rebuild the images after every pull —
-`docker compose up` alone keeps serving the previously built images:
+`joidy up` tries the configured `FRONTEND_PORT`/`API_PORT` and falls back automatically (up to 5 subsequent ports), persisting the winner to `.env`. To pin ports yourself, set them in `.env`.
 
-```bash
-docker compose down
-docker build --no-cache --pull -t d4mag3/joidy-frontend:latest --target production ./frontend
-docker build --no-cache --pull -t d4mag3/joidy-api:latest        ./api
-docker build --no-cache --pull -t d4mag3/joidy-ai-service:latest ./ai-service
-docker build --no-cache --pull -t d4mag3/joidy-worker:latest     ./worker
-docker compose up -d
-```
+## Data locations
 
-## Uninstall
+| Path | Contents |
+|------|----------|
+| `data/backups/` | Compressed `pg_dump -Fc` dumps (0600) |
+| `postgres_data` (volume) | PostgreSQL 16 + pgvector |
+| `OBSIDIAN_VAULT_PATH` | Your vault, mounted read-path into the worker |
 
-```bash
-docker compose down -v  # Removes containers AND the postgres_data volume — all data!
-```
+Next: [Operations](/docs/operations) for CLI, backups, and monitoring.

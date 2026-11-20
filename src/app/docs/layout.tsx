@@ -11,7 +11,11 @@ const DOCS_INDEX = [
   { slug: 'installation', title: 'Installation' },
   { slug: 'configuration', title: 'Configuration' },
   { slug: 'architecture', title: 'Architecture' },
+  { slug: 'features', title: 'Features' },
+  { slug: 'integrations', title: 'Integrations' },
   { slug: 'api-reference', title: 'API Reference' },
+  { slug: 'operations', title: 'Operations' },
+  { slug: 'security', title: 'Security' },
 ];
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {

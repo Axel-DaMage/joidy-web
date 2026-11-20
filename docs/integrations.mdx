@@ -1,0 +1,47 @@
+---
+title: Integrations
+description: GitHub, Google Calendar, Gmail via n8n, Telegram, Obsidian, and OAuth scaffolds.
+---
+
+# Integrations
+
+## Google Calendar — live
+
+- Incremental sync via `syncToken`; an HTTP 410 triggers a full re-sync automatically
+- Events cached in the local Postgres tables; `/calendar` frontend view
+- Periodic pull by the worker every `CALENDAR_SYNC_INTERVAL` seconds (default 900)
+- API: `GET /integrations/google/calendar/status`, `POST .../sync`, `GET|POST|PUT|DELETE .../calendar/events`
+- Calendar tasks award XP on completion (+5 timed, +3 untimed)
+
+Google Tasks has OAuth/backend scaffolding only.
+
+## Gmail — via n8n
+
+- Unified inbox at `/emails` (frontend + API)
+- Synced by the bundled n8n workflow `n8n/workflows/gmail-inbox-sync.json`
+- n8n calls `POST /emails/` with `Bearer <INTERNAL_API_TOKEN>`; rows upsert keyed by `account` + `gmail_id`
+- Start n8n with `make n8n` (port `N8N_PORT`, default 5678)
+
+## Telegram bot — live
+
+- Quick capture: `TELEGRAM_BOT_TOKEN` + webhook (`POST /telegram/webhook`, secret-validated, no JWT)
+- Commands: `/note`, `/goal`, `/checkin`, `/ask`, `/status`, `/help`
+- Restrict to your account with the allowed-user id in `TELEGRAM_*` config; events stored in `telegram_events`
+
+## Obsidian — bidirectional
+
+- Filesystem watcher in the worker imports changes from `OBSIDIAN_VAULT_PATH`
+- `POST /obsidian/webhook` receives pushes from the vault plugin — authenticate with `OBSIDIAN_WEBHOOK_SECRET` (or JWT)
+- Vault paths are sanitized server-side; `POST /vault/restore-goals` rebuilds goal state from notes
+
+## GitHub — live
+
+OAuth + repository data under `/integrations/github`.
+
+## Spotify & Strava — scaffolded
+
+OAuth flows and backend endpoints exist (`/integrations/spotify`, `/integrations/strava`) but have no full frontend integration yet.
+
+## Web push
+
+`/push` subscription endpoints for PWA notifications — VAPID-signed, with SSRF validation of subscription endpoints.

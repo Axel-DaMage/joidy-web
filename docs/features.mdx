@@ -1,0 +1,66 @@
+---
+title: Features
+description: Gamification, goals, mood tracking, Pomodoro, streaks, and PWA support.
+---
+
+# Features
+
+## Gamification
+
+Joidy awards flat XP per event — no length or backlink multipliers:
+
+| Event | XP |
+|-------|----|
+| `note_created` | +10 |
+| `note_edited` | +5 |
+| `tag_added` | +3 |
+| `tag_accepted_ai` | +4 |
+| `topic_connected` | +8 |
+| `note_imported_obsidian` | +2 |
+| `pomodoro_completed` | +15 |
+| `goal_completed` | +50 |
+| `daily_activity` | +15 |
+| `calendar_task_completed` | +5 |
+| `calendar_task_completed_no_time` | +3 |
+| `day_fully_planned` | +15 |
+| `streak_milestone_*` (7/30/100/365 days) | +100 each |
+
+Values can be overridden per-install via `xp_*` keys in `system_config` (database).
+
+### Your plant
+
+Lifetime XP grows a virtual plant: **0** seed → **300** sprout → **1 200** seedling → **4 000** young → **10 000** mature → **25 000** flowering → **60 000** tree.
+
+### Streaks
+
+One forgiven day per week (grace period). Milestones at 7, 30, 100, and 365 days each award +100 XP. Streaks are per-category via `/personal-streaks`, with check-in and freeze endpoints. Snowball-mode goals keep a persistent "never fails" streak.
+
+### Achievements
+
+Persisted in PostgreSQL and synced with the UI. `POST /achievements/{id}/unlock` is idempotent; the catalog is defined server-side.
+
+## Goals
+
+- Priority + manual sorting (`PATCH /goals/sort`), execution queue
+- Every goal can link a **real note** — the goal's content lives in your vault
+- Archiving, one-off tasks
+- Reset modes: rollover, snowball, daily-reset
+- Auto-suggested icon/emoji on creation
+
+## Mood tracking
+
+`POST /mood/` daily check-in, plus `GET /mood/today`, `/mood/history`, `/mood/stats` — feeds the `/streaks` dashboard.
+
+## Pomodoro
+
+`POST /gamification/pomodoro` — pass `minutes` and an idempotent `pomodoro_id`; a completed session awards **+15 XP**. Multiple clock/timer styles in the UI.
+
+## AI chat
+
+Full assistant at `/ai` backed by `POST /ai/chat` — no dev-mode required (same for `/graph` and `/skills`). Providers: Gemini (primary), OpenAI, Anthropic, Cohere, Ollama, OpenRouter, plus any OpenAI-compatible endpoint.
+
+## PWA
+
+- Installable on mobile/desktop
+- Web-push notifications (VAPID, SSRF-validated endpoints)
+- Offline mode with sync on reconnect — dedicated `/offline` route

@@ -1,45 +1,34 @@
+---
+title: Joidy Documentation
+description: Official documentation for Joidy — a self-hosted, gamified personal knowledge management system.
+---
+
 # Joidy Documentation
 
-Welcome to the Joidy documentation. Joidy is a private, self-hosted PKM system that turns notes into XP, an evolving plant, and a living knowledge graph — on your hardware, under your control.
+Joidy is a self-hosted, gamified PKM system that turns your notes into experience points. Private, open-source (GPL v3), and runs on your own machine.
+
+**Current version:** v1.1.0-beta.7
+
+## Stack
+
+- **Frontend:** SvelteKit 3 + Vite + TypeScript (adapter-node)
+- **API:** FastAPI (Python 3.12)
+- **AI service:** FastAPI — Gemini, OpenAI, Anthropic, Cohere, Ollama, OpenRouter (+ any OpenAI-compatible endpoint)
+- **Database:** PostgreSQL 16 + pgvector (semantic search)
+- **Deployment:** Docker Compose
 
 ## Quick Links
 
-- [Getting Started](/docs/getting-started)
-- [Installation](/docs/installation)
-- [Configuration](/docs/configuration)
-- [Architecture](/docs/architecture)
-- [API Reference](/docs/api-reference)
-- [Contributing](https://github.com/Axel-DaMage/joidy/blob/main/CONTRIBUTING.md)
+- [Getting Started](/docs/getting-started) — run Joidy in minutes
+- [Installation](/docs/installation) — Docker, curl one-liner, PowerShell/WSL2, Homebrew, AUR
+- [Configuration](/docs/configuration) — environment variables reference
+- [Architecture](/docs/architecture) — services, ports, data flow
+- [Features](/docs/features) — gamification, goals, mood, Pomodoro, streaks
+- [Integrations](/docs/integrations) — GitHub, Google Calendar, Gmail, Telegram, Obsidian, Spotify, Strava
+- [API Reference](/docs/api-reference) — all REST endpoints
+- [Operations](/docs/operations) — `joidy` CLI, backups, monitoring, power management
+- [Security](/docs/security) — auth model, hardening, disclosure
 
-## What is Joidy?
+## Source
 
-Joidy is a **Personal Knowledge Management (PKM)** system designed for privacy-conscious users who want full control over their data. It transforms your notes into an interactive experience with:
-
-- **Gamification**: XP, streaks, and an evolving plant that grows with your knowledge
-- **Knowledge Graph**: Automatic connections between notes, tags, and skills
-- **Semantic Search**: Vector search powered by PostgreSQL + pgvector
-- **Local AI**: Optional Ollama integration for fully local AI classification
-- **Obsidian Sync**: Bidirectional sync with your existing Obsidian vault — file watcher plus instant webhook push
-- **Integrations**: GitHub, with Google Calendar/Tasks, Strava, and Spotify scaffolds
-- **Monitoring**: Optional Prometheus + Grafana stack
-
-## Philosophy
-
-> Your knowledge is the most valuable thing you own. It should not live on someone else's server.
-
-Joidy runs entirely on your machine via Docker Compose. No cloud dependency, no tracking, no telemetry.
-
-## Quick Start
-
-```bash
-git clone https://github.com/Axel-DaMage/joidy.git
-cd joidy
-cp .env.example .env
-docker compose up -d
-```
-
-Then open http://localhost:3000
-
-## License
-
-Joidy is licensed under GPL v3. See [LICENSE](https://github.com/Axel-DaMage/joidy/blob/main/LICENSE) for details.
+Repository: [github.com/Axel-DaMage/joidy](https://github.com/Axel-DaMage/joidy) — licensed under [GPL v3](https://github.com/Axel-DaMage/joidy/blob/main/LICENSE).

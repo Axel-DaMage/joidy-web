@@ -1,153 +1,63 @@
 ---
 title: Architecture
-description: System architecture, data flow, and component overview for Joidy.
+description: Services, ports, and data flow in Joidy.
 ---
 
 # Architecture
 
-## System Overview
+Joidy is a four-service Docker Compose application backed by PostgreSQL 16 with pgvector.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        DOCKER COMPOSE                           │
-├─────────────┬─────────────┬─────────────┬───────────────────────┤
-│  Frontend   │    API      │   Worker    │     AI Service        │
-│ (SvelteKit) │  (FastAPI)  │  (asyncio)  │  (Embeddings/RAG)     │
-│  Port 3000  │  Port 8000  │  Port 8001  │  Port 8002            │
-└──────┬──────┴──────┬──────┴──────┬──────┴───────────┬──────────┘
-       │             │             │                  │
-       │             ▼             ▼                  │
-       │      ┌─────────────────────────┐            │
-       └───▶  │  PostgreSQL 16           │ ◀──────────┘
-              │  + pgvector              │
-              └─────────────────────────┘
-                            ▲
-              ┌─────────────┴─────────────┐
-              │ Obsidian Vault (/vault)   │ ◀── worker reads/writes
-              └───────────────────────────┘
+```text
+┌─────────────────────────── Docker Compose network ──────────────────────────┐
+│                                                                             │
+│  ┌───────────┐   ┌──────────┐   ┌─────────────┐   ┌─────────┐  ┌──────────┐ │
+│  │ frontend  │   │   api    │   │  ai-service │   │ worker  │  │ postgres │ │
+│  │ SvelteKit │──▶│  FastAPI │──▶│  FastAPI    │   │ asyncio │  │   16     │ │
+│  │   :3000   │   │  :8000   │   │   :8002     │   │  :8001  │  │  :5432   │ │
+│  └─────┬─────┘   └────┬─────┘   └─────────────┘   └────┬────┘  │ +pgvector│ │
+│        │              │                                │       └─────┬────┘ │
+│        │              └────────────────────────────────┴─────────────┘      │
+└────────┼────────────────────────────────────────────────────────────────────┘
+         │  published to host — BIND_ADDR (default 127.0.0.1)
+   :3000 (ui)   :8000 (api)
 ```
 
-All four services share the same PostgreSQL database via `DATABASE_URL`.
+## Services
 
-## Component Details
+| Service | Stack | Port | Exposure |
+|---------|-------|------|----------|
+| `frontend` | SvelteKit 3 + Vite + TypeScript (adapter-node) | 3000 | Published (`BIND_ADDR`) |
+| `api` | FastAPI, Python 3.12 | 8000 | Published (`BIND_ADDR`) |
+| `ai-service` | FastAPI — 6 providers + OpenAI-compatible | 8002 | **Internal only** |
+| `worker` | Python asyncio | 8001 | **Internal only** |
+| `postgres` | PostgreSQL 16 + pgvector | 5432 | Internal only |
+| `backup` | Sidecar (compose profile, on by default) | — | Internal only |
 
-### Frontend (SvelteKit)
+`ai-service` and `worker` are not reachable from the host — they live on the Compose network. API → ai-service calls authenticate with the `INTERNAL_SECRET` shared secret (`X-Internal-Secret` header); service-to-service API calls use `INTERNAL_API_TOKEN`.
 
-- **SvelteKit + Vite + TypeScript** on port 3000
-- Pages: notes, goals, graph, skills, streaks, AI chat
-- Svelte stores for state (`notes`, `gamification`, `pomodoro`, `graph`, `settings`, `focusMode`, `offlineSync`)
-- PWA with offline mode (`manifest.json`, `/offline` route)
-- Production build via `@sveltejs/adapter-node` (`node build`)
+## Worker tasks
 
-### API (FastAPI)
+The worker runs three asyncio loops:
 
-- **Python 3.12**, async, port 8000
-- ~24 routers: `notes`, `goals`, `skills`, `tags`, `gamification`, `personal-streaks`, `mood`, `planning`, `folders`, `export`, `upload`, `vault`, `sync`, `ai`, `analytics`, `stats`, `metrics`, `config`, `auth`, `push`, `system/power`, `integrations/*`, `websocket`
-- **SQLAlchemy** ORM + **Alembic** migrations (`make migrate`)
-- **JWT** authentication — enforced on all data endpoints (except `/auth/*`, `/config`, `/ws`)
-- Interactive OpenAPI docs at `http://localhost:8000/docs`
+1. **Vault watcher** — watches `OBSIDIAN_VAULT_PATH`, imports/updates notes, feeds the webhook sync.
+2. **Daily writes** — scheduled tasks (backups orchestration helpers, streak maintenance).
+3. **Calendar sync** — incremental Google Calendar sync every `CALENDAR_SYNC_INTERVAL` seconds (default 900) using `syncToken`; a 410 response triggers a full re-sync.
 
-### AI Service (FastAPI)
+## Data flow
 
-- Port 8002, factory pattern over **6 providers**: Gemini, OpenAI, Anthropic, Cohere, Ollama, OpenRouter
-- Endpoints: `/embed`, `/classify`, `/rag`
-- Provider + model selected via `LLM_MODEL=provider:model` (e.g. `gemini:gemini-2.0-flash`)
-- Fully optional — core features work without any AI key
+- Frontend calls the API with a JWT (`Authorization: Bearer`).
+- API persists everything in Postgres; embeddings live in pgvector columns — no separate vector store.
+- AI requests flow API → ai-service → provider (Gemini default, or OpenAI/Anthropic/Cohere/Ollama/OpenRouter/any OpenAI-compatible endpoint).
+- Gmail arrives via an n8n workflow that upserts into `/emails` with `INTERNAL_API_TOKEN`.
+- Obsidian files flow both ways: filesystem watcher imports changes; a webhook endpoint receives pushes from the vault plugin.
 
-### Worker (asyncio)
+## Persistence
 
-- Port 8001, two concurrent tasks:
-  - `watch_vault()` — watches `/vault/*.md` (2s debounce) with crash-recovery event log
-  - `schedule_daily_writes()` — writes `_joidy/` files at midnight
-- Exposes `/metrics` and `/health`
+- `postgres_data` volume — all application data (notes, goals, achievements, embeddings, calendar cache).
+- `data/backups/` — compressed `pg_dump -Fc` dumps, permissions 0600.
+- Alembic manages schema migrations (`make migrate`); migrations run automatically on API start.
 
-### Database (PostgreSQL 16 + pgvector)
+## Security posture
 
-- Runs in the `postgres` container, `postgres_data` volume
-- `pgvector` powers semantic search (embedding columns, KNN queries)
-- Shared by all services via `DATABASE_URL=postgresql://joidy:joidy@postgres:5432/joidy`
-
-## Data Flow
-
-### Note Ingestion (file watcher)
-
-```
-1. File change detected in vault (watchdog, 2s debounce)
-       │
-       ▼
-2. Worker parses markdown (frontmatter + content)
-       │
-       ▼
-3. Worker sends note to API
-       │
-       ▼
-4. API stores note in PostgreSQL
-       │
-       ▼
-5. AI Service generates embedding → pgvector column
-       │
-       ▼
-6. API updates tag co-occurrence graph → awards XP → updates skill tree
-       │
-       ▼
-7. Streaks/goals checked → WebSocket event → frontend updates live
-```
-
-### Note Ingestion (Obsidian webhook — instant sync)
-
-```
-Obsidian plugin → POST /webhook/obsidian?secret=... → API → same pipeline
-```
-
-See the webhook payload format in the [API Reference](/docs/api-reference#obsidian-webhook).
-
-### Semantic Search
-
-```
-Query → AI Service /embed → pgvector KNN → ranked results
-```
-
-## Internal Communication
-
-| From | To | URL |
-|------|----|-----|
-| Frontend | API | `http://localhost:8000` |
-| API | AI Service | `http://ai-service:8002` |
-| API | Worker | `http://worker:8001` |
-| Worker | API | `http://api:8000` |
-| Worker | Vault | reads/writes `/vault` (host: `OBSIDIAN_VAULT_PATH`) |
-
-## Gamification
-
-XP events (note created `+10`, note edited `+5`, daily activity `+15`, goal completed `+50`), streak milestones (7/30/100/365 days → `+100` XP), and a plant that evolves through stages (seed → sprout → … → tree) as total XP grows. See `api/services/gamification_engine.py`.
-
-## Deployment
-
-### Development
-
-```bash
-make dev       # docker-compose.yml + docker-compose.dev.yml, hot reload
-```
-
-### Production
-
-```bash
-joidy up       # or: docker compose up -d
-```
-
-Production images are prebuilt (`d4mag3/joidy-*:latest`). After pulling new source code, rebuild the images before restarting — see the repo `AGENTS.md` for the rebuild sequence.
-
-### Monitoring (optional)
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
-```
-
-Adds **Prometheus** (:9090) and **Grafana** (host port 3001) with auto-provisioned datasources and dashboards. Requires `GRAFANA_ADMIN_PASSWORD` in `.env`.
-
-## Security
-
-- JWT auth on all data/mutation endpoints
-- CORS restricted via `CORS_ALLOWED_ORIGINS` (dev fallback only)
-- No telemetry, no phone-home — everything stays on your machine
-- Optional: expose via Cloudflare Tunnel or a reverse proxy with TLS
+- Only `frontend`/`api` publish, bound to loopback by default (`BIND_ADDR` to change).
+- JWT required on all data/mutation endpoints; OAuth state nonces, SSRF validation for push endpoints, rate limiting with `TRUSTED_PROXIES`, security headers — see [Security](/docs/security).

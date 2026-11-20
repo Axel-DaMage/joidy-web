@@ -1,112 +1,118 @@
 ---
 title: API Reference
-description: REST API reference for Joidy — auth, endpoints, webhooks, and realtime.
+description: Complete REST API reference for the Joidy backend.
 ---
 
 # API Reference
 
-Base URL: `http://localhost:8000`
-
-The API exposes **interactive OpenAPI documentation** out of the box. For the
-full endpoint list with schemas and try-it-out, run the stack and open:
-
-- Swagger UI: `http://localhost:8000/docs`
-- OpenAPI JSON: `http://localhost:8000/openapi.json`
-
-This page covers what Swagger can't: auth flow, webhooks, and realtime.
+Base URL: `http://localhost:8000` (FastAPI, interactive docs at `/docs`).
 
 ## Authentication
 
-Single-user JWT auth. Data and mutation endpoints require a bearer token;
-`/auth/*`, `/config`, and `/ws` are exempt. In development without
-`AUTH_PASSWORD`, auth is bypassed; in production `AUTH_PASSWORD` is mandatory.
+All data/mutation endpoints require a JWT:
 
-```bash
-# Login (password from AUTH_PASSWORD in .env)
-curl -X POST http://localhost:8000/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username": "user", "password": "your-password"}'
-# → { "access_token": "<jwt>", "token_type": "bearer" }
-
-# Authenticated request
-curl -H "Authorization: Bearer <jwt>" http://localhost:8000/notes/
+```text
+Authorization: Bearer <access_token>
 ```
 
-`GET /auth/status` reports whether auth is configured.
+**Public endpoints** (no JWT): `GET /`, `GET /health`, `GET /health/ready`, `GET /health/cache`, `GET /config/setup-status`, `POST /config/setup` (loopback-only), `/auth/*`, plus the unauthenticated webhooks noted below.
 
-## Endpoint Groups
+**Other auth schemes:**
 
-| Prefix | Area |
-|--------|------|
-| `/notes` | CRUD, semantic search (`POST /notes/search/semantic`), backlinks, similar notes, bulk ops, embedding retry |
-| `/tags` | Tags, tag co-occurrence graph, skill-tree parenting |
-| `/skills` | Skill tree |
-| `/goals` | Goals with failure modes (rollover, snowball, daily reset) |
-| `/personal-streaks` | Custom streaks |
-| `/gamification` | XP events, plant state |
-| `/mood` | Mood tracking |
-| `/planning` | Planning |
-| `/folders` | Vault folders |
-| `/vault` | Vault file operations |
-| `/export` | Data export |
-| `/upload` | File uploads |
-| `/sync` | Obsidian sync status, conflict resolution |
-| `/ai` | AI features (delegates to ai-service) |
-| `/analytics`, `/stats`, `/metrics` | Dashboards and metrics |
-| `/integrations/github` `/integrations/google` `/integrations/strava` `/integrations/spotify` | Third-party integrations (OAuth) |
-| `/push` | Web Push subscriptions (`GET /push/vapid-public-key`) |
-| `/config` | Runtime settings (exempt from JWT) |
-| `/system/power` | Host power/service management |
-| `/webhook/obsidian` | Inbound Obsidian events |
-| `/ws` | WebSocket realtime updates |
+| Scheme | Used by |
+|--------|---------|
+| `?token=<jwt>` | WebSocket `/ws` |
+| `OBSIDIAN_WEBHOOK_SECRET` or JWT | `POST /obsidian/webhook` |
+| `TELEGRAM_*` secret validation | `POST /telegram/webhook` |
+| `Bearer <INTERNAL_API_TOKEN>` | Service-to-service (e.g. n8n → `/emails`) |
+| `X-Internal-Secret: <INTERNAL_SECRET>` | API → ai-service (internal) |
 
-## Obsidian Webhook
+**Errors** follow the FastAPI standard: `{"detail": "..."}`. **Pagination** is `skip`/`limit` query params where supported.
 
-Bidirectional sync: the worker watches the vault filesystem, and Obsidian can
-push changes instantly via webhook (no polling).
+## Rate limiting
 
-```
-POST /webhook/obsidian?secret=<OBSIDIAN_WEBHOOK_SECRET>
-```
+- 60 req/min for anonymous IPs, 120 req/min for authenticated users
+- `X-RateLimit-*` headers on responses
+- Client IP taken from `X-Forwarded-For` **only** when the peer is in `TRUSTED_PROXIES`
 
-```json
-{
-  "event": "create",
-  "path": "/vault/My Note.md",
-  "content": "---\ntitle: My Note\ntags: [python, web]\n---\n# Content here",
-  "mtime": 1700000000
-}
-```
+## Routers
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `event` | string | yes | `create`, `update`, or `delete` |
-| `path` | string | yes | File path (matches `source_path` in DB) |
-| `content` | string | create/update | Full file content (frontmatter + body) |
-| `mtime` | int | no | Remote modification time (Unix timestamp) |
+### auth — `/auth`
+`POST /auth/register` · `POST /auth/login` (returns `{access_token, token_type}`) · `GET /auth/status`
 
-**Auth:** if `OBSIDIAN_WEBHOOK_SECRET` is set, pass it as `?secret=`. If unset
-but `AUTH_PASSWORD` is configured, JWT is required. If neither is set (dev
-mode), no auth.
+### notes — `/notes`
+`GET /notes/` (skip/limit, filters) · `POST /notes/` · `GET|PUT|DELETE /notes/{id}` · search + backlink endpoints
 
-`POST /webhook/obsidian/legacy` accepts the old payload format
-(`note_id`, `path`, `remote_mtime`) for backward compatibility.
+### tags — `/tags`  ·  folders — `/folders`
+CRUD for tags and note folders (`GET /folders/`, `POST /folders/`, `GET|PUT|DELETE /folders/{id}`).
 
-## WebSocket
+### skills — `/skills`
+Skill tree CRUD and XP-per-skill queries.
 
-```
-WS /ws?token=<jwt>
-```
+### gamification — `/gamification`
+`GET /gamification/profile` · `GET /gamification/xp-history` · `POST /gamification/pomodoro` — awards **+15 XP**; body takes `minutes` and an idempotent `pomodoro_id`.
 
-Realtime updates for the frontend (note changes, XP events, sync status).
-Connections without a token are closed with code `4001`.
+### achievements — `/achievements`
+`GET /achievements` (catalog + unlocked state, persisted in Postgres) · `POST /achievements/{id}/unlock` — idempotent, catalog is server-side.
 
-## Health & Metrics
+### goals — `/goals`
+`GET /goals/` · `POST /goals/` · `GET|PUT|DELETE /goals/{id}` · `PATCH /goals/sort` · `GET /goals/execution-queue` · `POST /goals/{id}/fail`
 
-- `GET /health` — API health check
-- `GET /metrics` — Prometheus format (also on worker `:8001`)
+Supports priority ordering, linked real notes, archiving, one-off tasks, rollover / snowball / daily-reset modes, persistent snowball streaks, icon auto-suggestion.
 
-## Errors
+### mood — `/mood`
+`POST /mood/` (daily check-in) · `GET /mood/today` · `GET /mood/history` · `GET /mood/stats`
 
-Standard FastAPI error responses: `401` unauthorized, `404` not found,
-`422` validation errors with per-field detail.
+### personal_streaks — `/personal-streaks`
+Streak check-in, freeze, and per-category streak queries.
+
+### calendar_tasks — `/calendar/tasks`
+CRUD over calendar-sourced tasks: `GET|POST /calendar/tasks` · `GET|PUT|DELETE /calendar/tasks/{id}` · `GET /calendar/tasks/execution-queue` · done-toggle endpoint. Completed tasks award +5 XP (+3 when untimed).
+
+### planning — `/planning`
+Day-planning endpoints; `day_fully_planned` awards +15 XP.
+
+### ai — `/ai`
+`POST /ai/chat` (AI assistant backing `/ai` page) · `POST /ai/plan-suggest` · classification/summarization endpoints. Proxied to `ai-service` internally.
+
+### emails — `/emails`
+Unified Gmail inbox (populated by the n8n workflow): `GET /emails/` · `GET /emails/accounts` · `POST /emails/` — upsert keyed by `account` + `gmail_id` (service token) · `PATCH /emails/{id}` · `DELETE /emails/{id}`.
+
+### telegram — `/telegram`
+`POST /telegram/webhook` (unauthenticated, secret-validated — bot commands `/note /goal /checkin /ask /status /help`) · `GET|PUT|DELETE /telegram/` config (JWT). Events stored in `telegram_events`.
+
+### obsidian — `/obsidian`
+`POST /obsidian/webhook` — bidirectional sync push from the vault plugin; authenticated by `OBSIDIAN_WEBHOOK_SECRET` or JWT.
+
+### integrations
+
+| Router | State | Notes |
+|--------|-------|-------|
+| `/integrations/github` | live | OAuth + repo data |
+| `/integrations/google` | live | Calendar `GET /calendar/status`, `POST /calendar/sync`, `GET|POST|PUT|DELETE /calendar/events`; Tasks is scaffolded |
+| `/integrations/spotify` | scaffold | OAuth flow, no full frontend |
+| `/integrations/strava` | scaffold | OAuth flow, no full frontend |
+
+### sync — `/sync`  ·  vault — `/vault`
+`GET /sync/status` · vault operations incl. `POST /vault/restore-goals`.
+
+### export — `/export`  ·  upload — `/upload`
+Data export; file uploads (JWT, mime-derived extensions, path-sanitized).
+
+### stats — `/stats`  ·  analytics — `/analytics`
+`GET /stats/*` aggregates · `GET /analytics/dashboard` · `POST /analytics/track` · `GET /analytics/usage`.
+
+### config — `/config`
+`GET /config/setup-status` (public) · `POST /config/setup` (public, loopback-only, password policy) · authenticated config read/write (JWT).
+
+### metrics — `/metrics`
+Prometheus scrape endpoint (api + worker expose it).
+
+### push — `/push`
+Web-push subscription endpoints; endpoints are SSRF-validated, VAPID-signed.
+
+### system — `/system` (opt-in)
+Only registered when `POWER_MANAGEMENT_ENABLED=true`: `GET /system/power/status` · `POST /system/power/sleep` · `POST /system/power/wake` · `POST /system/power/shutdown`.
+
+### websocket — `/ws`
+Realtime events; JWT via `?token=` query param.
