@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useI18n } from "@/i18n";
 import { Section } from "@/components/ui/Section";
 
@@ -9,9 +9,10 @@ export function ArchitectureSection() {
 
   return (
     <Section id="architecture" title={t.architecture.title}>
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
         transition={{ duration: 0.6 }}
         className="font-mono text-xs md:text-sm leading-relaxed max-w-2xl mx-auto overflow-hidden"
       >
@@ -86,7 +87,7 @@ export function ArchitectureSection() {
             </span>
           </pre>
         </div>
-      </motion.div>
+      </m.div>
     </Section>
   );
 }

@@ -1,15 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-fira-code), 'JetBrains Mono', monospace;
 }
 
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
-  html {
-    scroll-behavior: smooth;
+  :root {
+    color-scheme: dark;
+  }
+  /* Next.js 16 no longer overrides `scroll-behavior` during route transitions.
+     The `data-scroll-behavior="smooth"` attribute on <html> opts back into the
+     override, so SPA navigations scroll instantly while in-page anchor jumps
+     keep smooth scrolling. */
+  @media (prefers-reduced-motion: no-preference) {
+    html[data-scroll-behavior="smooth"] {
+      scroll-behavior: smooth;
+    }
   }
   body {
     background: #000000;
@@ -35,6 +43,10 @@
   }
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
   }
 }
 

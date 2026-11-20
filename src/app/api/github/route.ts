@@ -1,14 +1,36 @@
 import { NextResponse } from 'next/server';
+import { githubFetch, OUTAGE_TTL_MS } from '@/lib/github';
 
 export const revalidate = 86400; // Cache for 24 hours (86400 seconds)
 
+interface GitHubIssue {
+  id: number;
+  number: number;
+  title: string;
+  state: string;
+  html_url: string;
+  pull_request?: unknown;
+  user?: {
+    login: string;
+    avatar_url: string;
+  } | null;
+}
+
+// Best-effort, per-instance fallback state. Module state is not shared
+// across serverless instances or cold starts, but it still stops a burst of
+// client requests from each triggering a new GitHub call during an outage.
+let lastGood: GitHubIssue[] | null = null;
+let outageUntil = 0;
+
 export async function GET() {
+  if (Date.now() < outageUntil) {
+    if (lastGood) return NextResponse.json(lastGood);
+    return NextResponse.json({ error: 'Failed to fetch issues' }, { status: 500 });
+  }
+
   try {
     // Fetch up to 30 items to give us room to mix them
-    const res = await fetch('https://api.github.com/repos/Axel-DaMage/joidy/issues?state=all&per_page=30', {
-      headers: {
-        'Accept': 'application/vnd.github.v3+json',
-      },
+    const res = await githubFetch('https://api.github.com/repos/Axel-DaMage/joidy/issues?state=all&per_page=30', {
       next: { revalidate: 86400 },
     });
 
@@ -16,13 +38,13 @@ export async function GET() {
       throw new Error(`GitHub API error: ${res.status}`);
     }
 
-    const data = (await res.json()) as { pull_request?: unknown }[];
+    const data = (await res.json()) as GitHubIssue[];
 
     // Separar Issues y PRs para forzar una mezcla equitativa si es posible
     const prs = data.filter((item) => !!item.pull_request);
     const issues = data.filter((item) => !item.pull_request);
     
-    const mixed = [];
+    const mixed: GitHubIssue[] = [];
     const maxLength = Math.max(prs.length, issues.length);
     
     for (let i = 0; i < maxLength; i++) {
@@ -30,9 +52,27 @@ export async function GET() {
       if (prs[i]) mixed.push(prs[i]);
     }
 
-    return NextResponse.json(mixed);
+    // Solo exponer los campos que consume el cliente (RoadmapSection)
+    const slim = mixed.map((item) => ({
+      id: item.id,
+      number: item.number,
+      title: item.title,
+      state: item.state,
+      html_url: item.html_url,
+      pull_request: item.pull_request ? {} : undefined,
+      user: item.user
+        ? { login: item.user.login, avatar_url: item.user.avatar_url }
+        : undefined,
+    }));
+
+    lastGood = slim;
+    return NextResponse.json(slim);
   } catch (error) {
     console.error('Error fetching GitHub issues:', error);
+    outageUntil = Date.now() + OUTAGE_TTL_MS;
+    // Serve last-good data during the outage window instead of letting every
+    // request re-hit GitHub.
+    if (lastGood) return NextResponse.json(lastGood);
     return NextResponse.json({ error: 'Failed to fetch issues' }, { status: 500 });
   }
 }
