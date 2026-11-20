@@ -43,7 +43,7 @@ export function RoadmapSection() {
   }, []);
 
   return (
-    <Section id="roadmap" title={t.roadmap.title || 'Roadmap'}>
+    <Section id="roadmap" title={t.roadmap.title}>
       <div className="w-full max-w-6xl mx-auto">
         {loading ? (
           <div className="font-mono text-sm text-[#555555] text-center py-20 animate-pulse">
@@ -90,6 +90,7 @@ export function RoadmapSection() {
                       alt={item.user.login}
                       width={24}
                       height={24}
+                      unoptimized
                       className={`w-6 h-6 rounded-sm grayscale group-hover:grayscale-0 transition-all border ${borderColor}`}
                       title={item.user.login}
                     />
