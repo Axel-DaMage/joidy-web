@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
+import rehypeSlug from 'rehype-slug';
+import GithubSlugger from 'github-slugger';
 import type { ComponentPropsWithoutRef } from 'react';
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
@@ -22,6 +24,8 @@ const DOCS_INDEX = [
   { slug: 'api-reference', title: 'API Reference', description: 'Complete REST API documentation' },
   { slug: 'operations', title: 'Operations', description: 'joidy CLI, backups, monitoring, and power management' },
   { slug: 'security', title: 'Security', description: 'Authentication model, hardening, and disclosure' },
+  { slug: 'troubleshooting', title: 'Troubleshooting', description: 'Diagnose and fix common startup, API, vault, and AI issues' },
+  { slug: 'faq', title: 'FAQ', description: 'Frequently asked questions about running Joidy' },
 ];
 
 const SLUG_PATTERN = /^[a-z0-9-]+(\/[a-z0-9-]+)*$/;
@@ -40,6 +44,46 @@ async function getDocContent(slug: string) {
   const { data, content } = matter(fileContent);
   
   return { frontmatter: data, content };
+}
+
+interface TocItem {
+  depth: number;
+  text: string;
+  id: string;
+}
+
+// Reduce markdown heading content to its plain-text equivalent so
+// TOC labels and slugs match what rehype-slug derives from rendered text.
+// `_`/`__` are only emphasis at word boundaries (CommonMark) — intraword
+// underscores in identifiers like OBSIDIAN_VAULT_PATH must be preserved.
+function headingToText(raw: string): string {
+  return raw
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/`([^`]*)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/(^|\s)__([^_]+)__(?=\s|$)/g, '$1$2')
+    .replace(/(^|\s)_([^_]+)_(?=\s|$)/g, '$1$2')
+    .replace(/~~([^~]+)~~/g, '$1')
+    .trim();
+}
+
+function extractToc(content: string): TocItem[] {
+  const slugger = new GithubSlugger();
+  const items: TocItem[] = [];
+  let inFence = false;
+  for (const line of content.split('\n')) {
+    if (/^\s*```/.test(line)) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    const match = /^(#{2,4})\s+(.+)$/.exec(line);
+    if (!match) continue;
+    const text = headingToText(match[2]);
+    items.push({ depth: match[1].length, text, id: slugger.slug(text) });
+  }
+  return items;
 }
 
 export async function generateStaticParams() {
@@ -198,6 +242,14 @@ export default async function DocPage({ params }: DocPageProps) {
     notFound();
   }
   
+  const toc = extractToc(doc.content);
+  const docIndex = DOCS_INDEX.findIndex((entry) => entry.slug === slug);
+  const prevDoc = docIndex > 0 ? DOCS_INDEX[docIndex - 1] : null;
+  const nextDoc =
+    docIndex >= 0 && docIndex < DOCS_INDEX.length - 1
+      ? DOCS_INDEX[docIndex + 1]
+      : null;
+  
   return (
     <article className="prose max-w-none">
       <header className="mb-8 pb-6 border-b border-[#1a1a1a]">
@@ -210,9 +262,59 @@ export default async function DocPage({ params }: DocPageProps) {
           </p>
         )}
       </header>
+      {toc.length >= 4 && (
+        <nav className="not-prose mb-10 rounded-lg border border-[#1a1a1a] bg-[#0a0a0a] p-5">
+          <h2 className="font-mono text-[10px] tracking-widest text-[#555555] uppercase mb-3">
+            On this page
+          </h2>
+          <ul className="space-y-1.5">
+            {toc.map((item) => (
+              <li
+                key={item.id}
+                style={{ paddingLeft: `${(item.depth - 2) * 1.25}rem` }}
+              >
+                <a
+                  href={`#${item.id}`}
+                  className="font-mono text-xs tracking-wider text-[#888888] hover:text-[#10b981] transition-colors"
+                >
+                  {item.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       {/* next-mdx-remote v6: blockJS/blockDangerousJS default to true — {expressions}
           in MDX prose are silently stripped. See the docs-authoring note in AGENTS.md. */}
-      <MDXRemote source={doc.content} components={mdxComponents} />
+      <MDXRemote
+        source={doc.content}
+        options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }}
+        components={mdxComponents}
+      />
+      {(prevDoc || nextDoc) && (
+        <nav className="not-prose mt-12 pt-6 border-t border-[#1a1a1a] flex items-center justify-between gap-4">
+          {prevDoc ? (
+            <Link
+              href={`/docs/${prevDoc.slug}`}
+              className="font-mono text-xs tracking-wider text-[#888888] hover:text-[#10b981] transition-colors"
+            >
+              ← {prevDoc.title}
+            </Link>
+          ) : (
+            <span />
+          )}
+          {nextDoc ? (
+            <Link
+              href={`/docs/${nextDoc.slug}`}
+              className="font-mono text-xs tracking-wider text-[#888888] hover:text-[#10b981] transition-colors"
+            >
+              {nextDoc.title} →
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
+      )}
     </article>
   );
 }
