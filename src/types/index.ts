@@ -32,6 +32,20 @@ export interface Dict {
   architecture: {
     title: string;
   };
+  demo: {
+    title: string;
+    description: string;
+    terminalCaption: string;
+    appCaption: string;
+    app: {
+      nav: string[];
+      stats: { label: string; value: string }[];
+      notesTitle: string;
+      notes: string[];
+      goalsTitle: string;
+      goals: { name: string; progress: string }[];
+    };
+  };
   audience: {
     title: string;
     items: { title: string; desc: string }[];

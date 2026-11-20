@@ -284,6 +284,8 @@ export default async function DocPage({ params }: DocPageProps) {
           </ul>
         </nav>
       )}
+      {/* next-mdx-remote v6: blockJS/blockDangerousJS default to true — {expressions}
+          in MDX prose are silently stripped. See the docs-authoring note in AGENTS.md. */}
       <MDXRemote
         source={doc.content}
         options={{ mdxOptions: { rehypePlugins: [rehypeSlug] } }}
