@@ -30,7 +30,7 @@ export function NeofetchOutput() {
     >
       <div className="flex flex-col md:flex-row items-center gap-6 md:gap-10">
         {/* Logo Section */}
-        <div className="text-white font-bold leading-tight whitespace-pre shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
+        <div aria-hidden="true" className="text-white font-bold leading-tight whitespace-pre shrink-0 drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">
           {catAscii.join("\n")}
         </div>
 
