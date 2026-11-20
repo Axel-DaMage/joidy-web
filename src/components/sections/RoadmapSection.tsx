@@ -30,8 +30,12 @@ export function RoadmapSection() {
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) {
-          // Mezclar aleatoriamente y tomar solo 3
-          const shuffled = data.sort(() => 0.5 - Math.random());
+          // Fisher–Yates shuffle, then take only 3
+          const shuffled = [...data];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
           setItems(shuffled.slice(0, 3));
         }
         setLoading(false);

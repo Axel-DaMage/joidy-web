@@ -21,7 +21,7 @@ const hoverColors = [
 ];
 
 function FeatureCard({ title, desc, highlight, index, total }: { title: string; desc: string; highlight?: string; index: number; total: number }) {
-  const Icon = featureIcons[index];
+  const Icon = featureIcons[index % featureIcons.length];
   const colorClass = hoverColors[index % hoverColors.length];
 
   // If we are on a 3-column grid (lg) and there is exactly 1 item left on the last row (e.g. 10th item of 10)
