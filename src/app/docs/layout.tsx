@@ -33,6 +33,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             <span className="font-mono text-xs tracking-wider text-[#777777]">DOCUMENTATION MENU</span>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="docs-nav"
               className="font-mono text-xs tracking-wider text-white border border-[#333333] hover:border-white px-3 py-1.5 transition-all"
             >
               {mobileMenuOpen ? 'CLOSE' : 'MENU'}
@@ -40,7 +42,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </div>
 
           {/* Sidebar */}
-          <aside className={`
+          <aside id="docs-nav" className={`
             ${mobileMenuOpen ? 'block' : 'hidden'} 
             md:block w-full md:w-64 flex-shrink-0 
             md:sticky md:top-24 md:h-[calc(100vh-8rem)] 
@@ -88,7 +90,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0 pb-16">
+          <main id="main-content" className="flex-1 min-w-0 pb-16">
             {children}
           </main>
         </div>
