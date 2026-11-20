@@ -102,7 +102,7 @@ export function InstallBox({ className = "" }: { className?: string }) {
           aria-live="polite"
           className="font-mono text-[10px] text-[#777777] hover:text-[#00FFFF] transition-colors uppercase tracking-widest text-right whitespace-nowrap w-full"
         >
-          {copied ? t.cta.copied : t.cta.copy}
+          {copied ? t.clipboard.copied : t.clipboard.copy}
         </button>
       </div>
     </div>

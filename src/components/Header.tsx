@@ -6,8 +6,6 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useI18n } from '@/i18n';
 
-const NAV_IDS = ['features', 'architecture', 'roadmap', 'faq', 'privacy'];
-
 export function Header() {
   const { lang, setLang, t } = useI18n();
   const pathname = usePathname();
@@ -55,13 +53,13 @@ export function Header() {
       </Link>
 
       <nav className="hidden md:flex items-center gap-8">
-        {t.header.nav.map((label, i) => (
+        {t.header.nav.map((item) => (
           <Link
-            key={label}
-            href={`/#${NAV_IDS[i]}`}
+            key={item.id}
+            href={`/#${item.id}`}
             className="font-mono text-xs tracking-[0.1em] text-[#888888] hover:text-white transition-colors uppercase"
           >
-            {label}
+            {item.label}
           </Link>
         ))}
         <Link
@@ -93,14 +91,14 @@ export function Header() {
 
       {menuOpen && (
         <nav id="mobile-nav" className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4">
-          {t.header.nav.map((label, i) => (
+          {t.header.nav.map((item) => (
             <Link
-              key={label}
-              href={`/#${NAV_IDS[i]}`}
+              key={item.id}
+              href={`/#${item.id}`}
               onClick={() => setMenuOpen(false)}
               className="font-mono text-xs tracking-[0.1em] text-[#888888] hover:text-white transition-colors uppercase"
             >
-              {label}
+              {item.label}
             </Link>
           ))}
           <Link
