@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { DOCS_INDEX } from "@/lib/docs";
+import { useI18n } from "@/i18n";
 
 export function DocsSidebar() {
   const pathname = usePathname();
+  const { t } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -29,6 +31,7 @@ export function DocsSidebar() {
       {/* Sidebar */}
       <aside
         id="docs-nav"
+        aria-label={t.a11y.docsNav}
         className={`
         ${mobileMenuOpen ? "block" : "hidden"} 
         md:block w-full md:w-64 flex-shrink-0 

@@ -99,7 +99,11 @@
   "roadmap": {
     "title": "Roadmap",
     "loading": "Fetching GitHub data...",
-    "empty": "No repository data available."
+    "empty": "No repository data available.",
+    "pullRequest": "Pull request",
+    "issue": "Issue",
+    "open": "open",
+    "closed": "closed"
   },
   "faq": {
     "title": "FAQs",
@@ -116,6 +120,7 @@
     ]
   },
   "donate": {
+    "title": "Donate",
     "message": "The project survives thanks to the open-source community, not just one person's work. If you'd like to support the creator, you can donate here.",
     "button": "Sponsor Project"
   },
@@ -164,6 +169,10 @@
     "menu": "Menu"
   },
   "a11y": {
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "primaryNav": "Primary",
+    "footerNav": "Footer",
+    "communityNav": "Community",
+    "docsNav": "Docs"
   }
 }

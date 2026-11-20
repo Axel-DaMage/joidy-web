@@ -54,7 +54,7 @@ export function Header() {
         JOIDY
       </Link>
 
-      <nav className="hidden md:flex items-center gap-8">
+      <nav aria-label={t.a11y.primaryNav} className="hidden md:flex items-center gap-8">
         {t.header.nav.map((item) => (
           <Link
             key={item.id}
@@ -94,6 +94,7 @@ export function Header() {
       {menuOpen && (
         <nav
           id="mobile-nav"
+          aria-label={t.a11y.primaryNav}
           className="md:hidden absolute top-14 left-0 right-0 border-b border-[#1a1a1a] bg-black/95 backdrop-blur-md px-6 py-4 flex flex-col gap-4"
         >
           {t.header.nav.map((item) => (

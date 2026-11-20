@@ -1,25 +1,13 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n';
 import { Container } from '@/components/ui/Container';
-import { useEffect, useState } from 'react';
 import { LATEST_VERSION } from '@/lib/version';
 
-export function Footer() {
+export function Footer({ version }: { version?: ReactNode }) {
   const { t } = useI18n();
-  const [version, setVersion] = useState(LATEST_VERSION);
-
-  useEffect(() => {
-    fetch('/api/github/version')
-      .then(res => res.json())
-      .then(data => {
-        if (data.version) {
-          setVersion(data.version);
-        }
-      })
-      .catch(console.error);
-  }, []);
 
   const footerLinks = {
     navigation: [
@@ -47,10 +35,10 @@ export function Footer() {
             </p>
           </div>
 
-          <nav>
-            <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
+          <nav aria-label={t.a11y.footerNav}>
+            <h2 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
               {t.footer.nav}
-            </h4>
+            </h2>
             <ul className="space-y-2">
               {footerLinks.navigation.map((link) => (
                 <li key={link.label}>
@@ -65,10 +53,10 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav>
-            <h4 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
+          <nav aria-label={t.a11y.communityNav}>
+            <h2 className="font-mono text-xs tracking-wider text-[#888888] uppercase mb-4">
               {t.footer.connect}
-            </h4>
+            </h2>
             <ul className="space-y-2">
               {footerLinks.connect.map((link) => (
                 <li key={link.label}>
@@ -97,7 +85,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-[#1a1a1a] flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="font-mono text-xs text-[#777777] text-center md:text-left">
-            {version} · <a href="https://github.com/Axel-DaMage" target="_blank" rel="noopener noreferrer" className="hover:text-[#aaaaaa] transition-colors">Axel-DaMage</a>
+            {version ?? LATEST_VERSION} · <a href="https://github.com/Axel-DaMage" target="_blank" rel="noopener noreferrer" className="hover:text-[#aaaaaa] transition-colors">Axel-DaMage</a>
           </div>
         </div>
       </Container>

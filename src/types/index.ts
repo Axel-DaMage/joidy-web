@@ -53,12 +53,17 @@ export interface Dict {
     title: string;
     loading: string;
     empty: string;
+    pullRequest: string;
+    issue: string;
+    open: string;
+    closed: string;
   };
   faq: {
     title: string;
     items: { q: string; a: string }[];
   };
   donate: {
+    title: string;
     message: string;
     button: string;
   };
@@ -102,5 +107,9 @@ export interface Dict {
   };
   a11y: {
     skipToContent: string;
+    primaryNav: string;
+    footerNav: string;
+    communityNav: string;
+    docsNav: string;
   };
 }

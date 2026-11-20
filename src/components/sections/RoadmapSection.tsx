@@ -13,11 +13,33 @@ type GitHubItem = {
   state: 'open' | 'closed';
   html_url: string;
   pull_request?: object;
+  // GitHub returns `user: null` for deleted/ghost accounts
   user?: {
     login: string;
     avatar_url: string;
   } | null;
 };
+
+function isGitHubItem(item: unknown): item is GitHubItem {
+  if (typeof item !== 'object' || item === null) return false;
+  const candidate = item as Partial<GitHubItem>;
+  if (
+    typeof candidate.id !== 'number' ||
+    typeof candidate.number !== 'number' ||
+    typeof candidate.title !== 'string' ||
+    typeof candidate.html_url !== 'string' ||
+    (candidate.state !== 'open' && candidate.state !== 'closed')
+  ) {
+    return false;
+  }
+  return (
+    candidate.user == null ||
+    (typeof candidate.user === 'object' &&
+      candidate.user !== null &&
+      typeof candidate.user.login === 'string' &&
+      typeof candidate.user.avatar_url === 'string')
+  );
+}
 
 export function RoadmapSection() {
   const { t } = useI18n();
@@ -27,10 +49,10 @@ export function RoadmapSection() {
   useEffect(() => {
     fetch('/api/github')
       .then(res => res.json())
-      .then(data => {
+      .then((data: unknown) => {
         if (Array.isArray(data)) {
           // Fisher–Yates shuffle, then take only 3
-          const shuffled = [...data];
+          const shuffled = data.filter(isGitHubItem);
           for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
             [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -40,7 +62,9 @@ export function RoadmapSection() {
         setLoading(false);
       })
       .catch(err => {
-        console.error(err);
+        if (process.env.NODE_ENV === 'development') {
+          console.error(err);
+        }
         setLoading(false);
       });
   }, []);
@@ -99,7 +123,11 @@ export function RoadmapSection() {
                         title={item.user.login}
                       />
                     ) : (
-                      <span className={`w-6 h-6 rounded-sm border ${borderColor} flex items-center justify-center font-mono text-[10px] text-[#555555]`}>
+                      <span
+                        aria-hidden="true"
+                        title="ghost"
+                        className={`w-6 h-6 rounded-sm border ${borderColor} flex items-center justify-center font-mono text-[10px] text-[#555555] select-none`}
+                      >
                         ?
                       </span>
                     )}
@@ -107,6 +135,9 @@ export function RoadmapSection() {
 
                   {/* Title */}
                   <div className={`font-mono text-sm font-semibold line-clamp-3 w-full ${isOpen ? 'text-[#cccccc] group-hover:text-white' : 'text-[#777777] line-through group-hover:text-[#888888]'} transition-colors leading-relaxed`}>
+                    <span className="sr-only">
+                      {isPR ? t.roadmap.pullRequest : t.roadmap.issue}, {isOpen ? t.roadmap.open : t.roadmap.closed}:{' '}
+                    </span>
                     {item.title}
                   </div>
                 </m.a>

@@ -99,7 +99,11 @@
   "roadmap": {
     "title": "Roadmap",
     "loading": "Obteniendo datos de GitHub...",
-    "empty": "No hay datos disponibles en el repositorio."
+    "empty": "No hay datos disponibles en el repositorio.",
+    "pullRequest": "Pull request",
+    "issue": "Issue",
+    "open": "abierto",
+    "closed": "cerrado"
   },
   "faq": {
     "title": "FAQs",
@@ -116,6 +120,7 @@
     ]
   },
   "donate": {
+    "title": "Donar",
     "message": "El proyecto sobrevive gracias a la comunidad open-source y no solo al trabajo de uno. Si deseas apoyar al creador, puedes donar aquí.",
     "button": "Sponsor Project"
   },
@@ -164,6 +169,10 @@
     "menu": "Menú"
   },
   "a11y": {
-    "skipToContent": "Saltar al contenido"
+    "skipToContent": "Saltar al contenido",
+    "primaryNav": "Principal",
+    "footerNav": "Pie de página",
+    "communityNav": "Comunidad",
+    "docsNav": "Documentación"
   }
 }

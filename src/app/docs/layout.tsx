@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { FooterVersion } from "@/components/FooterVersion";
 import { DocsSidebar } from "@/components/docs/DocsSidebar";
 
 export default function DocsLayout({
@@ -22,7 +23,7 @@ export default function DocsLayout({
         </div>
       </div>
 
-      <Footer />
+      <Footer version={<FooterVersion />} />
     </div>
   );
 }
