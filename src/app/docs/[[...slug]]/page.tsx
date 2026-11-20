@@ -8,6 +8,12 @@ import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'r
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 
+// Canonical doc slugs: one or more lowercase segments of letters, digits and dashes.
+const SLUG_PATTERN = /^[a-z0-9-]+(\/[a-z0-9-]+)*$/;
+
+// All docs are known at build time; unknown slugs must 404 without touching fs.
+export const dynamicParams = false;
+
 interface DocPageProps {
   params: Promise<{ slug?: string[] }>;
 }
@@ -25,8 +31,18 @@ const DOCS_INDEX = [
 ];
 
 async function getDocContent(slug: string) {
-  const filePath = path.join(DOCS_DIR, `${slug}.mdx`);
-  
+  // Reject anything outside the canonical slug shape (blocks `..`, `%2e`, etc.)
+  if (!SLUG_PATTERN.test(slug)) {
+    return null;
+  }
+
+  const filePath = path.resolve(DOCS_DIR, `${slug}.mdx`);
+
+  // Defense-in-depth: the resolved path must stay inside DOCS_DIR.
+  if (!filePath.startsWith(`${DOCS_DIR}${path.sep}`)) {
+    return null;
+  }
+
   if (!fs.existsSync(filePath)) {
     return null;
   }
@@ -37,10 +53,18 @@ async function getDocContent(slug: string) {
   return { frontmatter: data, content };
 }
 
-export async function generateStaticParams() {
-  const params = DOCS_INDEX.map(doc => ({ slug: [doc.slug] }));
-  params.push({ slug: [] }); // index page
-  return params;
+export function generateStaticParams() {
+  // Register every .mdx file under docs/ so new docs are picked up automatically.
+  // `index.mdx` is intentionally skipped: /docs renders the index page below.
+  const docParams = fs
+    .readdirSync(DOCS_DIR)
+    .filter(file => file.endsWith('.mdx'))
+    .map(file => file.replace(/\.mdx$/, ''))
+    .filter(slug => slug !== 'index' && SLUG_PATTERN.test(slug))
+    .map(slug => ({ slug: [slug] }));
+
+  docParams.push({ slug: [] }); // index page
+  return docParams;
 }
 
 export async function generateMetadata({ params }: DocPageProps) {
