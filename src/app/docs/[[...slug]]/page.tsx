@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
-import { isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
 
 const DOCS_DIR = path.join(process.cwd(), 'docs');
 
@@ -24,7 +24,12 @@ const DOCS_INDEX = [
   { slug: 'security', title: 'Security', description: 'Authentication model, hardening, and disclosure' },
 ];
 
+const SLUG_PATTERN = /^[a-z0-9-]+(\/[a-z0-9-]+)*$/;
+
 async function getDocContent(slug: string) {
+  if (!SLUG_PATTERN.test(slug)) {
+    return null;
+  }
   const filePath = path.join(DOCS_DIR, `${slug}.mdx`);
   
   if (!fs.existsSync(filePath)) {
@@ -67,15 +72,6 @@ export async function generateMetadata({ params }: DocPageProps) {
   };
 }
 
-// Función auxiliar para extraer texto de los children de React
-const extractText = (children: ReactNode): string => {
-  if (typeof children === 'string') return children;
-  if (typeof children === 'number') return String(children);
-  if (Array.isArray(children)) return children.map(extractText).join('');
-  if (isValidElement<{ children?: ReactNode }>(children)) return extractText(children.props.children);
-  return '';
-};
-
 // Componentes MDX personalizados para dar estilos y colores
 const mdxComponents = {
   table: (props: ComponentPropsWithoutRef<'table'>) => (
@@ -89,18 +85,9 @@ const mdxComponents = {
       {...props} 
     />
   ),
-  td: (props: ComponentPropsWithoutRef<'td'>) => {
-    // Extraemos el texto recursivamente por si viene envuelto en otros nodos
-    const text = extractText(props.children).trim();
-    let colorClass = "text-[#cccccc]";
-    
-    if (text === 'Yes') colorClass = "text-[#10b981] font-bold";
-    if (text === 'No') colorClass = "text-[#ef4444]";
-
-    return (
-      <td className={`px-6 py-4 border-b border-[#222] bg-[#111111] ${colorClass}`} {...props} />
-    )
-  },
+  td: (props: ComponentPropsWithoutRef<'td'>) => (
+    <td className="px-6 py-4 border-b border-[#222] bg-[#111111] text-[#cccccc]" {...props} />
+  ),
   code: (props: ComponentPropsWithoutRef<'code'>) => {
     // Verificamos si es un bloque de código (pre > code) o código en línea
     const isBlock = props.className?.includes('language-');
@@ -109,17 +96,29 @@ const mdxComponents = {
     }
     return (
       <code 
-        className="!text-[#10b981] !bg-[#1a1a1a] px-1.5 py-0.5 rounded font-mono text-[0.9em] border border-[#333] before:content-none after:content-none" 
+        className="text-[#10b981]! bg-[#1a1a1a]! px-1.5 py-0.5 rounded font-mono text-[0.9em] border border-[#333] before:content-none after:content-none" 
         {...props} 
       />
     );
   },
-  a: (props: ComponentPropsWithoutRef<'a'>) => (
-    <a 
-      className="text-[#10b981] hover:text-[#34d399] transition-colors decoration-dashed underline-offset-4" 
-      {...props} 
-    />
-  )
+  a: ({ href, ...props }: ComponentPropsWithoutRef<'a'>) => {
+    if (href?.startsWith('/')) {
+      return (
+        <Link
+          href={href}
+          className="text-[#10b981] hover:text-[#34d399] transition-colors decoration-dashed underline-offset-4"
+          {...props}
+        />
+      );
+    }
+    return (
+      <a 
+        className="text-[#10b981] hover:text-[#34d399] transition-colors decoration-dashed underline-offset-4" 
+        href={href}
+        {...props} 
+      />
+    );
+  }
 };
 
 export default async function DocPage({ params }: DocPageProps) {
@@ -200,7 +199,7 @@ export default async function DocPage({ params }: DocPageProps) {
   }
   
   return (
-    <article className="prose prose-invert max-w-none">
+    <article className="prose max-w-none">
       <header className="mb-8 pb-6 border-b border-[#1a1a1a]">
         <h1 className="font-mono text-3xl md:text-4xl tracking-[0.1em] text-white mb-4">
           {doc.frontmatter.title}
